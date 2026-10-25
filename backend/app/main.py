@@ -4,6 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from .api.analytics import router as analytics_router
 from .api.appeals import router as appeals_router
 from .db import get_session
 
@@ -19,6 +20,7 @@ app.add_middleware(
 
 
 app.include_router(appeals_router)
+app.include_router(analytics_router)
 
 
 @app.get("/health")

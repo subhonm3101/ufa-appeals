@@ -47,3 +47,82 @@ class CategoryOut(BaseModel):
 class DistrictOut(BaseModel):
     id: int
     name: str
+
+
+# ----------------------------- аналитика (шаг 3.3) -----------------------------
+
+from datetime import date  # noqa: E402
+
+
+class TimePoint(BaseModel):
+    period: date  # начало периода (день, понедельник недели или 1-е число месяца)
+    count: int
+
+
+class TimeSeries(BaseModel):
+    date_from: date
+    date_to: date
+    granularity: str
+    category: str | None
+    district: str | None
+    total: int
+    points: list[TimePoint]  # без пропусков: периоды без обращений дают count = 0
+
+
+class CategoryStat(BaseModel):
+    code: str
+    name: str
+    count: int
+    prev_count: int
+    change_pct: float | None  # None, если в прошлом периоде было 0
+    share: float              # доля от всех обращений периода, 0..1
+
+
+class DistrictStat(BaseModel):
+    name: str
+    count: int
+    prev_count: int
+    change_pct: float | None
+
+
+class Summary(BaseModel):
+    date_from: date
+    date_to: date
+    prev_date_from: date
+    prev_date_to: date
+    days: int
+    total: int
+    prev_total: int
+    change_pct: float | None
+    per_day: float
+    uncategorized: int
+    by_category: list[CategoryStat]
+    by_district: list[DistrictStat]
+
+
+class HeatmapCell(BaseModel):
+    category: str
+    district: str
+    count: int
+
+
+class Heatmap(BaseModel):
+    date_from: date
+    date_to: date
+    categories: list[CategoryOut]
+    districts: list[str]
+    cells: list[HeatmapCell]  # только ненулевые ячейки
+
+
+class MapPoint(BaseModel):
+    id: int
+    lat: float
+    lon: float
+    category: str | None
+    district: str | None
+    created_at: datetime
+
+
+class MapPoints(BaseModel):
+    total: int  # всего подходящих точек (может быть больше limit)
+    items: list[MapPoint]
