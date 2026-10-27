@@ -218,7 +218,9 @@ _INSERT = pg_insert(_appeals).on_conflict_do_nothing(
 )
 
 
-def run_import(session: Session, filename: str, content: bytes, dry_run: bool = False) -> ImportReport:
+def run_import(
+    session: Session, filename: str, content: bytes, dry_run: bool = False, user_id: int | None = None
+) -> ImportReport:
     filename = os.path.basename(filename or "upload")[:200]
     records = read_table(filename, content)
 
@@ -247,10 +249,10 @@ def run_import(session: Session, filename: str, content: bytes, dry_run: bool = 
     if new_rows and not dry_run:
         batch_id = session.execute(
             text(
-                "INSERT INTO import_batches (filename, source, rows_total, rows_ok, rows_failed) "
-                "VALUES (:f, 'upload', :t, :ok, :bad) RETURNING id"
+                "INSERT INTO import_batches (filename, source, rows_total, rows_ok, rows_failed, uploaded_by) "
+                "VALUES (:f, 'upload', :t, :ok, :bad, :u) RETURNING id"
             ),
-            {"f": filename, "t": len(records), "ok": len(new_rows), "bad": len(errors)},
+            {"f": filename, "t": len(records), "ok": len(new_rows), "bad": len(errors), "u": user_id},
         ).scalar_one()
         for i in range(0, len(new_rows), CHUNK):
             chunk = [dict(r, batch_id=batch_id) for r in new_rows[i:i + CHUNK]]

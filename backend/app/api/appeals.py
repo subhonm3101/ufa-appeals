@@ -1,12 +1,14 @@
 from datetime import date, datetime, time, timedelta
 
-from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, UploadFile
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from ..auth import CurrentUser, client_ip, get_current_user, require_roles
 from ..db import get_session
 from ..schemas import AppealOut, AppealsPage, CategoryOut, DistrictOut, ImportReport
+from ..services.audit import log_event
 from ..services.importer import LOCAL_TZ, MAX_BYTES, ImportFileError, run_import
 
 router = APIRouter(prefix="/api", tags=["appeals"])
@@ -16,16 +18,25 @@ DB_DOWN = HTTPException(status_code=503, detail="База данных недо�
 
 @router.post("/import", response_model=ImportReport)
 def import_appeals(
+    request: Request,
     file: UploadFile = File(..., description="Файл .csv или .xlsx"),
     dry_run: bool = Query(False, description="Только проверить файл, в базу ничего не писать"),
+    user: CurrentUser = Depends(require_roles("operator", "admin")),
     session: Session = Depends(get_session),
 ):
-    """Загрузка обращений из CSV/XLSX. Пока без авторизации (она появится на шаге 3.4)."""
+    """Загрузка обращений из CSV/XLSX. Доступна ролям operator и admin; действие пишется в журнал."""
     content = file.file.read(MAX_BYTES + 1)
     if len(content) > MAX_BYTES:
         raise HTTPException(status_code=413, detail=f"Файл больше {MAX_BYTES // (1024 * 1024)} МБ")
     try:
-        return run_import(session, file.filename or "upload", content, dry_run)
+        report = run_import(session, file.filename or "upload", content, dry_run, user_id=user.id)
+        log_event(
+            session, user.id, "import_dry_run" if dry_run else "import", "import_batch", report.batch_id,
+            details={"filename": report.filename, "rows_total": report.rows_total, "inserted": report.inserted,
+                     "rows_failed": report.rows_failed, "duplicates_skipped": report.duplicates_skipped},
+            ip=client_ip(request),
+        )
+        return report
     except ImportFileError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except SQLAlchemyError as exc:
@@ -33,7 +44,7 @@ def import_appeals(
         raise DB_DOWN from exc
 
 
-@router.get("/appeals", response_model=AppealsPage)
+@router.get("/appeals", response_model=AppealsPage, dependencies=[Depends(get_current_user)])
 def list_appeals(
     category: str | None = Query(None, description="Код категории, например roads"),
     district: str | None = Query(None, description="Название района"),
@@ -81,7 +92,7 @@ def list_appeals(
     return AppealsPage(total=total, limit=limit, offset=offset, items=[AppealOut(**r) for r in rows])
 
 
-@router.get("/categories", response_model=list[CategoryOut])
+@router.get("/categories", response_model=list[CategoryOut], dependencies=[Depends(get_current_user)])
 def list_categories(session: Session = Depends(get_session)):
     try:
         rows = session.execute(text("SELECT code, name_ru FROM categories ORDER BY id")).all()
@@ -90,7 +101,7 @@ def list_categories(session: Session = Depends(get_session)):
     return [CategoryOut(code=r.code, name=r.name_ru) for r in rows]
 
 
-@router.get("/districts", response_model=list[DistrictOut])
+@router.get("/districts", response_model=list[DistrictOut], dependencies=[Depends(get_current_user)])
 def list_districts(session: Session = Depends(get_session)):
     try:
         rows = session.execute(text("SELECT MIN(id) AS id, name FROM districts GROUP BY name ORDER BY name")).all()

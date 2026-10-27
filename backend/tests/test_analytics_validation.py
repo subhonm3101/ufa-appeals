@@ -2,9 +2,17 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from app.auth import CurrentUser, get_current_user
 from app.main import app
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def _as_admin():
+    app.dependency_overrides[get_current_user] = lambda: CurrentUser(id=1, email="t@t.ru", role="admin")
+    yield
+    app.dependency_overrides.clear()
 
 
 @pytest.mark.parametrize("url, params", [

@@ -126,3 +126,65 @@ class MapPoint(BaseModel):
 class MapPoints(BaseModel):
     total: int  # всего подходящих точек (может быть больше limit)
     items: list[MapPoint]
+
+
+# ----------------------------- пользователи, вход, журнал (шаг 3.4) -----------------------------
+
+from typing import Literal  # noqa: E402
+
+Role = Literal["operator", "analyst", "manager", "admin"]
+
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+    full_name: str | None
+    role: Role
+    is_active: bool
+    last_login_at: datetime | None
+    created_at: datetime | None
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int  # секунд
+    user: UserOut
+
+
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    full_name: str | None = None
+    role: Role
+
+
+class UserUpdate(BaseModel):
+    role: Role | None = None
+    full_name: str | None = None
+    is_active: bool | None = None
+    password: str | None = None  # сброс пароля администратором
+
+
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
+
+class AuditEntry(BaseModel):
+    id: int
+    created_at: datetime
+    user_id: int | None
+    user_email: str | None
+    action: str
+    entity: str | None
+    entity_id: str | None
+    details: dict | None
+    ip: str | None
+
+
+class AuditPage(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    items: list[AuditEntry]

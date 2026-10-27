@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -6,9 +8,19 @@ from sqlalchemy.orm import Session
 
 from .api.analytics import router as analytics_router
 from .api.appeals import router as appeals_router
+from .api.auth import router as auth_router
+from .api.users import router as users_router
+from .auth import get_current_user
+from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
 
-app = FastAPI(title="Ufa Appeals API", version="0.1.0")
+if settings.secret_key == DEFAULT_SECRET_KEY:
+    logging.getLogger("uvicorn.error").warning(
+        "Используется ключ подписи токенов по умолчанию. Задайте свой через APPEALS_SECRET_KEY "
+        "(переменная окружения или файл .env), иначе токены может подделать любой."
+    )
+
+app = FastAPI(title="Ufa Appeals API", version="0.2.0")
 
 # Разрешаем запросы с фронтенда на этапе разработки (React dev-сервер)
 app.add_middleware(
@@ -18,20 +30,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+app.include_router(auth_router)
 app.include_router(appeals_router)
 app.include_router(analytics_router)
+app.include_router(users_router)
 
 
 @app.get("/health")
 def health():
-    """Сервер работает (базу не трогает)."""
+    """Сервер работает (базу не трогает). Открыт без входа, для проверки состояния."""
     return {"status": "ok"}
 
 
 @app.get("/health/db")
 def health_db(session: Session = Depends(get_session)):
-    """Проверка подключения к PostgreSQL."""
+    """Проверка подключения к PostgreSQL. Открыт без входа."""
     try:
         session.execute(text("SELECT 1"))
     except SQLAlchemyError:
@@ -39,9 +52,9 @@ def health_db(session: Session = Depends(get_session)):
     return {"status": "ok", "database": "connected"}
 
 
-@app.get("/api/stats/categories")
+@app.get("/api/stats/categories", dependencies=[Depends(get_current_user)])
 def stats_categories(session: Session = Depends(get_session)):
-    """Число обращений по категориям (первый реальный запрос к данным)."""
+    """Число обращений по категориям. Требует входа."""
     try:
         rows = session.execute(
             text(

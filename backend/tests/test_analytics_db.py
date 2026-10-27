@@ -29,7 +29,8 @@ PYTEST-B4,Днём ещё одно,2010-03-10 13:00,Пайтест-район,py
 
 
 @pytest.fixture(autouse=True)
-def data():
+def data(make_user):
+    client.headers.update(make_user("admin").headers)
     with engine.begin() as c:
         c.execute(text("INSERT INTO categories (code, name_ru) VALUES ('pytest_cat','Тестовая категория') ON CONFLICT (code) DO NOTHING"))
         if not c.execute(text("SELECT 1 FROM districts WHERE name='Пайтест-район'")).first():
@@ -42,6 +43,7 @@ def data():
         c.execute(text("DELETE FROM import_batches WHERE filename LIKE 'pytest_%'"))
         c.execute(text("DELETE FROM categories WHERE code='pytest_cat'"))
         c.execute(text("DELETE FROM districts WHERE name='Пайтест-район'"))
+    client.headers.pop("Authorization", None)
 
 
 def _series(**params):

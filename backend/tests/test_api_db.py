@@ -19,7 +19,8 @@ CSV = "external_id,text,created_at,district,category\n{rows}"
 
 
 @pytest.fixture(autouse=True)
-def clean():
+def clean(make_user):
+    client.headers.update(make_user("admin").headers)
     with engine.begin() as c:
         c.execute(text("INSERT INTO categories (code, name_ru) VALUES ('pytest_cat','Тестовая категория') ON CONFLICT (code) DO NOTHING"))
         if not c.execute(text("SELECT 1 FROM districts WHERE name='Пайтест-район'")).first():
@@ -30,6 +31,7 @@ def clean():
         c.execute(text("DELETE FROM import_batches WHERE filename LIKE 'pytest_%'"))
         c.execute(text("DELETE FROM categories WHERE code='pytest_cat'"))
         c.execute(text("DELETE FROM districts WHERE name='Пайтест-район'"))
+    client.headers.pop("Authorization", None)
 
 
 def _upload(body: str, name="pytest_a.csv", **params):

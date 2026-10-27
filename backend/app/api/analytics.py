@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from ..auth import require_roles
 from ..db import get_session
 from ..schemas import (
     CategoryOut, CategoryStat, DistrictStat, Heatmap, HeatmapCell, MapPoint, MapPoints,
@@ -17,7 +18,10 @@ from ..schemas import (
 )
 from ..services.importer import LOCAL_TZ
 
-router = APIRouter(prefix="/api/analytics", tags=["analytics"])
+router = APIRouter(
+    prefix="/api/analytics", tags=["analytics"],
+    dependencies=[Depends(require_roles("analyst", "manager", "admin"))],
+)
 
 TZ_NAME = "Asia/Yekaterinburg"
 DEFAULT_DAYS = 90
