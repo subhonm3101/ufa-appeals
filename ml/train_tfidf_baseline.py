@@ -9,8 +9,10 @@ import argparse
 import json
 import os
 import sys
+import warnings
 import time
 
+warnings.filterwarnings("ignore", message="Unknown solver options")  # безвредное предупреждение scipy
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 import joblib
