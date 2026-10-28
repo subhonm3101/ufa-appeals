@@ -1,0 +1,863 @@
+{
+  "A_grouped": {
+    "scenario": "A. Деление по problem_id",
+    "group_leak_between_train_test": false,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 3632,
+        "problem_id": 2720,
+        "подтем": 45
+      },
+      {
+        "выборка": "val",
+        "обращений": 781,
+        "problem_id": 546,
+        "подтем": 45
+      },
+      {
+        "выборка": "test",
+        "обращений": 729,
+        "problem_id": 544,
+        "подтем": 45
+      }
+    ],
+    "best_C": 100,
+    "val_macro_f1_by_C": {
+      "0.3": 0.9659,
+      "1": 0.9759,
+      "3": 0.9777,
+      "10": 0.9772,
+      "30": 0.9746,
+      "100": 0.9824,
+      "300": 0.9789
+    },
+    "test": {
+      "accuracy": 0.9739,
+      "macro_f1": 0.9677,
+      "weighted_f1": 0.9741
+    },
+    "dummy_majority": {
+      "accuracy": 0.2675,
+      "macro_f1": 0.0603
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 0.9762,
+        "recall": 0.9762,
+        "f1-score": 0.9762,
+        "support": 126.0
+      },
+      "landscaping": {
+        "precision": 0.9298,
+        "recall": 0.9815,
+        "f1-score": 0.955,
+        "support": 54.0
+      },
+      "lighting": {
+        "precision": 0.9647,
+        "recall": 0.988,
+        "f1-score": 0.9762,
+        "support": 83.0
+      },
+      "other": {
+        "precision": 0.9,
+        "recall": 0.9643,
+        "f1-score": 0.931,
+        "support": 28.0
+      },
+      "roads": {
+        "precision": 0.9947,
+        "recall": 0.959,
+        "f1-score": 0.9765,
+        "support": 195.0
+      },
+      "transport": {
+        "precision": 0.9915,
+        "recall": 0.9832,
+        "f1-score": 0.9873,
+        "support": 119.0
+      },
+      "utilities": {
+        "precision": 0.968,
+        "recall": 0.9758,
+        "f1-score": 0.9719,
+        "support": 124.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          123,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          53,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          82,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          27,
+          0,
+          0,
+          1
+        ],
+        [
+          2,
+          2,
+          0,
+          0,
+          187,
+          1,
+          3
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0,
+          121
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "other",
+        "subtopic": "other.noise",
+        "accuracy": 0.833,
+        "n": 6
+      },
+      {
+        "category": "utilities",
+        "subtopic": "utilities.sewage",
+        "accuracy": 0.857,
+        "n": 14
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.sport",
+        "accuracy": 0.889,
+        "n": 9
+      },
+      {
+        "category": "roads",
+        "subtopic": "roads.winter",
+        "accuracy": 0.923,
+        "n": 13
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.frequency",
+        "accuracy": 0.929,
+        "n": 14
+      },
+      {
+        "category": "garbage",
+        "subtopic": "garbage.overflow",
+        "accuracy": 0.931,
+        "n": 29
+      },
+      {
+        "category": "roads",
+        "subtopic": "roads.manhole",
+        "accuracy": 0.933,
+        "n": 45
+      },
+      {
+        "category": "roads",
+        "subtopic": "roads.markings",
+        "accuracy": 0.947,
+        "n": 38
+      }
+    ],
+    "top_terms": {
+      "garbage": [
+        "мусор",
+        "землю",
+        "на землю",
+        "свалка",
+        "за домом",
+        "пакеты",
+        "холодильник",
+        "диван"
+      ],
+      "landscaping": [
+        "дерево",
+        "парке",
+        "рядом домом",
+        "машины",
+        "весь тротуар",
+        "заняли весь",
+        "заняли",
+        "падают"
+      ],
+      "lighting": [
+        "освещения",
+        "света",
+        "столб",
+        "фонари",
+        "горят",
+        "фонарь",
+        "чуть",
+        "вчера чуть"
+      ],
+      "other": [
+        "подскажите",
+        "мешает",
+        "остановки мешает",
+        "мешает пройти",
+        "не соблюдаются",
+        "соблюдаются",
+        "дворе на",
+        "убирает за"
+      ],
+      "roads": [
+        "яма",
+        "проезжей",
+        "проезжей части",
+        "части",
+        "ещё",
+        "идут",
+        "идут по",
+        "хаос"
+      ],
+      "transport": [
+        "на остановке",
+        "остановке",
+        "автобус",
+        "автобусе",
+        "автобусе не",
+        "пешком",
+        "остановке торгового",
+        "нет урны"
+      ],
+      "utilities": [
+        "вода",
+        "течёт",
+        "подъезде",
+        "давно",
+        "лифт",
+        "воды",
+        "из",
+        "доме"
+      ]
+    },
+    "train_seconds": 2.29,
+    "predict_ms_per_text": 0.2182
+  },
+  "B_heldout_subtopics": {
+    "scenario": "B. Тест из невиданных подтем",
+    "group_leak_between_train_test": false,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 2969,
+        "problem_id": 2206,
+        "подтем": 31
+      },
+      {
+        "выборка": "val",
+        "обращений": 594,
+        "problem_id": 441,
+        "подтем": 31
+      },
+      {
+        "выборка": "test",
+        "обращений": 1579,
+        "problem_id": 1163,
+        "подтем": 14
+      }
+    ],
+    "best_C": 30,
+    "val_macro_f1_by_C": {
+      "0.3": 0.9704,
+      "1": 0.9678,
+      "3": 0.9678,
+      "10": 0.9678,
+      "30": 0.9733,
+      "100": 0.9678,
+      "300": 0.9678
+    },
+    "test": {
+      "accuracy": 0.449,
+      "macro_f1": 0.3983,
+      "weighted_f1": 0.4405
+    },
+    "dummy_majority": {
+      "accuracy": 0.197,
+      "macro_f1": 0.047
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 0.6495,
+        "recall": 0.3777,
+        "f1-score": 0.4777,
+        "support": 368.0
+      },
+      "landscaping": {
+        "precision": 0.3372,
+        "recall": 0.3412,
+        "f1-score": 0.3392,
+        "support": 170.0
+      },
+      "lighting": {
+        "precision": 0.7284,
+        "recall": 0.281,
+        "f1-score": 0.4055,
+        "support": 210.0
+      },
+      "other": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 100.0
+      },
+      "roads": {
+        "precision": 0.3163,
+        "recall": 0.7363,
+        "f1-score": 0.4425,
+        "support": 311.0
+      },
+      "transport": {
+        "precision": 0.8125,
+        "recall": 0.6471,
+        "f1-score": 0.7204,
+        "support": 221.0
+      },
+      "utilities": {
+        "precision": 0.399,
+        "recall": 0.407,
+        "f1-score": 0.403,
+        "support": 199.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          139,
+          75,
+          9,
+          2,
+          113,
+          4,
+          26
+        ],
+        [
+          6,
+          58,
+          0,
+          1,
+          91,
+          1,
+          13
+        ],
+        [
+          1,
+          1,
+          59,
+          0,
+          102,
+          3,
+          44
+        ],
+        [
+          1,
+          25,
+          3,
+          0,
+          50,
+          18,
+          3
+        ],
+        [
+          60,
+          3,
+          4,
+          1,
+          229,
+          7,
+          7
+        ],
+        [
+          4,
+          6,
+          4,
+          2,
+          33,
+          143,
+          29
+        ],
+        [
+          3,
+          4,
+          2,
+          3,
+          106,
+          0,
+          81
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.parking",
+        "accuracy": 0.0,
+        "n": 76
+      },
+      {
+        "category": "other",
+        "subtopic": "other.trade",
+        "accuracy": 0.0,
+        "n": 53
+      },
+      {
+        "category": "other",
+        "subtopic": "other.animals",
+        "accuracy": 0.0,
+        "n": 47
+      },
+      {
+        "category": "utilities",
+        "subtopic": "utilities.elevator",
+        "accuracy": 0.0,
+        "n": 110
+      },
+      {
+        "category": "garbage",
+        "subtopic": "garbage.bulk",
+        "accuracy": 0.222,
+        "n": 171
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.crossing",
+        "accuracy": 0.263,
+        "n": 114
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.quarter",
+        "accuracy": 0.302,
+        "n": 96
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.vehicle",
+        "accuracy": 0.417,
+        "n": 120
+      }
+    ],
+    "top_terms": {
+      "garbage": [
+        "мусор",
+        "свалка",
+        "землю",
+        "на землю",
+        "пакеты",
+        "от",
+        "стоит",
+        "везде"
+      ],
+      "landscaping": [
+        "дерево",
+        "ветки",
+        "разбито ещё",
+        "скамейки",
+        "парке",
+        "школы",
+        "никто",
+        "убирает"
+      ],
+      "lighting": [
+        "фонари",
+        "горят",
+        "столб",
+        "освещения",
+        "фонарь",
+        "днём",
+        "днём ночью",
+        "выключены"
+      ],
+      "other": [
+        "подскажите",
+        "спать",
+        "рекламу она",
+        "рекламу",
+        "она",
+        "получить",
+        "как получить",
+        "как"
+      ],
+      "roads": [
+        "яма",
+        "тротуар",
+        "части",
+        "проезжей",
+        "проезжей части",
+        "обочине",
+        "хаос",
+        "огромная"
+      ],
+      "transport": [
+        "остановке",
+        "на остановке",
+        "пешком",
+        "автобусе не",
+        "платить",
+        "автобусе",
+        "приходится платить",
+        "приходится"
+      ],
+      "utilities": [
+        "вода",
+        "течёт",
+        "из",
+        "воды",
+        "подъезде",
+        "стоки",
+        "из крана",
+        "крана"
+      ]
+    },
+    "train_seconds": 1.02,
+    "predict_ms_per_text": 0.1585
+  },
+  "C_random_leak": {
+    "scenario": "C. Случайное деление (утечка)",
+    "group_leak_between_train_test": true,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 3600,
+        "problem_id": 2838,
+        "подтем": 45
+      },
+      {
+        "выборка": "val",
+        "обращений": 771,
+        "problem_id": 722,
+        "подтем": 45
+      },
+      {
+        "выборка": "test",
+        "обращений": 771,
+        "problem_id": 726,
+        "подтем": 45
+      }
+    ],
+    "best_C": 300,
+    "val_macro_f1_by_C": {
+      "0.3": 0.9583,
+      "1": 0.9632,
+      "3": 0.9684,
+      "10": 0.9712,
+      "30": 0.9679,
+      "100": 0.9661,
+      "300": 0.9741
+    },
+    "test": {
+      "accuracy": 0.9857,
+      "macro_f1": 0.9799,
+      "weighted_f1": 0.9858
+    },
+    "dummy_majority": {
+      "accuracy": 0.2438,
+      "macro_f1": 0.056
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 0.994,
+        "recall": 0.9765,
+        "f1-score": 0.9852,
+        "support": 170.0
+      },
+      "landscaping": {
+        "precision": 0.9821,
+        "recall": 0.9649,
+        "f1-score": 0.9735,
+        "support": 57.0
+      },
+      "lighting": {
+        "precision": 0.9737,
+        "recall": 1.0,
+        "f1-score": 0.9867,
+        "support": 111.0
+      },
+      "other": {
+        "precision": 0.9189,
+        "recall": 0.9714,
+        "f1-score": 0.9444,
+        "support": 35.0
+      },
+      "roads": {
+        "precision": 1.0,
+        "recall": 0.9894,
+        "f1-score": 0.9947,
+        "support": 188.0
+      },
+      "transport": {
+        "precision": 0.9885,
+        "recall": 0.9773,
+        "f1-score": 0.9829,
+        "support": 88.0
+      },
+      "utilities": {
+        "precision": 0.9839,
+        "recall": 1.0,
+        "f1-score": 0.9919,
+        "support": 122.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          166,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          55,
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          111,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          34,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          186,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          1,
+          0,
+          86,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          122
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "other",
+        "subtopic": "other.animals",
+        "accuracy": 0.857,
+        "n": 7
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.sport",
+        "accuracy": 0.875,
+        "n": 8
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.grass",
+        "accuracy": 0.9,
+        "n": 10
+      },
+      {
+        "category": "garbage",
+        "subtopic": "garbage.bins_broken",
+        "accuracy": 0.923,
+        "n": 26
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.frequency",
+        "accuracy": 0.933,
+        "n": 15
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.vehicle",
+        "accuracy": 0.938,
+        "n": 16
+      },
+      {
+        "category": "roads",
+        "subtopic": "roads.potholes",
+        "accuracy": 0.943,
+        "n": 35
+      },
+      {
+        "category": "garbage",
+        "subtopic": "garbage.smell",
+        "accuracy": 0.955,
+        "n": 22
+      }
+    ],
+    "top_terms": {
+      "garbage": [
+        "мусор",
+        "на землю",
+        "землю",
+        "за домом",
+        "свалка",
+        "пакеты",
+        "не вывозит",
+        "вывозит"
+      ],
+      "landscaping": [
+        "дерево",
+        "машины",
+        "весь тротуар",
+        "заняли",
+        "заняли весь",
+        "пройти невозможно",
+        "машины заняли",
+        "рядом домом"
+      ],
+      "lighting": [
+        "освещения",
+        "света",
+        "столб",
+        "фонари",
+        "горят",
+        "света на",
+        "пешеходов",
+        "фонарь"
+      ],
+      "other": [
+        "подскажите",
+        "дворе на",
+        "площадке грязь",
+        "не соблюдаются",
+        "соблюдаются",
+        "спать",
+        "остановки мешает",
+        "торговля"
+      ],
+      "roads": [
+        "части",
+        "проезжей части",
+        "проезжей",
+        "ещё",
+        "яма",
+        "идут",
+        "идут по",
+        "обочине"
+      ],
+      "transport": [
+        "на остановке",
+        "остановке",
+        "автобусе не",
+        "автобусе",
+        "пешком",
+        "наличные ещё",
+        "автобус",
+        "не проходит"
+      ],
+      "utilities": [
+        "вода",
+        "течёт",
+        "воды",
+        "подъезде",
+        "лифт",
+        "из",
+        "давно",
+        "доме"
+      ]
+    },
+    "train_seconds": 2.69,
+    "predict_ms_per_text": 0.1958
+  }
+}
