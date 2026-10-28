@@ -1,0 +1,650 @@
+{
+  "A_grouped": {
+    "scenario": "A. Деление по problem_id",
+    "model": "cointegrated/rubert-tiny2",
+    "group_leak_between_train_test": false,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 3632,
+        "problem_id": 2720,
+        "подтем": 45
+      },
+      {
+        "выборка": "val",
+        "обращений": 781,
+        "problem_id": 546,
+        "подтем": 45
+      },
+      {
+        "выборка": "test",
+        "обращений": 729,
+        "problem_id": 544,
+        "подтем": 45
+      }
+    ],
+    "best_C": 30,
+    "val_macro_f1_by_C": {
+      "0.3": 0.909,
+      "1": 0.9468,
+      "3": 0.9557,
+      "10": 0.9648,
+      "30": 0.9765,
+      "100": 0.9749,
+      "300": 0.976
+    },
+    "test": {
+      "accuracy": 0.9712,
+      "macro_f1": 0.9679,
+      "weighted_f1": 0.9713
+    },
+    "dummy_majority": {
+      "accuracy": 0.2675,
+      "macro_f1": 0.0603
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 0.984,
+        "recall": 0.9762,
+        "f1-score": 0.9801,
+        "support": 126.0
+      },
+      "landscaping": {
+        "precision": 0.9811,
+        "recall": 0.963,
+        "f1-score": 0.972,
+        "support": 54.0
+      },
+      "lighting": {
+        "precision": 0.9222,
+        "recall": 1.0,
+        "f1-score": 0.9595,
+        "support": 83.0
+      },
+      "other": {
+        "precision": 0.931,
+        "recall": 0.9643,
+        "f1-score": 0.9474,
+        "support": 28.0
+      },
+      "roads": {
+        "precision": 0.9843,
+        "recall": 0.9641,
+        "f1-score": 0.9741,
+        "support": 195.0
+      },
+      "transport": {
+        "precision": 0.9913,
+        "recall": 0.958,
+        "f1-score": 0.9744,
+        "support": 119.0
+      },
+      "utilities": {
+        "precision": 0.9603,
+        "recall": 0.9758,
+        "f1-score": 0.968,
+        "support": 124.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          123,
+          0,
+          0,
+          2,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          52,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          83,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          27,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          0,
+          188,
+          1,
+          3
+        ],
+        [
+          1,
+          0,
+          2,
+          0,
+          1,
+          114,
+          1
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          121
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "other",
+        "subtopic": "other.noise",
+        "accuracy": 0.833,
+        "n": 6
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.sport",
+        "accuracy": 0.889,
+        "n": 9
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.benches",
+        "accuracy": 0.9,
+        "n": 10
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.newstop",
+        "accuracy": 0.909,
+        "n": 22
+      },
+      {
+        "category": "roads",
+        "subtopic": "roads.winter",
+        "accuracy": 0.923,
+        "n": 13
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.frequency",
+        "accuracy": 0.929,
+        "n": 14
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.driver",
+        "accuracy": 0.929,
+        "n": 14
+      },
+      {
+        "category": "garbage",
+        "subtopic": "garbage.overflow",
+        "accuracy": 0.931,
+        "n": 29
+      }
+    ],
+    "train_seconds": 0.28,
+    "encode_ms_per_text_incl_load": 8.32
+  },
+  "B_heldout_subtopics": {
+    "scenario": "B. Тест из невиданных подтем",
+    "model": "cointegrated/rubert-tiny2",
+    "group_leak_between_train_test": false,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 2969,
+        "problem_id": 2206,
+        "подтем": 31
+      },
+      {
+        "выборка": "val",
+        "обращений": 594,
+        "problem_id": 441,
+        "подтем": 31
+      },
+      {
+        "выборка": "test",
+        "обращений": 1579,
+        "problem_id": 1163,
+        "подтем": 14
+      }
+    ],
+    "best_C": 30,
+    "val_macro_f1_by_C": {
+      "0.3": 0.9413,
+      "1": 0.9597,
+      "3": 0.9671,
+      "10": 0.9722,
+      "30": 0.9737,
+      "100": 0.972,
+      "300": 0.9719
+    },
+    "test": {
+      "accuracy": 0.5655,
+      "macro_f1": 0.4682,
+      "weighted_f1": 0.5478
+    },
+    "dummy_majority": {
+      "accuracy": 0.197,
+      "macro_f1": 0.047
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 0.9225,
+        "recall": 0.712,
+        "f1-score": 0.8037,
+        "support": 368.0
+      },
+      "landscaping": {
+        "precision": 0.4495,
+        "recall": 0.2882,
+        "f1-score": 0.3513,
+        "support": 170.0
+      },
+      "lighting": {
+        "precision": 0.7245,
+        "recall": 0.3381,
+        "f1-score": 0.461,
+        "support": 210.0
+      },
+      "other": {
+        "precision": 0.0161,
+        "recall": 0.01,
+        "f1-score": 0.0123,
+        "support": 100.0
+      },
+      "roads": {
+        "precision": 0.4656,
+        "recall": 0.9357,
+        "f1-score": 0.6218,
+        "support": 311.0
+      },
+      "transport": {
+        "precision": 0.5655,
+        "recall": 0.6833,
+        "f1-score": 0.6189,
+        "support": 221.0
+      },
+      "utilities": {
+        "precision": 0.5075,
+        "recall": 0.3417,
+        "f1-score": 0.4084,
+        "support": 199.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          262,
+          35,
+          1,
+          2,
+          32,
+          22,
+          14
+        ],
+        [
+          1,
+          49,
+          0,
+          0,
+          118,
+          0,
+          2
+        ],
+        [
+          0,
+          4,
+          71,
+          1,
+          121,
+          7,
+          6
+        ],
+        [
+          15,
+          1,
+          17,
+          1,
+          41,
+          22,
+          3
+        ],
+        [
+          3,
+          0,
+          1,
+          0,
+          291,
+          12,
+          4
+        ],
+        [
+          1,
+          1,
+          2,
+          14,
+          15,
+          151,
+          37
+        ],
+        [
+          2,
+          19,
+          6,
+          44,
+          7,
+          53,
+          68
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "other",
+        "subtopic": "other.animals",
+        "accuracy": 0.0,
+        "n": 47
+      },
+      {
+        "category": "other",
+        "subtopic": "other.trade",
+        "accuracy": 0.019,
+        "n": 53
+      },
+      {
+        "category": "utilities",
+        "subtopic": "utilities.elevator",
+        "accuracy": 0.055,
+        "n": 110
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.quarter",
+        "accuracy": 0.156,
+        "n": 96
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.playground",
+        "accuracy": 0.181,
+        "n": 94
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.parking",
+        "accuracy": 0.421,
+        "n": 76
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.vehicle",
+        "accuracy": 0.433,
+        "n": 120
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.crossing",
+        "accuracy": 0.491,
+        "n": 114
+      }
+    ],
+    "train_seconds": 0.17,
+    "encode_ms_per_text_incl_load": 8.32
+  },
+  "C_random_leak": {
+    "scenario": "C. Случайное деление (утечка)",
+    "model": "cointegrated/rubert-tiny2",
+    "group_leak_between_train_test": true,
+    "split": [
+      {
+        "выборка": "train",
+        "обращений": 3600,
+        "problem_id": 2838,
+        "подтем": 45
+      },
+      {
+        "выборка": "val",
+        "обращений": 771,
+        "problem_id": 722,
+        "подтем": 45
+      },
+      {
+        "выборка": "test",
+        "обращений": 771,
+        "problem_id": 726,
+        "подтем": 45
+      }
+    ],
+    "best_C": 300,
+    "val_macro_f1_by_C": {
+      "0.3": 0.9003,
+      "1": 0.9439,
+      "3": 0.9627,
+      "10": 0.9664,
+      "30": 0.9666,
+      "100": 0.9673,
+      "300": 0.9673
+    },
+    "test": {
+      "accuracy": 0.978,
+      "macro_f1": 0.9742,
+      "weighted_f1": 0.9781
+    },
+    "dummy_majority": {
+      "accuracy": 0.2438,
+      "macro_f1": 0.056
+    },
+    "per_class": {
+      "garbage": {
+        "precision": 1.0,
+        "recall": 0.9824,
+        "f1-score": 0.9911,
+        "support": 170.0
+      },
+      "landscaping": {
+        "precision": 1.0,
+        "recall": 0.9825,
+        "f1-score": 0.9912,
+        "support": 57.0
+      },
+      "lighting": {
+        "precision": 0.9554,
+        "recall": 0.964,
+        "f1-score": 0.9596,
+        "support": 111.0
+      },
+      "other": {
+        "precision": 0.9189,
+        "recall": 0.9714,
+        "f1-score": 0.9444,
+        "support": 35.0
+      },
+      "roads": {
+        "precision": 0.9945,
+        "recall": 0.9681,
+        "f1-score": 0.9811,
+        "support": 188.0
+      },
+      "transport": {
+        "precision": 0.956,
+        "recall": 0.9886,
+        "f1-score": 0.9721,
+        "support": 88.0
+      },
+      "utilities": {
+        "precision": 0.968,
+        "recall": 0.9918,
+        "f1-score": 0.9798,
+        "support": 122.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "garbage",
+        "landscaping",
+        "lighting",
+        "other",
+        "roads",
+        "transport",
+        "utilities"
+      ],
+      "matrix": [
+        [
+          167,
+          0,
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          56,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          107,
+          2,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          34,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          1,
+          182,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          87,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          121
+        ]
+      ]
+    },
+    "worst_subtopics": [
+      {
+        "category": "roads",
+        "subtopic": "roads.winter",
+        "accuracy": 0.833,
+        "n": 12
+      },
+      {
+        "category": "landscaping",
+        "subtopic": "landscaping.sport",
+        "accuracy": 0.875,
+        "n": 8
+      },
+      {
+        "category": "other",
+        "subtopic": "other.trade",
+        "accuracy": 0.875,
+        "n": 8
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.street",
+        "accuracy": 0.913,
+        "n": 23
+      },
+      {
+        "category": "transport",
+        "subtopic": "transport.frequency",
+        "accuracy": 0.933,
+        "n": 15
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.pole",
+        "accuracy": 0.941,
+        "n": 17
+      },
+      {
+        "category": "lighting",
+        "subtopic": "lighting.crossing",
+        "accuracy": 0.944,
+        "n": 18
+      },
+      {
+        "category": "utilities",
+        "subtopic": "utilities.entrance",
+        "accuracy": 0.95,
+        "n": 20
+      }
+    ],
+    "train_seconds": 0.36,
+    "encode_ms_per_text_incl_load": 8.32
+  }
+}

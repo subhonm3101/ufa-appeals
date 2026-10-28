@@ -6,3 +6,5 @@ node_modules/
 .env
 
 ml/models/
+
+ml/cache/
