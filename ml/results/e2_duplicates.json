@@ -7,304 +7,304 @@
       "per_seed": [
         {
           "seed": 2026,
-          "pairs_test": 265356,
-          "positive_pairs_test": 322,
+          "pairs_test": 269745,
+          "positive_pairs_test": 342,
           "methods": {
             "text_tfidf": {
-              "precision": 0.1013,
-              "recall": 0.2391,
-              "f1": 0.1423,
-              "tp": 77,
-              "fp": 683,
-              "fn": 245,
-              "threshold": 0.75,
-              "ap": 0.0568
+              "precision": 0.1037,
+              "recall": 0.1901,
+              "f1": 0.1342,
+              "tp": 65,
+              "fp": 562,
+              "fn": 277,
+              "threshold": 0.735,
+              "ap": 0.0495
             },
             "text_rubert": {
-              "precision": 0.0557,
-              "recall": 0.1739,
-              "f1": 0.0844,
-              "tp": 56,
-              "fp": 949,
-              "fn": 266,
-              "threshold": 0.875,
-              "ap": 0.0315
+              "precision": 0.0591,
+              "recall": 0.1082,
+              "f1": 0.0764,
+              "tp": 37,
+              "fp": 589,
+              "fn": 305,
+              "threshold": 0.895,
+              "ap": 0.0245
             },
             "place_time_only": {
-              "precision": 0.9612,
+              "precision": 0.9688,
               "recall": 1.0,
-              "f1": 0.9802,
-              "tp": 322,
-              "fp": 13,
+              "f1": 0.9842,
+              "tp": 342,
+              "fp": 11,
               "fn": 0,
               "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
             },
             "combined_text_only": {
-              "precision": 0.5638,
-              "recall": 0.4938,
-              "f1": 0.5265,
-              "tp": 159,
-              "fp": 123,
-              "fn": 163,
-              "threshold": 0.84,
-              "ap": 0.5507
+              "precision": 0.4882,
+              "recall": 0.4825,
+              "f1": 0.4853,
+              "tp": 165,
+              "fp": 173,
+              "fn": 177,
+              "threshold": 0.79,
+              "ap": 0.5193
             },
             "combined_place_time_only": {
-              "precision": 0.9333,
-              "recall": 1.0,
-              "f1": 0.9655,
-              "tp": 322,
+              "precision": 0.9366,
+              "recall": 0.9942,
+              "f1": 0.9645,
+              "tp": 340,
               "fp": 23,
-              "fn": 0,
-              "threshold": 0.7,
-              "ap": 0.9941
+              "fn": 2,
+              "threshold": 0.64,
+              "ap": 0.9836
             },
             "combined_all": {
-              "precision": 0.9635,
-              "recall": 0.9845,
-              "f1": 0.9739,
-              "tp": 317,
-              "fp": 12,
-              "fn": 5,
-              "threshold": 0.95,
-              "ap": 0.9969
+              "precision": 0.9396,
+              "recall": 1.0,
+              "f1": 0.9688,
+              "tp": 342,
+              "fp": 22,
+              "fn": 0,
+              "threshold": 0.4,
+              "ap": 0.9919
             }
           },
           "tfidf_false_positives": {
-            "count": 683,
-            "share_same_district": 0.139,
-            "median_dist_m": 7310.0,
-            "median_dt_days": 109.4
+            "count": 562,
+            "share_same_district": 0.098,
+            "median_dist_m": 7177.0,
+            "median_dt_days": 93.7
           }
         },
         {
           "seed": 2027,
-          "pairs_test": 289180,
-          "positive_pairs_test": 395,
+          "pairs_test": 269745,
+          "positive_pairs_test": 340,
           "methods": {
             "text_tfidf": {
-              "precision": 0.133,
-              "recall": 0.2051,
-              "f1": 0.1614,
+              "precision": 0.1056,
+              "recall": 0.2059,
+              "f1": 0.1396,
+              "tp": 70,
+              "fp": 593,
+              "fn": 270,
+              "threshold": 0.75,
+              "ap": 0.0609
+            },
+            "text_rubert": {
+              "precision": 0.0568,
+              "recall": 0.2382,
+              "f1": 0.0917,
               "tp": 81,
-              "fp": 528,
-              "fn": 314,
-              "threshold": 0.755,
-              "ap": 0.0625
-            },
-            "text_rubert": {
-              "precision": 0.0764,
-              "recall": 0.1215,
-              "f1": 0.0938,
-              "tp": 48,
-              "fp": 580,
-              "fn": 347,
-              "threshold": 0.885,
-              "ap": 0.0358
+              "fp": 1346,
+              "fn": 259,
+              "threshold": 0.85,
+              "ap": 0.037
             },
             "place_time_only": {
-              "precision": 0.9516,
-              "recall": 0.9949,
-              "f1": 0.9728,
-              "tp": 393,
-              "fp": 20,
-              "fn": 2,
-              "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
-            },
-            "combined_text_only": {
-              "precision": 0.7046,
-              "recall": 0.4228,
-              "f1": 0.5285,
-              "tp": 167,
-              "fp": 70,
-              "fn": 228,
-              "threshold": 0.98,
-              "ap": 0.5571
-            },
-            "combined_place_time_only": {
-              "precision": 0.9726,
-              "recall": 0.9873,
-              "f1": 0.9799,
-              "tp": 390,
-              "fp": 11,
-              "fn": 5,
-              "threshold": 0.95,
-              "ap": 0.996
-            },
-            "combined_all": {
-              "precision": 0.968,
-              "recall": 0.9949,
-              "f1": 0.9813,
-              "tp": 393,
-              "fp": 13,
-              "fn": 2,
-              "threshold": 0.82,
-              "ap": 0.9986
-            }
-          },
-          "tfidf_false_positives": {
-            "count": 528,
-            "share_same_district": 0.159,
-            "median_dist_m": 6875.0,
-            "median_dt_days": 94.5
-          }
-        },
-        {
-          "seed": 2028,
-          "pairs_test": 289180,
-          "positive_pairs_test": 369,
-          "methods": {
-            "text_tfidf": {
-              "precision": 0.1618,
-              "recall": 0.2547,
-              "f1": 0.1979,
-              "tp": 94,
-              "fp": 487,
-              "fn": 275,
-              "threshold": 0.76,
-              "ap": 0.0745
-            },
-            "text_rubert": {
-              "precision": 0.073,
-              "recall": 0.3523,
-              "f1": 0.1209,
-              "tp": 130,
-              "fp": 1652,
-              "fn": 239,
-              "threshold": 0.84,
-              "ap": 0.0496
-            },
-            "place_time_only": {
-              "precision": 0.934,
-              "recall": 0.9973,
-              "f1": 0.9646,
-              "tp": 368,
-              "fp": 26,
+              "precision": 0.9798,
+              "recall": 0.9971,
+              "f1": 0.9883,
+              "tp": 339,
+              "fp": 7,
               "fn": 1,
               "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
             },
             "combined_text_only": {
-              "precision": 0.5983,
-              "recall": 0.5691,
-              "f1": 0.5833,
-              "tp": 210,
-              "fp": 141,
-              "fn": 159,
-              "threshold": 0.82,
-              "ap": 0.638
+              "precision": 0.6218,
+              "recall": 0.4353,
+              "f1": 0.5121,
+              "tp": 148,
+              "fp": 90,
+              "fn": 192,
+              "threshold": 0.96,
+              "ap": 0.5194
             },
             "combined_place_time_only": {
-              "precision": 0.9459,
-              "recall": 0.9946,
-              "f1": 0.9696,
-              "tp": 367,
-              "fp": 21,
-              "fn": 2,
-              "threshold": 0.86,
-              "ap": 0.9882
+              "precision": 0.9738,
+              "recall": 0.9853,
+              "f1": 0.9795,
+              "tp": 335,
+              "fp": 9,
+              "fn": 5,
+              "threshold": 0.92,
+              "ap": 0.986
             },
             "combined_all": {
-              "precision": 0.9605,
-              "recall": 0.9892,
-              "f1": 0.9746,
-              "tp": 365,
-              "fp": 15,
-              "fn": 4,
-              "threshold": 0.93,
-              "ap": 0.9959
+              "precision": 0.9713,
+              "recall": 0.9941,
+              "f1": 0.9826,
+              "tp": 338,
+              "fp": 10,
+              "fn": 2,
+              "threshold": 0.79,
+              "ap": 0.9883
             }
           },
           "tfidf_false_positives": {
-            "count": 487,
-            "share_same_district": 0.183,
-            "median_dist_m": 6694.0,
-            "median_dt_days": 113.9
+            "count": 593,
+            "share_same_district": 0.153,
+            "median_dist_m": 6943.0,
+            "median_dt_days": 108.1
+          }
+        },
+        {
+          "seed": 2028,
+          "pairs_test": 269745,
+          "positive_pairs_test": 341,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1244,
+              "recall": 0.2405,
+              "f1": 0.164,
+              "tp": 82,
+              "fp": 577,
+              "fn": 259,
+              "threshold": 0.73,
+              "ap": 0.058
+            },
+            "text_rubert": {
+              "precision": 0.0632,
+              "recall": 0.2317,
+              "f1": 0.0993,
+              "tp": 79,
+              "fp": 1171,
+              "fn": 262,
+              "threshold": 0.86,
+              "ap": 0.0338
+            },
+            "place_time_only": {
+              "precision": 0.9826,
+              "recall": 0.9941,
+              "f1": 0.9883,
+              "tp": 339,
+              "fp": 6,
+              "fn": 2,
+              "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.546,
+              "recall": 0.5044,
+              "f1": 0.5244,
+              "tp": 172,
+              "fp": 143,
+              "fn": 169,
+              "threshold": 0.84,
+              "ap": 0.5498
+            },
+            "combined_place_time_only": {
+              "precision": 0.9446,
+              "recall": 1.0,
+              "f1": 0.9715,
+              "tp": 341,
+              "fp": 20,
+              "fn": 0,
+              "threshold": 0.81,
+              "ap": 0.9922
+            },
+            "combined_all": {
+              "precision": 0.9552,
+              "recall": 1.0,
+              "f1": 0.9771,
+              "tp": 341,
+              "fp": 16,
+              "fn": 0,
+              "threshold": 0.82,
+              "ap": 0.9979
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 577,
+            "share_same_district": 0.137,
+            "median_dist_m": 6975.0,
+            "median_dt_days": 105.7
           }
         }
       ],
       "summary": {
         "text_tfidf": {
           "precision": {
-            "mean": 0.132,
-            "std": 0.0303
+            "mean": 0.1112,
+            "std": 0.0114
           },
           "recall": {
-            "mean": 0.233,
-            "std": 0.0254
+            "mean": 0.2122,
+            "std": 0.0258
           },
           "f1": {
-            "mean": 0.1672,
-            "std": 0.0283
+            "mean": 0.1459,
+            "std": 0.0159
           }
         },
         "text_rubert": {
           "precision": {
-            "mean": 0.0684,
-            "std": 0.0111
+            "mean": 0.0597,
+            "std": 0.0032
           },
           "recall": {
-            "mean": 0.2159,
-            "std": 0.121
+            "mean": 0.1927,
+            "std": 0.0733
           },
           "f1": {
-            "mean": 0.0997,
-            "std": 0.019
+            "mean": 0.0891,
+            "std": 0.0117
           }
         },
         "place_time_only": {
           "precision": {
-            "mean": 0.9489,
-            "std": 0.0138
+            "mean": 0.9771,
+            "std": 0.0073
           },
           "recall": {
-            "mean": 0.9974,
-            "std": 0.0026
+            "mean": 0.9971,
+            "std": 0.003
           },
           "f1": {
-            "mean": 0.9725,
-            "std": 0.0078
+            "mean": 0.9869,
+            "std": 0.0024
           }
         },
         "combined_text_only": {
           "precision": {
-            "mean": 0.6222,
-            "std": 0.0734
+            "mean": 0.552,
+            "std": 0.067
           },
           "recall": {
-            "mean": 0.4952,
-            "std": 0.0732
+            "mean": 0.4741,
+            "std": 0.0353
           },
           "f1": {
-            "mean": 0.5461,
-            "std": 0.0322
+            "mean": 0.5073,
+            "std": 0.02
           }
         },
         "combined_place_time_only": {
           "precision": {
-            "mean": 0.9506,
-            "std": 0.0201
+            "mean": 0.9517,
+            "std": 0.0196
           },
           "recall": {
-            "mean": 0.994,
-            "std": 0.0064
+            "mean": 0.9932,
+            "std": 0.0074
           },
           "f1": {
-            "mean": 0.9717,
-            "std": 0.0074
+            "mean": 0.9718,
+            "std": 0.0075
           }
         },
         "combined_all": {
           "precision": {
-            "mean": 0.964,
-            "std": 0.0038
+            "mean": 0.9554,
+            "std": 0.0159
           },
           "recall": {
-            "mean": 0.9895,
-            "std": 0.0052
+            "mean": 0.998,
+            "std": 0.0034
           },
           "f1": {
-            "mean": 0.9766,
-            "std": 0.0041
+            "mean": 0.9762,
+            "std": 0.0069
           }
         }
       }
@@ -315,304 +315,304 @@
       "per_seed": [
         {
           "seed": 2026,
-          "pairs_test": 265356,
-          "positive_pairs_test": 322,
+          "pairs_test": 269745,
+          "positive_pairs_test": 342,
           "methods": {
             "text_tfidf": {
-              "precision": 0.1013,
-              "recall": 0.2391,
-              "f1": 0.1423,
-              "tp": 77,
-              "fp": 683,
-              "fn": 245,
-              "threshold": 0.75,
-              "ap": 0.0568
+              "precision": 0.1037,
+              "recall": 0.1901,
+              "f1": 0.1342,
+              "tp": 65,
+              "fp": 562,
+              "fn": 277,
+              "threshold": 0.735,
+              "ap": 0.0495
             },
             "text_rubert": {
-              "precision": 0.0557,
-              "recall": 0.1739,
-              "f1": 0.0844,
-              "tp": 56,
-              "fp": 949,
-              "fn": 266,
-              "threshold": 0.875,
-              "ap": 0.0315
+              "precision": 0.0591,
+              "recall": 0.1082,
+              "f1": 0.0764,
+              "tp": 37,
+              "fp": 589,
+              "fn": 305,
+              "threshold": 0.895,
+              "ap": 0.0245
             },
             "place_time_only": {
-              "precision": 0.4539,
-              "recall": 0.413,
-              "f1": 0.4325,
-              "tp": 133,
-              "fp": 160,
-              "fn": 189,
-              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
+              "precision": 0.4935,
+              "recall": 0.3333,
+              "f1": 0.3979,
+              "tp": 114,
+              "fp": 117,
+              "fn": 228,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 3 сут."
             },
             "combined_text_only": {
-              "precision": 0.5638,
-              "recall": 0.4938,
-              "f1": 0.5265,
-              "tp": 159,
-              "fp": 123,
-              "fn": 163,
-              "threshold": 0.84,
-              "ap": 0.5507
+              "precision": 0.4882,
+              "recall": 0.4825,
+              "f1": 0.4853,
+              "tp": 165,
+              "fp": 173,
+              "fn": 177,
+              "threshold": 0.79,
+              "ap": 0.5193
             },
             "combined_place_time_only": {
-              "precision": 0.4792,
-              "recall": 0.6801,
-              "f1": 0.5623,
-              "tp": 219,
-              "fp": 238,
-              "fn": 103,
-              "threshold": 0.88,
-              "ap": 0.5459
+              "precision": 0.3606,
+              "recall": 0.7865,
+              "f1": 0.4945,
+              "tp": 269,
+              "fp": 477,
+              "fn": 73,
+              "threshold": 0.74,
+              "ap": 0.491
             },
             "combined_all": {
-              "precision": 0.7033,
-              "recall": 0.736,
-              "f1": 0.7193,
+              "precision": 0.7337,
+              "recall": 0.693,
+              "f1": 0.7128,
               "tp": 237,
-              "fp": 100,
-              "fn": 85,
+              "fp": 86,
+              "fn": 105,
               "threshold": 0.92,
-              "ap": 0.8042
+              "ap": 0.8032
             }
           },
           "tfidf_false_positives": {
-            "count": 683,
-            "share_same_district": 0.139,
-            "median_dist_m": 868.0,
-            "median_dt_days": 109.4
+            "count": 562,
+            "share_same_district": 0.098,
+            "median_dist_m": 0.0,
+            "median_dt_days": 93.7
           }
         },
         {
           "seed": 2027,
-          "pairs_test": 289180,
-          "positive_pairs_test": 395,
+          "pairs_test": 269745,
+          "positive_pairs_test": 340,
           "methods": {
             "text_tfidf": {
-              "precision": 0.133,
-              "recall": 0.2051,
-              "f1": 0.1614,
-              "tp": 81,
-              "fp": 528,
-              "fn": 314,
-              "threshold": 0.755,
-              "ap": 0.0625
+              "precision": 0.1056,
+              "recall": 0.2059,
+              "f1": 0.1396,
+              "tp": 70,
+              "fp": 593,
+              "fn": 270,
+              "threshold": 0.75,
+              "ap": 0.0609
             },
             "text_rubert": {
-              "precision": 0.0764,
-              "recall": 0.1215,
-              "f1": 0.0938,
-              "tp": 48,
-              "fp": 580,
-              "fn": 347,
-              "threshold": 0.885,
-              "ap": 0.0358
+              "precision": 0.0568,
+              "recall": 0.2382,
+              "f1": 0.0917,
+              "tp": 81,
+              "fp": 1346,
+              "fn": 259,
+              "threshold": 0.85,
+              "ap": 0.037
             },
             "place_time_only": {
-              "precision": 0.5592,
-              "recall": 0.3468,
-              "f1": 0.4281,
-              "tp": 137,
-              "fp": 108,
-              "fn": 258,
-              "rule": "расстояние ≤ 1000 м и разница ≤ 3 сут."
+              "precision": 0.4543,
+              "recall": 0.4235,
+              "f1": 0.4384,
+              "tp": 144,
+              "fp": 173,
+              "fn": 196,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
             },
             "combined_text_only": {
-              "precision": 0.7046,
-              "recall": 0.4228,
-              "f1": 0.5285,
-              "tp": 167,
-              "fp": 70,
-              "fn": 228,
-              "threshold": 0.98,
-              "ap": 0.5571
+              "precision": 0.6218,
+              "recall": 0.4353,
+              "f1": 0.5121,
+              "tp": 148,
+              "fp": 90,
+              "fn": 192,
+              "threshold": 0.96,
+              "ap": 0.5194
             },
             "combined_place_time_only": {
-              "precision": 0.5108,
-              "recall": 0.6,
-              "f1": 0.5518,
-              "tp": 237,
-              "fp": 227,
-              "fn": 158,
-              "threshold": 0.89,
-              "ap": 0.5811
+              "precision": 0.3869,
+              "recall": 0.7294,
+              "f1": 0.5056,
+              "tp": 248,
+              "fp": 393,
+              "fn": 92,
+              "threshold": 0.8,
+              "ap": 0.5326
             },
             "combined_all": {
-              "precision": 0.8349,
-              "recall": 0.6911,
-              "f1": 0.7562,
-              "tp": 273,
-              "fp": 54,
-              "fn": 122,
-              "threshold": 0.94,
-              "ap": 0.8436
+              "precision": 0.7194,
+              "recall": 0.7088,
+              "f1": 0.7141,
+              "tp": 241,
+              "fp": 94,
+              "fn": 99,
+              "threshold": 0.92,
+              "ap": 0.8033
             }
           },
           "tfidf_false_positives": {
-            "count": 528,
-            "share_same_district": 0.159,
+            "count": 593,
+            "share_same_district": 0.153,
             "median_dist_m": 0.0,
-            "median_dt_days": 94.5
+            "median_dt_days": 108.1
           }
         },
         {
           "seed": 2028,
-          "pairs_test": 289180,
-          "positive_pairs_test": 369,
+          "pairs_test": 269745,
+          "positive_pairs_test": 341,
           "methods": {
             "text_tfidf": {
-              "precision": 0.1618,
-              "recall": 0.2547,
-              "f1": 0.1979,
-              "tp": 94,
-              "fp": 487,
-              "fn": 275,
-              "threshold": 0.76,
-              "ap": 0.0745
+              "precision": 0.1244,
+              "recall": 0.2405,
+              "f1": 0.164,
+              "tp": 82,
+              "fp": 577,
+              "fn": 259,
+              "threshold": 0.73,
+              "ap": 0.058
             },
             "text_rubert": {
-              "precision": 0.073,
-              "recall": 0.3523,
-              "f1": 0.1209,
-              "tp": 130,
-              "fp": 1652,
-              "fn": 239,
-              "threshold": 0.84,
-              "ap": 0.0496
+              "precision": 0.0632,
+              "recall": 0.2317,
+              "f1": 0.0993,
+              "tp": 79,
+              "fp": 1171,
+              "fn": 262,
+              "threshold": 0.86,
+              "ap": 0.0338
             },
             "place_time_only": {
-              "precision": 0.575,
-              "recall": 0.3117,
-              "f1": 0.4042,
-              "tp": 115,
-              "fp": 85,
-              "fn": 254,
-              "rule": "расстояние ≤ 1000 м и разница ≤ 2 сут."
+              "precision": 0.41,
+              "recall": 0.4076,
+              "f1": 0.4088,
+              "tp": 139,
+              "fp": 200,
+              "fn": 202,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
             },
             "combined_text_only": {
-              "precision": 0.5983,
-              "recall": 0.5691,
-              "f1": 0.5833,
-              "tp": 210,
-              "fp": 141,
-              "fn": 159,
-              "threshold": 0.82,
-              "ap": 0.638
+              "precision": 0.546,
+              "recall": 0.5044,
+              "f1": 0.5244,
+              "tp": 172,
+              "fp": 143,
+              "fn": 169,
+              "threshold": 0.84,
+              "ap": 0.5498
             },
             "combined_place_time_only": {
-              "precision": 0.4915,
-              "recall": 0.4688,
-              "f1": 0.4799,
-              "tp": 173,
-              "fp": 179,
-              "fn": 196,
-              "threshold": 0.93,
-              "ap": 0.4971
+              "precision": 0.4411,
+              "recall": 0.6364,
+              "f1": 0.521,
+              "tp": 217,
+              "fp": 275,
+              "fn": 124,
+              "threshold": 0.88,
+              "ap": 0.5097
             },
             "combined_all": {
-              "precision": 0.7604,
-              "recall": 0.7398,
-              "f1": 0.75,
-              "tp": 273,
-              "fp": 86,
-              "fn": 96,
-              "threshold": 0.92,
-              "ap": 0.8205
+              "precision": 0.7635,
+              "recall": 0.6628,
+              "f1": 0.7096,
+              "tp": 226,
+              "fp": 70,
+              "fn": 115,
+              "threshold": 0.94,
+              "ap": 0.8019
             }
           },
           "tfidf_false_positives": {
-            "count": 487,
-            "share_same_district": 0.183,
+            "count": 577,
+            "share_same_district": 0.137,
             "median_dist_m": 0.0,
-            "median_dt_days": 113.9
+            "median_dt_days": 105.7
           }
         }
       ],
       "summary": {
         "text_tfidf": {
           "precision": {
-            "mean": 0.132,
-            "std": 0.0303
+            "mean": 0.1112,
+            "std": 0.0114
           },
           "recall": {
-            "mean": 0.233,
-            "std": 0.0254
+            "mean": 0.2122,
+            "std": 0.0258
           },
           "f1": {
-            "mean": 0.1672,
-            "std": 0.0283
+            "mean": 0.1459,
+            "std": 0.0159
           }
         },
         "text_rubert": {
           "precision": {
-            "mean": 0.0684,
-            "std": 0.0111
+            "mean": 0.0597,
+            "std": 0.0032
           },
           "recall": {
-            "mean": 0.2159,
-            "std": 0.121
+            "mean": 0.1927,
+            "std": 0.0733
           },
           "f1": {
-            "mean": 0.0997,
-            "std": 0.019
+            "mean": 0.0891,
+            "std": 0.0117
           }
         },
         "place_time_only": {
           "precision": {
-            "mean": 0.5294,
-            "std": 0.0658
+            "mean": 0.4526,
+            "std": 0.0418
           },
           "recall": {
-            "mean": 0.3572,
-            "std": 0.0514
+            "mean": 0.3881,
+            "std": 0.0481
           },
           "f1": {
-            "mean": 0.4216,
-            "std": 0.0152
+            "mean": 0.415,
+            "std": 0.021
           }
         },
         "combined_text_only": {
           "precision": {
-            "mean": 0.6222,
-            "std": 0.0734
+            "mean": 0.552,
+            "std": 0.067
           },
           "recall": {
-            "mean": 0.4952,
-            "std": 0.0732
+            "mean": 0.4741,
+            "std": 0.0353
           },
           "f1": {
-            "mean": 0.5461,
-            "std": 0.0322
+            "mean": 0.5073,
+            "std": 0.02
           }
         },
         "combined_place_time_only": {
           "precision": {
-            "mean": 0.4938,
-            "std": 0.0159
+            "mean": 0.3962,
+            "std": 0.041
           },
           "recall": {
-            "mean": 0.583,
-            "std": 0.1067
+            "mean": 0.7174,
+            "std": 0.0758
           },
           "f1": {
-            "mean": 0.5313,
-            "std": 0.0449
+            "mean": 0.507,
+            "std": 0.0133
           }
         },
         "combined_all": {
           "precision": {
-            "mean": 0.7662,
-            "std": 0.066
+            "mean": 0.7389,
+            "std": 0.0225
           },
           "recall": {
-            "mean": 0.7223,
-            "std": 0.0271
+            "mean": 0.6882,
+            "std": 0.0234
           },
           "f1": {
-            "mean": 0.7418,
-            "std": 0.0198
+            "mean": 0.7122,
+            "std": 0.0023
           }
         }
       }
@@ -623,304 +623,304 @@
       "per_seed": [
         {
           "seed": 2026,
-          "pairs_test": 265356,
-          "positive_pairs_test": 322,
+          "pairs_test": 269745,
+          "positive_pairs_test": 342,
           "methods": {
             "text_tfidf": {
-              "precision": 0.1013,
-              "recall": 0.2391,
-              "f1": 0.1423,
-              "tp": 77,
-              "fp": 683,
-              "fn": 245,
-              "threshold": 0.75,
-              "ap": 0.0568
+              "precision": 0.1037,
+              "recall": 0.1901,
+              "f1": 0.1342,
+              "tp": 65,
+              "fp": 562,
+              "fn": 277,
+              "threshold": 0.735,
+              "ap": 0.0495
             },
             "text_rubert": {
-              "precision": 0.0557,
-              "recall": 0.1739,
-              "f1": 0.0844,
-              "tp": 56,
-              "fp": 949,
-              "fn": 266,
-              "threshold": 0.875,
-              "ap": 0.0315
+              "precision": 0.0591,
+              "recall": 0.1082,
+              "f1": 0.0764,
+              "tp": 37,
+              "fp": 589,
+              "fn": 305,
+              "threshold": 0.895,
+              "ap": 0.0245
             },
             "place_time_only": {
-              "precision": 0.2,
-              "recall": 0.0217,
-              "f1": 0.0392,
-              "tp": 7,
-              "fp": 28,
-              "fn": 315,
-              "rule": "расстояние ≤ 1000 м и разница ≤ 3 сут."
+              "precision": 0.2381,
+              "recall": 0.0439,
+              "f1": 0.0741,
+              "tp": 15,
+              "fp": 48,
+              "fn": 327,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
             },
             "combined_text_only": {
-              "precision": 0.5638,
-              "recall": 0.4938,
-              "f1": 0.5265,
-              "tp": 159,
-              "fp": 123,
-              "fn": 163,
-              "threshold": 0.84,
-              "ap": 0.5507
+              "precision": 0.4882,
+              "recall": 0.4825,
+              "f1": 0.4853,
+              "tp": 165,
+              "fp": 173,
+              "fn": 177,
+              "threshold": 0.79,
+              "ap": 0.5193
             },
             "combined_place_time_only": {
-              "precision": 0.409,
-              "recall": 0.6211,
-              "f1": 0.4932,
-              "tp": 200,
-              "fp": 289,
-              "fn": 122,
-              "threshold": 0.87,
-              "ap": 0.4771
+              "precision": 0.3172,
+              "recall": 0.7661,
+              "f1": 0.4486,
+              "tp": 262,
+              "fp": 564,
+              "fn": 80,
+              "threshold": 0.72,
+              "ap": 0.413
             },
             "combined_all": {
-              "precision": 0.6585,
-              "recall": 0.7547,
-              "f1": 0.7033,
-              "tp": 243,
-              "fp": 126,
-              "fn": 79,
-              "threshold": 0.9,
-              "ap": 0.7893
+              "precision": 0.7424,
+              "recall": 0.6404,
+              "f1": 0.6876,
+              "tp": 219,
+              "fp": 76,
+              "fn": 123,
+              "threshold": 0.92,
+              "ap": 0.777
             }
           },
           "tfidf_false_positives": {
-            "count": 683,
-            "share_same_district": 0.139,
+            "count": 562,
+            "share_same_district": 0.098,
             "median_dist_m": 0.0,
-            "median_dt_days": 109.4
+            "median_dt_days": 93.7
           }
         },
         {
           "seed": 2027,
-          "pairs_test": 289180,
-          "positive_pairs_test": 395,
+          "pairs_test": 269745,
+          "positive_pairs_test": 340,
           "methods": {
             "text_tfidf": {
-              "precision": 0.133,
-              "recall": 0.2051,
-              "f1": 0.1614,
-              "tp": 81,
-              "fp": 528,
-              "fn": 314,
-              "threshold": 0.755,
-              "ap": 0.0625
+              "precision": 0.1056,
+              "recall": 0.2059,
+              "f1": 0.1396,
+              "tp": 70,
+              "fp": 593,
+              "fn": 270,
+              "threshold": 0.75,
+              "ap": 0.0609
             },
             "text_rubert": {
-              "precision": 0.0764,
-              "recall": 0.1215,
-              "f1": 0.0938,
-              "tp": 48,
-              "fp": 580,
-              "fn": 347,
-              "threshold": 0.885,
-              "ap": 0.0358
+              "precision": 0.0568,
+              "recall": 0.2382,
+              "f1": 0.0917,
+              "tp": 81,
+              "fp": 1346,
+              "fn": 259,
+              "threshold": 0.85,
+              "ap": 0.037
             },
             "place_time_only": {
-              "precision": 0.2174,
-              "recall": 0.0506,
-              "f1": 0.0821,
-              "tp": 20,
-              "fp": 72,
-              "fn": 375,
+              "precision": 0.2292,
+              "recall": 0.0647,
+              "f1": 0.1009,
+              "tp": 22,
+              "fp": 74,
+              "fn": 318,
               "rule": "расстояние ≤ 1000 м и разница ≤ 7 сут."
             },
             "combined_text_only": {
-              "precision": 0.7046,
-              "recall": 0.4228,
-              "f1": 0.5285,
-              "tp": 167,
-              "fp": 70,
-              "fn": 228,
-              "threshold": 0.98,
-              "ap": 0.5571
+              "precision": 0.6218,
+              "recall": 0.4353,
+              "f1": 0.5121,
+              "tp": 148,
+              "fp": 90,
+              "fn": 192,
+              "threshold": 0.96,
+              "ap": 0.5194
             },
             "combined_place_time_only": {
-              "precision": 0.4505,
-              "recall": 0.5418,
-              "f1": 0.492,
-              "tp": 214,
-              "fp": 261,
-              "fn": 181,
-              "threshold": 0.9,
-              "ap": 0.4778
+              "precision": 0.3291,
+              "recall": 0.6794,
+              "f1": 0.4434,
+              "tp": 231,
+              "fp": 471,
+              "fn": 109,
+              "threshold": 0.8,
+              "ap": 0.3958
             },
             "combined_all": {
-              "precision": 0.797,
-              "recall": 0.6658,
-              "f1": 0.7255,
-              "tp": 263,
-              "fp": 67,
-              "fn": 132,
+              "precision": 0.7308,
+              "recall": 0.6706,
+              "f1": 0.6994,
+              "tp": 228,
+              "fp": 84,
+              "fn": 112,
               "threshold": 0.93,
-              "ap": 0.8038
+              "ap": 0.7816
             }
           },
           "tfidf_false_positives": {
-            "count": 528,
-            "share_same_district": 0.159,
+            "count": 593,
+            "share_same_district": 0.153,
             "median_dist_m": 0.0,
-            "median_dt_days": 94.5
+            "median_dt_days": 108.1
           }
         },
         {
           "seed": 2028,
-          "pairs_test": 289180,
-          "positive_pairs_test": 369,
+          "pairs_test": 269745,
+          "positive_pairs_test": 341,
           "methods": {
             "text_tfidf": {
-              "precision": 0.1618,
-              "recall": 0.2547,
-              "f1": 0.1979,
-              "tp": 94,
-              "fp": 487,
-              "fn": 275,
-              "threshold": 0.76,
-              "ap": 0.0745
+              "precision": 0.1244,
+              "recall": 0.2405,
+              "f1": 0.164,
+              "tp": 82,
+              "fp": 577,
+              "fn": 259,
+              "threshold": 0.73,
+              "ap": 0.058
             },
             "text_rubert": {
-              "precision": 0.073,
-              "recall": 0.3523,
-              "f1": 0.1209,
-              "tp": 130,
-              "fp": 1652,
-              "fn": 239,
-              "threshold": 0.84,
-              "ap": 0.0496
+              "precision": 0.0632,
+              "recall": 0.2317,
+              "f1": 0.0993,
+              "tp": 79,
+              "fp": 1171,
+              "fn": 262,
+              "threshold": 0.86,
+              "ap": 0.0338
             },
             "place_time_only": {
-              "precision": 0.2469,
-              "recall": 0.0542,
-              "f1": 0.0889,
-              "tp": 20,
-              "fp": 61,
-              "fn": 349,
-              "rule": "расстояние ≤ 1000 м и разница ≤ 7 сут."
+              "precision": 0.2237,
+              "recall": 0.0499,
+              "f1": 0.0815,
+              "tp": 17,
+              "fp": 59,
+              "fn": 324,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
             },
             "combined_text_only": {
-              "precision": 0.5983,
-              "recall": 0.5691,
-              "f1": 0.5833,
-              "tp": 210,
-              "fp": 141,
-              "fn": 159,
-              "threshold": 0.82,
-              "ap": 0.638
+              "precision": 0.546,
+              "recall": 0.5044,
+              "f1": 0.5244,
+              "tp": 172,
+              "fp": 143,
+              "fn": 169,
+              "threshold": 0.84,
+              "ap": 0.5498
             },
             "combined_place_time_only": {
-              "precision": 0.3361,
-              "recall": 0.5528,
-              "f1": 0.418,
-              "tp": 204,
-              "fp": 403,
-              "fn": 165,
-              "threshold": 0.83,
-              "ap": 0.3544
+              "precision": 0.373,
+              "recall": 0.5601,
+              "f1": 0.4478,
+              "tp": 191,
+              "fp": 321,
+              "fn": 150,
+              "threshold": 0.88,
+              "ap": 0.3942
             },
             "combined_all": {
-              "precision": 0.7814,
-              "recall": 0.6585,
-              "f1": 0.7147,
-              "tp": 243,
-              "fp": 68,
-              "fn": 126,
-              "threshold": 0.94,
-              "ap": 0.793
+              "precision": 0.7085,
+              "recall": 0.6129,
+              "f1": 0.6572,
+              "tp": 209,
+              "fp": 86,
+              "fn": 132,
+              "threshold": 0.93,
+              "ap": 0.7469
             }
           },
           "tfidf_false_positives": {
-            "count": 487,
-            "share_same_district": 0.183,
+            "count": 577,
+            "share_same_district": 0.137,
             "median_dist_m": 0.0,
-            "median_dt_days": 113.9
+            "median_dt_days": 105.7
           }
         }
       ],
       "summary": {
         "text_tfidf": {
           "precision": {
-            "mean": 0.132,
-            "std": 0.0303
+            "mean": 0.1112,
+            "std": 0.0114
           },
           "recall": {
-            "mean": 0.233,
-            "std": 0.0254
+            "mean": 0.2122,
+            "std": 0.0258
           },
           "f1": {
-            "mean": 0.1672,
-            "std": 0.0283
+            "mean": 0.1459,
+            "std": 0.0159
           }
         },
         "text_rubert": {
           "precision": {
-            "mean": 0.0684,
-            "std": 0.0111
+            "mean": 0.0597,
+            "std": 0.0032
           },
           "recall": {
-            "mean": 0.2159,
-            "std": 0.121
+            "mean": 0.1927,
+            "std": 0.0733
           },
           "f1": {
-            "mean": 0.0997,
-            "std": 0.019
+            "mean": 0.0891,
+            "std": 0.0117
           }
         },
         "place_time_only": {
           "precision": {
-            "mean": 0.2214,
-            "std": 0.0237
+            "mean": 0.2303,
+            "std": 0.0073
           },
           "recall": {
-            "mean": 0.0422,
-            "std": 0.0178
+            "mean": 0.0528,
+            "std": 0.0107
           },
           "f1": {
-            "mean": 0.0701,
-            "std": 0.0269
+            "mean": 0.0855,
+            "std": 0.0138
           }
         },
         "combined_text_only": {
           "precision": {
-            "mean": 0.6222,
-            "std": 0.0734
+            "mean": 0.552,
+            "std": 0.067
           },
           "recall": {
-            "mean": 0.4952,
-            "std": 0.0732
+            "mean": 0.4741,
+            "std": 0.0353
           },
           "f1": {
-            "mean": 0.5461,
-            "std": 0.0322
+            "mean": 0.5073,
+            "std": 0.02
           }
         },
         "combined_place_time_only": {
           "precision": {
-            "mean": 0.3985,
-            "std": 0.0579
+            "mean": 0.3398,
+            "std": 0.0294
           },
           "recall": {
-            "mean": 0.5719,
-            "std": 0.043
+            "mean": 0.6685,
+            "std": 0.1034
           },
           "f1": {
-            "mean": 0.4677,
-            "std": 0.0431
+            "mean": 0.4466,
+            "std": 0.0028
           }
         },
         "combined_all": {
           "precision": {
-            "mean": 0.7456,
-            "std": 0.0759
+            "mean": 0.7272,
+            "std": 0.0172
           },
           "recall": {
-            "mean": 0.693,
-            "std": 0.0536
+            "mean": 0.6413,
+            "std": 0.0289
           },
           "f1": {
-            "mean": 0.7145,
-            "std": 0.0111
+            "mean": 0.6814,
+            "std": 0.0218
           }
         }
       }

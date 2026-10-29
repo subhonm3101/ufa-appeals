@@ -7,142 +7,142 @@
       "per_seed": [
         {
           "seed": 2026,
-          "n_test": 729,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.0914,
-              "recall": 0.2391,
-              "f1": 0.1323,
-              "threshold": 0.808,
-              "ari": 0.1308,
-              "homogeneity": 0.9051,
-              "completeness": 0.9468,
-              "clusters": 481
+              "precision": 0.1031,
+              "recall": 0.1082,
+              "f1": 0.1056,
+              "threshold": 0.848,
+              "ari": 0.1044,
+              "homogeneity": 0.9459,
+              "completeness": 0.9381,
+              "clusters": 575
             },
             "tfidf+average": {
-              "precision": 0.0874,
-              "recall": 0.2702,
-              "f1": 0.1321,
-              "threshold": 0.707,
-              "ari": 0.1305,
-              "homogeneity": 0.8723,
-              "completeness": 0.9485,
-              "clusters": 385
+              "precision": 0.1009,
+              "recall": 0.1667,
+              "f1": 0.1257,
+              "threshold": 0.747,
+              "ari": 0.1243,
+              "homogeneity": 0.9128,
+              "completeness": 0.9415,
+              "clusters": 476
             },
             "model+components": {
-              "precision": 0.9359,
-              "recall": 0.9969,
-              "f1": 0.9654,
-              "threshold": 0.95,
-              "ari": 0.9654,
-              "homogeneity": 0.9967,
-              "completeness": 0.9997,
+              "precision": 0.9659,
+              "recall": 0.9942,
+              "f1": 0.9798,
+              "threshold": 0.99,
+              "ari": 0.9798,
+              "homogeneity": 0.9973,
+              "completeness": 0.9996,
               "clusters": 538
             },
             "model+average": {
-              "precision": 0.9415,
-              "recall": 1.0,
-              "f1": 0.9699,
-              "threshold": 0.626,
-              "ari": 0.9698,
-              "homogeneity": 0.9971,
-              "completeness": 1.0,
+              "precision": 0.9705,
+              "recall": 0.962,
+              "f1": 0.9662,
+              "threshold": 0.909,
+              "ari": 0.9662,
+              "homogeneity": 0.9973,
+              "completeness": 0.9986,
               "clusters": 538
             }
           }
         },
         {
           "seed": 2027,
-          "n_test": 761,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.1332,
-              "recall": 0.2152,
-              "f1": 0.1646,
-              "threshold": 0.808,
-              "ari": 0.1632,
-              "homogeneity": 0.9228,
-              "completeness": 0.9372,
-              "clusters": 534
+              "precision": 0.0922,
+              "recall": 0.2353,
+              "f1": 0.1325,
+              "threshold": 0.788,
+              "ari": 0.1309,
+              "homogeneity": 0.8979,
+              "completeness": 0.945,
+              "clusters": 467
             },
             "tfidf+average": {
-              "precision": 0.1566,
-              "recall": 0.2304,
-              "f1": 0.1865,
-              "threshold": 0.747,
-              "ari": 0.1852,
-              "homogeneity": 0.9152,
-              "completeness": 0.939,
-              "clusters": 484
+              "precision": 0.1042,
+              "recall": 0.2265,
+              "f1": 0.1427,
+              "threshold": 0.727,
+              "ari": 0.1412,
+              "homogeneity": 0.897,
+              "completeness": 0.945,
+              "clusters": 439
             },
             "model+components": {
-              "precision": 0.9703,
-              "recall": 0.9924,
-              "f1": 0.9812,
-              "threshold": 0.97,
-              "ari": 0.9812,
-              "homogeneity": 0.9982,
+              "precision": 0.9854,
+              "recall": 0.9912,
+              "f1": 0.9883,
+              "threshold": 0.99,
+              "ari": 0.9883,
+              "homogeneity": 0.9989,
               "completeness": 0.9993,
-              "clusters": 542
+              "clusters": 543
             },
             "model+average": {
-              "precision": 0.9776,
-              "recall": 0.9949,
-              "f1": 0.9862,
+              "precision": 0.9796,
+              "recall": 0.9882,
+              "f1": 0.9839,
               "threshold": 0.848,
-              "ari": 0.9862,
-              "homogeneity": 0.9985,
-              "completeness": 0.9996,
-              "clusters": 541
+              "ari": 0.9839,
+              "homogeneity": 0.998,
+              "completeness": 0.9994,
+              "clusters": 539
             }
           }
         },
         {
           "seed": 2028,
-          "n_test": 761,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.1362,
-              "recall": 0.252,
-              "f1": 0.1768,
-              "threshold": 0.808,
-              "ari": 0.1754,
-              "homogeneity": 0.9229,
-              "completeness": 0.9428,
-              "clusters": 523
+              "precision": 0.115,
+              "recall": 0.2493,
+              "f1": 0.1574,
+              "threshold": 0.788,
+              "ari": 0.1559,
+              "homogeneity": 0.9105,
+              "completeness": 0.946,
+              "clusters": 487
             },
             "tfidf+average": {
-              "precision": 0.2113,
-              "recall": 0.2033,
-              "f1": 0.2072,
-              "threshold": 0.788,
-              "ari": 0.2062,
-              "homogeneity": 0.942,
-              "completeness": 0.9398,
-              "clusters": 547
+              "precision": 0.1204,
+              "recall": 0.261,
+              "f1": 0.1648,
+              "threshold": 0.707,
+              "ari": 0.1634,
+              "homogeneity": 0.8984,
+              "completeness": 0.947,
+              "clusters": 437
             },
             "model+components": {
-              "precision": 0.9558,
-              "recall": 0.9973,
-              "f1": 0.9761,
+              "precision": 0.9549,
+              "recall": 0.9941,
+              "f1": 0.9741,
               "threshold": 0.97,
-              "ari": 0.9761,
+              "ari": 0.9741,
               "homogeneity": 0.9973,
-              "completeness": 0.9997,
-              "clusters": 539
+              "completeness": 0.9994,
+              "clusters": 540
             },
             "model+average": {
-              "precision": 0.966,
-              "recall": 1.0,
-              "f1": 0.9827,
-              "threshold": 0.889,
-              "ari": 0.9827,
-              "homogeneity": 0.9974,
-              "completeness": 1.0,
-              "clusters": 537
+              "precision": 0.9714,
+              "recall": 0.9971,
+              "f1": 0.9841,
+              "threshold": 0.909,
+              "ari": 0.9841,
+              "homogeneity": 0.9983,
+              "completeness": 0.9997,
+              "clusters": 541
             }
           }
         }
@@ -150,90 +150,90 @@
       "summary": {
         "tfidf+components": {
           "precision": {
-            "mean": 0.1203,
-            "std": 0.025
+            "mean": 0.1034,
+            "std": 0.0114
           },
           "recall": {
-            "mean": 0.2354,
-            "std": 0.0187
+            "mean": 0.1976,
+            "std": 0.0777
           },
           "f1": {
-            "mean": 0.1579,
-            "std": 0.023
+            "mean": 0.1318,
+            "std": 0.0259
           },
           "ari": {
-            "mean": 0.1565,
-            "std": 0.023
+            "mean": 0.1304,
+            "std": 0.0258
           },
           "clusters": {
-            "mean": 512.6667,
-            "std": 27.9702
+            "mean": 509.6667,
+            "std": 57.4572
           }
         },
         "tfidf+average": {
           "precision": {
-            "mean": 0.1518,
-            "std": 0.0621
+            "mean": 0.1085,
+            "std": 0.0104
           },
           "recall": {
-            "mean": 0.2346,
-            "std": 0.0337
+            "mean": 0.2181,
+            "std": 0.0477
           },
           "f1": {
-            "mean": 0.1753,
-            "std": 0.0388
+            "mean": 0.1444,
+            "std": 0.0196
           },
           "ari": {
-            "mean": 0.174,
-            "std": 0.0391
+            "mean": 0.143,
+            "std": 0.0196
           },
           "clusters": {
-            "mean": 472.0,
-            "std": 81.6639
+            "mean": 450.6667,
+            "std": 21.9621
           }
         },
         "model+components": {
           "precision": {
-            "mean": 0.954,
-            "std": 0.0173
+            "mean": 0.9687,
+            "std": 0.0154
           },
           "recall": {
-            "mean": 0.9955,
-            "std": 0.0027
+            "mean": 0.9932,
+            "std": 0.0017
           },
           "f1": {
-            "mean": 0.9742,
-            "std": 0.0081
+            "mean": 0.9807,
+            "std": 0.0071
           },
           "ari": {
-            "mean": 0.9742,
-            "std": 0.0081
+            "mean": 0.9807,
+            "std": 0.0071
           },
           "clusters": {
-            "mean": 539.6667,
-            "std": 2.0817
+            "mean": 540.3333,
+            "std": 2.5166
           }
         },
         "model+average": {
           "precision": {
-            "mean": 0.9617,
-            "std": 0.0184
+            "mean": 0.9738,
+            "std": 0.005
           },
           "recall": {
-            "mean": 0.9983,
-            "std": 0.0029
+            "mean": 0.9824,
+            "std": 0.0182
           },
           "f1": {
-            "mean": 0.9796,
-            "std": 0.0086
+            "mean": 0.9781,
+            "std": 0.0103
           },
           "ari": {
-            "mean": 0.9796,
-            "std": 0.0086
+            "mean": 0.9781,
+            "std": 0.0103
           },
           "clusters": {
-            "mean": 538.6667,
-            "std": 2.0817
+            "mean": 539.3333,
+            "std": 1.5275
           }
         }
       }
@@ -244,142 +244,142 @@
       "per_seed": [
         {
           "seed": 2026,
-          "n_test": 729,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.0914,
-              "recall": 0.2391,
-              "f1": 0.1323,
-              "threshold": 0.808,
-              "ari": 0.1308,
-              "homogeneity": 0.9051,
-              "completeness": 0.9468,
-              "clusters": 481
+              "precision": 0.1031,
+              "recall": 0.1082,
+              "f1": 0.1056,
+              "threshold": 0.848,
+              "ari": 0.1044,
+              "homogeneity": 0.9459,
+              "completeness": 0.9381,
+              "clusters": 575
             },
             "tfidf+average": {
-              "precision": 0.0874,
-              "recall": 0.2702,
-              "f1": 0.1321,
-              "threshold": 0.707,
-              "ari": 0.1305,
-              "homogeneity": 0.8723,
-              "completeness": 0.9485,
-              "clusters": 385
+              "precision": 0.1009,
+              "recall": 0.1667,
+              "f1": 0.1257,
+              "threshold": 0.747,
+              "ari": 0.1243,
+              "homogeneity": 0.9128,
+              "completeness": 0.9415,
+              "clusters": 476
             },
             "model+components": {
-              "precision": 0.6345,
-              "recall": 0.7764,
-              "f1": 0.6983,
-              "threshold": 0.97,
-              "ari": 0.6979,
-              "homogeneity": 0.9804,
-              "completeness": 0.9838,
-              "clusters": 547
+              "precision": 0.6353,
+              "recall": 0.8304,
+              "f1": 0.7199,
+              "threshold": 0.95,
+              "ari": 0.7195,
+              "homogeneity": 0.9775,
+              "completeness": 0.9877,
+              "clusters": 530
             },
             "model+average": {
-              "precision": 0.7009,
-              "recall": 0.7205,
-              "f1": 0.7106,
-              "threshold": 0.828,
-              "ari": 0.7102,
-              "homogeneity": 0.9765,
-              "completeness": 0.9839,
-              "clusters": 512
+              "precision": 0.6147,
+              "recall": 0.807,
+              "f1": 0.6979,
+              "threshold": 0.707,
+              "ari": 0.6974,
+              "homogeneity": 0.9628,
+              "completeness": 0.988,
+              "clusters": 470
             }
           }
         },
         {
           "seed": 2027,
-          "n_test": 761,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.1332,
-              "recall": 0.2152,
-              "f1": 0.1646,
-              "threshold": 0.808,
-              "ari": 0.1632,
-              "homogeneity": 0.9228,
-              "completeness": 0.9372,
-              "clusters": 534
+              "precision": 0.0922,
+              "recall": 0.2353,
+              "f1": 0.1325,
+              "threshold": 0.788,
+              "ari": 0.1309,
+              "homogeneity": 0.8979,
+              "completeness": 0.945,
+              "clusters": 467
             },
             "tfidf+average": {
-              "precision": 0.1566,
-              "recall": 0.2304,
-              "f1": 0.1865,
-              "threshold": 0.747,
-              "ari": 0.1852,
-              "homogeneity": 0.9152,
-              "completeness": 0.939,
-              "clusters": 484
+              "precision": 0.1042,
+              "recall": 0.2265,
+              "f1": 0.1427,
+              "threshold": 0.727,
+              "ari": 0.1412,
+              "homogeneity": 0.897,
+              "completeness": 0.945,
+              "clusters": 439
             },
             "model+components": {
-              "precision": 0.8533,
-              "recall": 0.8101,
-              "f1": 0.8312,
+              "precision": 0.7316,
+              "recall": 0.7618,
+              "f1": 0.7464,
               "threshold": 0.97,
-              "ari": 0.8309,
-              "homogeneity": 0.9902,
-              "completeness": 0.9845,
-              "clusters": 560
+              "ari": 0.7461,
+              "homogeneity": 0.9873,
+              "completeness": 0.9847,
+              "clusters": 554
             },
             "model+average": {
-              "precision": 0.7127,
-              "recall": 0.8354,
-              "f1": 0.7692,
-              "threshold": 0.747,
-              "ari": 0.7689,
-              "homogeneity": 0.9675,
-              "completeness": 0.9876,
-              "clusters": 476
+              "precision": 0.7384,
+              "recall": 0.6559,
+              "f1": 0.6947,
+              "threshold": 0.869,
+              "ari": 0.6943,
+              "homogeneity": 0.9788,
+              "completeness": 0.9804,
+              "clusters": 521
             }
           }
         },
         {
           "seed": 2028,
-          "n_test": 761,
+          "n_test": 735,
           "true_clusters": 544,
           "runs": {
             "tfidf+components": {
-              "precision": 0.1362,
-              "recall": 0.252,
-              "f1": 0.1768,
-              "threshold": 0.808,
-              "ari": 0.1754,
-              "homogeneity": 0.9229,
-              "completeness": 0.9428,
-              "clusters": 523
+              "precision": 0.115,
+              "recall": 0.2493,
+              "f1": 0.1574,
+              "threshold": 0.788,
+              "ari": 0.1559,
+              "homogeneity": 0.9105,
+              "completeness": 0.946,
+              "clusters": 487
             },
             "tfidf+average": {
-              "precision": 0.2113,
-              "recall": 0.2033,
-              "f1": 0.2072,
-              "threshold": 0.788,
-              "ari": 0.2062,
-              "homogeneity": 0.942,
-              "completeness": 0.9398,
-              "clusters": 547
+              "precision": 0.1204,
+              "recall": 0.261,
+              "f1": 0.1648,
+              "threshold": 0.707,
+              "ari": 0.1634,
+              "homogeneity": 0.8984,
+              "completeness": 0.947,
+              "clusters": 437
             },
             "model+components": {
-              "precision": 0.602,
-              "recall": 0.8157,
-              "f1": 0.6928,
-              "threshold": 0.95,
-              "ari": 0.6923,
-              "homogeneity": 0.9748,
-              "completeness": 0.9862,
-              "clusters": 530
+              "precision": 0.7055,
+              "recall": 0.7097,
+              "f1": 0.7076,
+              "threshold": 0.97,
+              "ari": 0.7072,
+              "homogeneity": 0.9862,
+              "completeness": 0.9798,
+              "clusters": 566
             },
             "model+average": {
-              "precision": 0.753,
-              "recall": 0.6856,
-              "f1": 0.7177,
-              "threshold": 0.848,
-              "ari": 0.7174,
-              "homogeneity": 0.9793,
-              "completeness": 0.9795,
-              "clusters": 529
+              "precision": 0.6835,
+              "recall": 0.7918,
+              "f1": 0.7337,
+              "threshold": 0.808,
+              "ari": 0.7333,
+              "homogeneity": 0.9717,
+              "completeness": 0.9872,
+              "clusters": 493
             }
           }
         }
@@ -387,90 +387,90 @@
       "summary": {
         "tfidf+components": {
           "precision": {
-            "mean": 0.1203,
-            "std": 0.025
+            "mean": 0.1034,
+            "std": 0.0114
           },
           "recall": {
-            "mean": 0.2354,
-            "std": 0.0187
+            "mean": 0.1976,
+            "std": 0.0777
           },
           "f1": {
-            "mean": 0.1579,
-            "std": 0.023
+            "mean": 0.1318,
+            "std": 0.0259
           },
           "ari": {
-            "mean": 0.1565,
-            "std": 0.023
+            "mean": 0.1304,
+            "std": 0.0258
           },
           "clusters": {
-            "mean": 512.6667,
-            "std": 27.9702
+            "mean": 509.6667,
+            "std": 57.4572
           }
         },
         "tfidf+average": {
           "precision": {
-            "mean": 0.1518,
-            "std": 0.0621
+            "mean": 0.1085,
+            "std": 0.0104
           },
           "recall": {
-            "mean": 0.2346,
-            "std": 0.0337
+            "mean": 0.2181,
+            "std": 0.0477
           },
           "f1": {
-            "mean": 0.1753,
-            "std": 0.0388
+            "mean": 0.1444,
+            "std": 0.0196
           },
           "ari": {
-            "mean": 0.174,
-            "std": 0.0391
+            "mean": 0.143,
+            "std": 0.0196
           },
           "clusters": {
-            "mean": 472.0,
-            "std": 81.6639
+            "mean": 450.6667,
+            "std": 21.9621
           }
         },
         "model+components": {
           "precision": {
-            "mean": 0.6966,
-            "std": 0.1367
+            "mean": 0.6908,
+            "std": 0.0498
           },
           "recall": {
-            "mean": 0.8007,
-            "std": 0.0213
+            "mean": 0.7673,
+            "std": 0.0605
           },
           "f1": {
-            "mean": 0.7408,
-            "std": 0.0784
+            "mean": 0.7246,
+            "std": 0.0198
           },
           "ari": {
-            "mean": 0.7404,
-            "std": 0.0785
+            "mean": 0.7243,
+            "std": 0.0199
           },
           "clusters": {
-            "mean": 545.6667,
-            "std": 15.0444
+            "mean": 550.0,
+            "std": 18.3303
           }
         },
         "model+average": {
           "precision": {
-            "mean": 0.7222,
-            "std": 0.0273
+            "mean": 0.6789,
+            "std": 0.062
           },
           "recall": {
-            "mean": 0.7472,
-            "std": 0.0784
+            "mean": 0.7516,
+            "std": 0.0832
           },
           "f1": {
-            "mean": 0.7325,
-            "std": 0.032
+            "mean": 0.7088,
+            "std": 0.0217
           },
           "ari": {
-            "mean": 0.7322,
-            "std": 0.032
+            "mean": 0.7083,
+            "std": 0.0217
           },
           "clusters": {
-            "mean": 505.6667,
-            "std": 27.0617
+            "mean": 494.6667,
+            "std": 25.5408
           }
         }
       }
