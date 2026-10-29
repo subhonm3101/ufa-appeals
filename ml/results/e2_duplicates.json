@@ -1,0 +1,929 @@
+{
+  "model": "cointegrated/rubert-tiny2",
+  "scenarios": {
+    "clean": {
+      "geo_noise_m": 0,
+      "geo_missing_frac": 0.0,
+      "per_seed": [
+        {
+          "seed": 2026,
+          "pairs_test": 265356,
+          "positive_pairs_test": 322,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1013,
+              "recall": 0.2391,
+              "f1": 0.1423,
+              "tp": 77,
+              "fp": 683,
+              "fn": 245,
+              "threshold": 0.75,
+              "ap": 0.0568
+            },
+            "text_rubert": {
+              "precision": 0.0557,
+              "recall": 0.1739,
+              "f1": 0.0844,
+              "tp": 56,
+              "fp": 949,
+              "fn": 266,
+              "threshold": 0.875,
+              "ap": 0.0315
+            },
+            "place_time_only": {
+              "precision": 0.9612,
+              "recall": 1.0,
+              "f1": 0.9802,
+              "tp": 322,
+              "fp": 13,
+              "fn": 0,
+              "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5638,
+              "recall": 0.4938,
+              "f1": 0.5265,
+              "tp": 159,
+              "fp": 123,
+              "fn": 163,
+              "threshold": 0.84,
+              "ap": 0.5507
+            },
+            "combined_place_time_only": {
+              "precision": 0.9333,
+              "recall": 1.0,
+              "f1": 0.9655,
+              "tp": 322,
+              "fp": 23,
+              "fn": 0,
+              "threshold": 0.7,
+              "ap": 0.9941
+            },
+            "combined_all": {
+              "precision": 0.9635,
+              "recall": 0.9845,
+              "f1": 0.9739,
+              "tp": 317,
+              "fp": 12,
+              "fn": 5,
+              "threshold": 0.95,
+              "ap": 0.9969
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 683,
+            "share_same_district": 0.139,
+            "median_dist_m": 7310.0,
+            "median_dt_days": 109.4
+          }
+        },
+        {
+          "seed": 2027,
+          "pairs_test": 289180,
+          "positive_pairs_test": 395,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.133,
+              "recall": 0.2051,
+              "f1": 0.1614,
+              "tp": 81,
+              "fp": 528,
+              "fn": 314,
+              "threshold": 0.755,
+              "ap": 0.0625
+            },
+            "text_rubert": {
+              "precision": 0.0764,
+              "recall": 0.1215,
+              "f1": 0.0938,
+              "tp": 48,
+              "fp": 580,
+              "fn": 347,
+              "threshold": 0.885,
+              "ap": 0.0358
+            },
+            "place_time_only": {
+              "precision": 0.9516,
+              "recall": 0.9949,
+              "f1": 0.9728,
+              "tp": 393,
+              "fp": 20,
+              "fn": 2,
+              "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.7046,
+              "recall": 0.4228,
+              "f1": 0.5285,
+              "tp": 167,
+              "fp": 70,
+              "fn": 228,
+              "threshold": 0.98,
+              "ap": 0.5571
+            },
+            "combined_place_time_only": {
+              "precision": 0.9726,
+              "recall": 0.9873,
+              "f1": 0.9799,
+              "tp": 390,
+              "fp": 11,
+              "fn": 5,
+              "threshold": 0.95,
+              "ap": 0.996
+            },
+            "combined_all": {
+              "precision": 0.968,
+              "recall": 0.9949,
+              "f1": 0.9813,
+              "tp": 393,
+              "fp": 13,
+              "fn": 2,
+              "threshold": 0.82,
+              "ap": 0.9986
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 528,
+            "share_same_district": 0.159,
+            "median_dist_m": 6875.0,
+            "median_dt_days": 94.5
+          }
+        },
+        {
+          "seed": 2028,
+          "pairs_test": 289180,
+          "positive_pairs_test": 369,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1618,
+              "recall": 0.2547,
+              "f1": 0.1979,
+              "tp": 94,
+              "fp": 487,
+              "fn": 275,
+              "threshold": 0.76,
+              "ap": 0.0745
+            },
+            "text_rubert": {
+              "precision": 0.073,
+              "recall": 0.3523,
+              "f1": 0.1209,
+              "tp": 130,
+              "fp": 1652,
+              "fn": 239,
+              "threshold": 0.84,
+              "ap": 0.0496
+            },
+            "place_time_only": {
+              "precision": 0.934,
+              "recall": 0.9973,
+              "f1": 0.9646,
+              "tp": 368,
+              "fp": 26,
+              "fn": 1,
+              "rule": "расстояние ≤ 100 м и разница ≤ 10 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5983,
+              "recall": 0.5691,
+              "f1": 0.5833,
+              "tp": 210,
+              "fp": 141,
+              "fn": 159,
+              "threshold": 0.82,
+              "ap": 0.638
+            },
+            "combined_place_time_only": {
+              "precision": 0.9459,
+              "recall": 0.9946,
+              "f1": 0.9696,
+              "tp": 367,
+              "fp": 21,
+              "fn": 2,
+              "threshold": 0.86,
+              "ap": 0.9882
+            },
+            "combined_all": {
+              "precision": 0.9605,
+              "recall": 0.9892,
+              "f1": 0.9746,
+              "tp": 365,
+              "fp": 15,
+              "fn": 4,
+              "threshold": 0.93,
+              "ap": 0.9959
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 487,
+            "share_same_district": 0.183,
+            "median_dist_m": 6694.0,
+            "median_dt_days": 113.9
+          }
+        }
+      ],
+      "summary": {
+        "text_tfidf": {
+          "precision": {
+            "mean": 0.132,
+            "std": 0.0303
+          },
+          "recall": {
+            "mean": 0.233,
+            "std": 0.0254
+          },
+          "f1": {
+            "mean": 0.1672,
+            "std": 0.0283
+          }
+        },
+        "text_rubert": {
+          "precision": {
+            "mean": 0.0684,
+            "std": 0.0111
+          },
+          "recall": {
+            "mean": 0.2159,
+            "std": 0.121
+          },
+          "f1": {
+            "mean": 0.0997,
+            "std": 0.019
+          }
+        },
+        "place_time_only": {
+          "precision": {
+            "mean": 0.9489,
+            "std": 0.0138
+          },
+          "recall": {
+            "mean": 0.9974,
+            "std": 0.0026
+          },
+          "f1": {
+            "mean": 0.9725,
+            "std": 0.0078
+          }
+        },
+        "combined_text_only": {
+          "precision": {
+            "mean": 0.6222,
+            "std": 0.0734
+          },
+          "recall": {
+            "mean": 0.4952,
+            "std": 0.0732
+          },
+          "f1": {
+            "mean": 0.5461,
+            "std": 0.0322
+          }
+        },
+        "combined_place_time_only": {
+          "precision": {
+            "mean": 0.9506,
+            "std": 0.0201
+          },
+          "recall": {
+            "mean": 0.994,
+            "std": 0.0064
+          },
+          "f1": {
+            "mean": 0.9717,
+            "std": 0.0074
+          }
+        },
+        "combined_all": {
+          "precision": {
+            "mean": 0.964,
+            "std": 0.0038
+          },
+          "recall": {
+            "mean": 0.9895,
+            "std": 0.0052
+          },
+          "f1": {
+            "mean": 0.9766,
+            "std": 0.0041
+          }
+        }
+      }
+    },
+    "noisy": {
+      "geo_noise_m": 300,
+      "geo_missing_frac": 0.3,
+      "per_seed": [
+        {
+          "seed": 2026,
+          "pairs_test": 265356,
+          "positive_pairs_test": 322,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1013,
+              "recall": 0.2391,
+              "f1": 0.1423,
+              "tp": 77,
+              "fp": 683,
+              "fn": 245,
+              "threshold": 0.75,
+              "ap": 0.0568
+            },
+            "text_rubert": {
+              "precision": 0.0557,
+              "recall": 0.1739,
+              "f1": 0.0844,
+              "tp": 56,
+              "fp": 949,
+              "fn": 266,
+              "threshold": 0.875,
+              "ap": 0.0315
+            },
+            "place_time_only": {
+              "precision": 0.4539,
+              "recall": 0.413,
+              "f1": 0.4325,
+              "tp": 133,
+              "fp": 160,
+              "fn": 189,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 5 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5638,
+              "recall": 0.4938,
+              "f1": 0.5265,
+              "tp": 159,
+              "fp": 123,
+              "fn": 163,
+              "threshold": 0.84,
+              "ap": 0.5507
+            },
+            "combined_place_time_only": {
+              "precision": 0.4792,
+              "recall": 0.6801,
+              "f1": 0.5623,
+              "tp": 219,
+              "fp": 238,
+              "fn": 103,
+              "threshold": 0.88,
+              "ap": 0.5459
+            },
+            "combined_all": {
+              "precision": 0.7033,
+              "recall": 0.736,
+              "f1": 0.7193,
+              "tp": 237,
+              "fp": 100,
+              "fn": 85,
+              "threshold": 0.92,
+              "ap": 0.8042
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 683,
+            "share_same_district": 0.139,
+            "median_dist_m": 868.0,
+            "median_dt_days": 109.4
+          }
+        },
+        {
+          "seed": 2027,
+          "pairs_test": 289180,
+          "positive_pairs_test": 395,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.133,
+              "recall": 0.2051,
+              "f1": 0.1614,
+              "tp": 81,
+              "fp": 528,
+              "fn": 314,
+              "threshold": 0.755,
+              "ap": 0.0625
+            },
+            "text_rubert": {
+              "precision": 0.0764,
+              "recall": 0.1215,
+              "f1": 0.0938,
+              "tp": 48,
+              "fp": 580,
+              "fn": 347,
+              "threshold": 0.885,
+              "ap": 0.0358
+            },
+            "place_time_only": {
+              "precision": 0.5592,
+              "recall": 0.3468,
+              "f1": 0.4281,
+              "tp": 137,
+              "fp": 108,
+              "fn": 258,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 3 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.7046,
+              "recall": 0.4228,
+              "f1": 0.5285,
+              "tp": 167,
+              "fp": 70,
+              "fn": 228,
+              "threshold": 0.98,
+              "ap": 0.5571
+            },
+            "combined_place_time_only": {
+              "precision": 0.5108,
+              "recall": 0.6,
+              "f1": 0.5518,
+              "tp": 237,
+              "fp": 227,
+              "fn": 158,
+              "threshold": 0.89,
+              "ap": 0.5811
+            },
+            "combined_all": {
+              "precision": 0.8349,
+              "recall": 0.6911,
+              "f1": 0.7562,
+              "tp": 273,
+              "fp": 54,
+              "fn": 122,
+              "threshold": 0.94,
+              "ap": 0.8436
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 528,
+            "share_same_district": 0.159,
+            "median_dist_m": 0.0,
+            "median_dt_days": 94.5
+          }
+        },
+        {
+          "seed": 2028,
+          "pairs_test": 289180,
+          "positive_pairs_test": 369,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1618,
+              "recall": 0.2547,
+              "f1": 0.1979,
+              "tp": 94,
+              "fp": 487,
+              "fn": 275,
+              "threshold": 0.76,
+              "ap": 0.0745
+            },
+            "text_rubert": {
+              "precision": 0.073,
+              "recall": 0.3523,
+              "f1": 0.1209,
+              "tp": 130,
+              "fp": 1652,
+              "fn": 239,
+              "threshold": 0.84,
+              "ap": 0.0496
+            },
+            "place_time_only": {
+              "precision": 0.575,
+              "recall": 0.3117,
+              "f1": 0.4042,
+              "tp": 115,
+              "fp": 85,
+              "fn": 254,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 2 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5983,
+              "recall": 0.5691,
+              "f1": 0.5833,
+              "tp": 210,
+              "fp": 141,
+              "fn": 159,
+              "threshold": 0.82,
+              "ap": 0.638
+            },
+            "combined_place_time_only": {
+              "precision": 0.4915,
+              "recall": 0.4688,
+              "f1": 0.4799,
+              "tp": 173,
+              "fp": 179,
+              "fn": 196,
+              "threshold": 0.93,
+              "ap": 0.4971
+            },
+            "combined_all": {
+              "precision": 0.7604,
+              "recall": 0.7398,
+              "f1": 0.75,
+              "tp": 273,
+              "fp": 86,
+              "fn": 96,
+              "threshold": 0.92,
+              "ap": 0.8205
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 487,
+            "share_same_district": 0.183,
+            "median_dist_m": 0.0,
+            "median_dt_days": 113.9
+          }
+        }
+      ],
+      "summary": {
+        "text_tfidf": {
+          "precision": {
+            "mean": 0.132,
+            "std": 0.0303
+          },
+          "recall": {
+            "mean": 0.233,
+            "std": 0.0254
+          },
+          "f1": {
+            "mean": 0.1672,
+            "std": 0.0283
+          }
+        },
+        "text_rubert": {
+          "precision": {
+            "mean": 0.0684,
+            "std": 0.0111
+          },
+          "recall": {
+            "mean": 0.2159,
+            "std": 0.121
+          },
+          "f1": {
+            "mean": 0.0997,
+            "std": 0.019
+          }
+        },
+        "place_time_only": {
+          "precision": {
+            "mean": 0.5294,
+            "std": 0.0658
+          },
+          "recall": {
+            "mean": 0.3572,
+            "std": 0.0514
+          },
+          "f1": {
+            "mean": 0.4216,
+            "std": 0.0152
+          }
+        },
+        "combined_text_only": {
+          "precision": {
+            "mean": 0.6222,
+            "std": 0.0734
+          },
+          "recall": {
+            "mean": 0.4952,
+            "std": 0.0732
+          },
+          "f1": {
+            "mean": 0.5461,
+            "std": 0.0322
+          }
+        },
+        "combined_place_time_only": {
+          "precision": {
+            "mean": 0.4938,
+            "std": 0.0159
+          },
+          "recall": {
+            "mean": 0.583,
+            "std": 0.1067
+          },
+          "f1": {
+            "mean": 0.5313,
+            "std": 0.0449
+          }
+        },
+        "combined_all": {
+          "precision": {
+            "mean": 0.7662,
+            "std": 0.066
+          },
+          "recall": {
+            "mean": 0.7223,
+            "std": 0.0271
+          },
+          "f1": {
+            "mean": 0.7418,
+            "std": 0.0198
+          }
+        }
+      }
+    },
+    "harsh": {
+      "geo_noise_m": 1000,
+      "geo_missing_frac": 0.5,
+      "per_seed": [
+        {
+          "seed": 2026,
+          "pairs_test": 265356,
+          "positive_pairs_test": 322,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1013,
+              "recall": 0.2391,
+              "f1": 0.1423,
+              "tp": 77,
+              "fp": 683,
+              "fn": 245,
+              "threshold": 0.75,
+              "ap": 0.0568
+            },
+            "text_rubert": {
+              "precision": 0.0557,
+              "recall": 0.1739,
+              "f1": 0.0844,
+              "tp": 56,
+              "fp": 949,
+              "fn": 266,
+              "threshold": 0.875,
+              "ap": 0.0315
+            },
+            "place_time_only": {
+              "precision": 0.2,
+              "recall": 0.0217,
+              "f1": 0.0392,
+              "tp": 7,
+              "fp": 28,
+              "fn": 315,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 3 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5638,
+              "recall": 0.4938,
+              "f1": 0.5265,
+              "tp": 159,
+              "fp": 123,
+              "fn": 163,
+              "threshold": 0.84,
+              "ap": 0.5507
+            },
+            "combined_place_time_only": {
+              "precision": 0.409,
+              "recall": 0.6211,
+              "f1": 0.4932,
+              "tp": 200,
+              "fp": 289,
+              "fn": 122,
+              "threshold": 0.87,
+              "ap": 0.4771
+            },
+            "combined_all": {
+              "precision": 0.6585,
+              "recall": 0.7547,
+              "f1": 0.7033,
+              "tp": 243,
+              "fp": 126,
+              "fn": 79,
+              "threshold": 0.9,
+              "ap": 0.7893
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 683,
+            "share_same_district": 0.139,
+            "median_dist_m": 0.0,
+            "median_dt_days": 109.4
+          }
+        },
+        {
+          "seed": 2027,
+          "pairs_test": 289180,
+          "positive_pairs_test": 395,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.133,
+              "recall": 0.2051,
+              "f1": 0.1614,
+              "tp": 81,
+              "fp": 528,
+              "fn": 314,
+              "threshold": 0.755,
+              "ap": 0.0625
+            },
+            "text_rubert": {
+              "precision": 0.0764,
+              "recall": 0.1215,
+              "f1": 0.0938,
+              "tp": 48,
+              "fp": 580,
+              "fn": 347,
+              "threshold": 0.885,
+              "ap": 0.0358
+            },
+            "place_time_only": {
+              "precision": 0.2174,
+              "recall": 0.0506,
+              "f1": 0.0821,
+              "tp": 20,
+              "fp": 72,
+              "fn": 375,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 7 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.7046,
+              "recall": 0.4228,
+              "f1": 0.5285,
+              "tp": 167,
+              "fp": 70,
+              "fn": 228,
+              "threshold": 0.98,
+              "ap": 0.5571
+            },
+            "combined_place_time_only": {
+              "precision": 0.4505,
+              "recall": 0.5418,
+              "f1": 0.492,
+              "tp": 214,
+              "fp": 261,
+              "fn": 181,
+              "threshold": 0.9,
+              "ap": 0.4778
+            },
+            "combined_all": {
+              "precision": 0.797,
+              "recall": 0.6658,
+              "f1": 0.7255,
+              "tp": 263,
+              "fp": 67,
+              "fn": 132,
+              "threshold": 0.93,
+              "ap": 0.8038
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 528,
+            "share_same_district": 0.159,
+            "median_dist_m": 0.0,
+            "median_dt_days": 94.5
+          }
+        },
+        {
+          "seed": 2028,
+          "pairs_test": 289180,
+          "positive_pairs_test": 369,
+          "methods": {
+            "text_tfidf": {
+              "precision": 0.1618,
+              "recall": 0.2547,
+              "f1": 0.1979,
+              "tp": 94,
+              "fp": 487,
+              "fn": 275,
+              "threshold": 0.76,
+              "ap": 0.0745
+            },
+            "text_rubert": {
+              "precision": 0.073,
+              "recall": 0.3523,
+              "f1": 0.1209,
+              "tp": 130,
+              "fp": 1652,
+              "fn": 239,
+              "threshold": 0.84,
+              "ap": 0.0496
+            },
+            "place_time_only": {
+              "precision": 0.2469,
+              "recall": 0.0542,
+              "f1": 0.0889,
+              "tp": 20,
+              "fp": 61,
+              "fn": 349,
+              "rule": "расстояние ≤ 1000 м и разница ≤ 7 сут."
+            },
+            "combined_text_only": {
+              "precision": 0.5983,
+              "recall": 0.5691,
+              "f1": 0.5833,
+              "tp": 210,
+              "fp": 141,
+              "fn": 159,
+              "threshold": 0.82,
+              "ap": 0.638
+            },
+            "combined_place_time_only": {
+              "precision": 0.3361,
+              "recall": 0.5528,
+              "f1": 0.418,
+              "tp": 204,
+              "fp": 403,
+              "fn": 165,
+              "threshold": 0.83,
+              "ap": 0.3544
+            },
+            "combined_all": {
+              "precision": 0.7814,
+              "recall": 0.6585,
+              "f1": 0.7147,
+              "tp": 243,
+              "fp": 68,
+              "fn": 126,
+              "threshold": 0.94,
+              "ap": 0.793
+            }
+          },
+          "tfidf_false_positives": {
+            "count": 487,
+            "share_same_district": 0.183,
+            "median_dist_m": 0.0,
+            "median_dt_days": 113.9
+          }
+        }
+      ],
+      "summary": {
+        "text_tfidf": {
+          "precision": {
+            "mean": 0.132,
+            "std": 0.0303
+          },
+          "recall": {
+            "mean": 0.233,
+            "std": 0.0254
+          },
+          "f1": {
+            "mean": 0.1672,
+            "std": 0.0283
+          }
+        },
+        "text_rubert": {
+          "precision": {
+            "mean": 0.0684,
+            "std": 0.0111
+          },
+          "recall": {
+            "mean": 0.2159,
+            "std": 0.121
+          },
+          "f1": {
+            "mean": 0.0997,
+            "std": 0.019
+          }
+        },
+        "place_time_only": {
+          "precision": {
+            "mean": 0.2214,
+            "std": 0.0237
+          },
+          "recall": {
+            "mean": 0.0422,
+            "std": 0.0178
+          },
+          "f1": {
+            "mean": 0.0701,
+            "std": 0.0269
+          }
+        },
+        "combined_text_only": {
+          "precision": {
+            "mean": 0.6222,
+            "std": 0.0734
+          },
+          "recall": {
+            "mean": 0.4952,
+            "std": 0.0732
+          },
+          "f1": {
+            "mean": 0.5461,
+            "std": 0.0322
+          }
+        },
+        "combined_place_time_only": {
+          "precision": {
+            "mean": 0.3985,
+            "std": 0.0579
+          },
+          "recall": {
+            "mean": 0.5719,
+            "std": 0.043
+          },
+          "f1": {
+            "mean": 0.4677,
+            "std": 0.0431
+          }
+        },
+        "combined_all": {
+          "precision": {
+            "mean": 0.7456,
+            "std": 0.0759
+          },
+          "recall": {
+            "mean": 0.693,
+            "std": 0.0536
+          },
+          "f1": {
+            "mean": 0.7145,
+            "std": 0.0111
+          }
+        }
+      }
+    }
+  }
+}
