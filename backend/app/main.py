@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +10,7 @@ from .api.analytics import router as analytics_router
 from .api.appeals import router as appeals_router
 from .api.auth import router as auth_router
 from .api.users import router as users_router
+from .api.priority import router as priority_router
 from .auth import get_current_user
 from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
@@ -34,6 +35,7 @@ app.include_router(auth_router)
 app.include_router(appeals_router)
 app.include_router(analytics_router)
 app.include_router(users_router)
+app.include_router(priority_router)
 
 
 @app.get("/health")
@@ -66,3 +68,4 @@ def stats_categories(session: Session = Depends(get_session)):
     except SQLAlchemyError:
         raise HTTPException(status_code=503, detail="База данных недоступна")
     return [{"code": r.code, "name": r.name_ru, "count": r.cnt} for r in rows]
+

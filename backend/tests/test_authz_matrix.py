@@ -14,6 +14,8 @@ PROTECTED = [
     ("GET", "/api/analytics/heatmap"), ("GET", "/api/analytics/points"),
     ("GET", "/api/users"), ("POST", "/api/users"), ("PATCH", "/api/users/1"), ("GET", "/api/audit"),
     ("GET", "/api/auth/me"), ("POST", "/api/auth/change-password"),
+    ("GET", "/api/priority/queue"),
+    ("GET", "/api/priority/clusters/1"),
 ]
 # (роль, метод, адрес): запрещено
 FORBIDDEN = [
@@ -23,6 +25,8 @@ FORBIDDEN = [
     ("operator", "GET", "/api/users"), ("analyst", "GET", "/api/users"), ("manager", "GET", "/api/users"),
     ("manager", "POST", "/api/users"), ("operator", "PATCH", "/api/users/1"),
     ("operator", "GET", "/api/audit"), ("analyst", "GET", "/api/audit"), ("manager", "GET", "/api/audit"),
+    ("operator", "GET", "/api/priority/queue"),
+    ("operator", "GET", "/api/priority/clusters/1"),
 ]
 
 
