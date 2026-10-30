@@ -45,11 +45,14 @@ def main():
     ap.add_argument("--dir", default="data/labeling")
     ap.add_argument("--out", default="ml/results")
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--invert", action="store_true", help="диагностика: 1 и 5 меняются местами")
     a = ap.parse_args()
     rng = np.random.default_rng(a.seed)
 
     key = pd.read_csv(os.path.join(a.dir, "items_key.csv"))
     rat = pd.read_csv(os.path.join(a.dir, "ratings.csv"), encoding="utf-8-sig")
+    if a.invert:
+        rat["rating"] = 6 - rat["rating"]
     tab = pd.read_csv(os.path.join(a.dir, "priority_table.csv"), encoding="utf-8-sig").rename(columns={"score": "score_db"})
 
     df = key.merge(rat[["item_id", "rating", "seconds"]], on="item_id", how="left")

@@ -1,69 +1,148 @@
 {
-  "n_items": 170,
-  "rating_counts": {
-    "1": 3,
-    "2": 66,
-    "3": 89,
-    "4": 12
-  },
-  "median_seconds_per_item": 5.0,
-  "repeat": {
-    "n": 20,
-    "exact_agreement": 0.55,
-    "within_one": 1.0,
-    "weighted_kappa": 0.237
-  },
-  "n_clusters": 150,
-  "score_vs_expert": {
-    "spearman": -0.283,
-    "ci95": [
-      -0.43,
-      -0.126
-    ],
-    "kendall_tau": -0.222
-  },
-  "rankers": {
-    "score": {
-      "spearman": -0.283,
-      "ndcg10": 0.341,
-      "ndcg20": 0.376
-    },
-    "urgency": {
-      "spearman": -0.222,
-      "ndcg10": 0.32,
-      "ndcg20": 0.386
-    },
-    "significance": {
-      "spearman": -0.109,
-      "ndcg10": 0.354,
-      "ndcg20": 0.447
-    },
-    "scale": {
-      "spearman": -0.102,
-      "ndcg10": 0.282,
-      "ndcg20": 0.373
-    },
-    "age": {
-      "spearman": -0.059,
-      "ndcg10": 0.393,
-      "ndcg20": 0.468
-    },
-    "dynamics": {
-      "spearman": 0.02,
-      "ndcg10": 0.384,
-      "ndcg20": 0.462
-    },
-    "random": {
-      "spearman": 0.0,
-      "ndcg10": 0.396,
-      "ndcg20": 0.472
+  "round1": {
+    "cards": 170,
+    "clusters": 150,
+    "median_seconds": 5.0,
+    "rating_counts": {
+      "1": 3,
+      "2": 66,
+      "3": 89,
+      "4": 12
     }
   },
-  "mean_rating_by_score_quintile": {
-    "1": 3.03,
-    "2": 2.63,
-    "3": 2.58,
-    "4": 2.7,
-    "5": 2.33
+  "round2": {
+    "cards": 60,
+    "clusters": 60,
+    "median_seconds": 5.5,
+    "rating_counts": {
+      "2": 1,
+      "3": 31,
+      "4": 26,
+      "5": 2
+    }
+  },
+  "rounds_comparison": {
+    "common_clusters": 60,
+    "spearman_r1_vs_r2": -0.381,
+    "p_value": 0.002635747512047322,
+    "spearman_first_half": -0.52,
+    "spearman_second_half": -0.315,
+    "agreement_if_r1_kept": {
+      "exact": 0.283,
+      "within_one": 0.717,
+      "weighted_kappa": -0.205
+    },
+    "agreement_if_r1_inverted": {
+      "exact": 0.533,
+      "within_one": 1.0,
+      "weighted_kappa": 0.387
+    }
+  },
+  "round1_orientation": "invert",
+  "combined": {
+    "n_clusters": 150,
+    "spearman": 0.3,
+    "ci95": [
+      0.149,
+      0.447
+    ],
+    "kendall_tau": 0.227,
+    "rankers": {
+      "score": {
+        "spearman": 0.3,
+        "ndcg10": 0.445,
+        "ndcg20": 0.567
+      },
+      "urgency": {
+        "spearman": 0.236,
+        "ndcg10": 0.471,
+        "ndcg20": 0.552
+      },
+      "significance": {
+        "spearman": 0.117,
+        "ndcg10": 0.548,
+        "ndcg20": 0.586
+      },
+      "scale": {
+        "spearman": 0.101,
+        "ndcg10": 0.454,
+        "ndcg20": 0.521
+      },
+      "age": {
+        "spearman": 0.025,
+        "ndcg10": 0.453,
+        "ndcg20": 0.521
+      },
+      "dynamics": {
+        "spearman": 0.02,
+        "ndcg10": 0.434,
+        "ndcg20": 0.492
+      },
+      "random": {
+        "spearman": 0.0,
+        "ndcg10": 0.435,
+        "ndcg20": 0.497
+      }
+    },
+    "mean_rating_by_score_quintile": {
+      "1": 2.98,
+      "2": 3.4,
+      "3": 3.46,
+      "4": 3.35,
+      "5": 3.64
+    }
+  },
+  "round2_only": {
+    "n_clusters": 60,
+    "spearman": 0.188,
+    "ci95": [
+      -0.083,
+      0.42
+    ],
+    "kendall_tau": 0.147,
+    "rankers": {
+      "score": {
+        "spearman": 0.188,
+        "ndcg10": 0.627,
+        "ndcg20": 0.655
+      },
+      "urgency": {
+        "spearman": 0.097,
+        "ndcg10": 0.586,
+        "ndcg20": 0.645
+      },
+      "significance": {
+        "spearman": 0.251,
+        "ndcg10": 0.742,
+        "ndcg20": 0.713
+      },
+      "scale": {
+        "spearman": 0.048,
+        "ndcg10": 0.503,
+        "ndcg20": 0.573
+      },
+      "age": {
+        "spearman": -0.053,
+        "ndcg10": 0.548,
+        "ndcg20": 0.608
+      },
+      "dynamics": {
+        "spearman": 0.07,
+        "ndcg10": 0.573,
+        "ndcg20": 0.622
+      },
+      "random": {
+        "spearman": 0.0,
+        "ndcg10": 0.54,
+        "ndcg20": 0.597
+      }
+    },
+    "mean_rating_by_score_quintile": {
+      "1": 3.08,
+      "2": 3.67,
+      "3": 3.5,
+      "4": 3.67,
+      "5": 3.5
+    }
   }
 }

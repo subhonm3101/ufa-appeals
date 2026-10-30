@@ -1,10 +1,12 @@
-.venv/
-.pytest_cache/
+﻿.env
+.env.*
+!.env.example
 __pycache__/
-*.pyc
-node_modules/
-.env
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
 
-ml/models/
-
+# ML: кэш и модели (большие, воспроизводятся)
 ml/cache/
+ml/models/

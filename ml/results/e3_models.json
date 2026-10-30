@@ -1,0 +1,143 @@
+{
+  "n_clusters": 150,
+  "n_groups": 40,
+  "folds": 5,
+  "repeats": 20,
+  "results": {
+    "rules_v1": {
+      "spearman": {
+        "mean": 0.3,
+        "std": 0.0
+      },
+      "ndcg10": {
+        "mean": 0.445,
+        "std": 0.0
+      },
+      "ndcg20": {
+        "mean": 0.567,
+        "std": 0.0
+      }
+    },
+    "equal": {
+      "spearman": {
+        "mean": 0.288,
+        "std": 0.0
+      },
+      "ndcg10": {
+        "mean": 0.508,
+        "std": 0.0
+      },
+      "ndcg20": {
+        "mean": 0.572,
+        "std": 0.0
+      }
+    },
+    "weights": {
+      "spearman": {
+        "mean": 0.118,
+        "std": 0.05
+      },
+      "ndcg10": {
+        "mean": 0.424,
+        "std": 0.033
+      },
+      "ndcg20": {
+        "mean": 0.514,
+        "std": 0.033
+      }
+    },
+    "text": {
+      "spearman": {
+        "mean": 0.216,
+        "std": 0.055
+      },
+      "ndcg10": {
+        "mean": 0.485,
+        "std": 0.069
+      },
+      "ndcg20": {
+        "mean": 0.544,
+        "std": 0.05
+      }
+    },
+    "hybrid": {
+      "spearman": {
+        "mean": 0.237,
+        "std": 0.044
+      },
+      "ndcg10": {
+        "mean": 0.512,
+        "std": 0.077
+      },
+      "ndcg20": {
+        "mean": 0.584,
+        "std": 0.059
+      }
+    },
+    "random": {
+      "spearman": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "ndcg10": {
+        "mean": 0.433,
+        "std": 0.0
+      },
+      "ndcg20": {
+        "mean": 0.495,
+        "std": 0.0
+      }
+    }
+  },
+  "delta_vs_rules_v1": {
+    "equal": {
+      "delta_spearman": -0.012,
+      "ci95": [
+        -0.062,
+        0.036
+      ]
+    },
+    "weights": {
+      "delta_spearman": -0.168,
+      "ci95": [
+        -0.228,
+        -0.109
+      ]
+    },
+    "text": {
+      "delta_spearman": -0.045,
+      "ci95": [
+        -0.251,
+        0.168
+      ]
+    },
+    "hybrid": {
+      "delta_spearman": -0.033,
+      "ci95": [
+        -0.168,
+        0.101
+      ]
+    }
+  },
+  "weights": {
+    "urgency": 0.332,
+    "significance": 0.3138,
+    "scale": 0.129,
+    "age": 0.103,
+    "dynamics": 0.1222
+  },
+  "weights_bootstrap_mean": {
+    "urgency": 0.3028,
+    "significance": 0.2851,
+    "scale": 0.1502,
+    "age": 0.1196,
+    "dynamics": 0.1423
+  },
+  "weights_bootstrap_std": {
+    "urgency": 0.1288,
+    "significance": 0.1829,
+    "scale": 0.168,
+    "age": 0.1089,
+    "dynamics": 0.1309
+  }
+}
