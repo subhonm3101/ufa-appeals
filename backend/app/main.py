@@ -11,6 +11,8 @@ from .api.appeals import router as appeals_router
 from .api.auth import router as auth_router
 from .api.users import router as users_router
 from .api.priority import router as priority_router
+from .api.forecast import router as forecast_router
+from .api.anomalies import router as anomalies_router
 from .auth import get_current_user
 from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
@@ -36,6 +38,8 @@ app.include_router(appeals_router)
 app.include_router(analytics_router)
 app.include_router(users_router)
 app.include_router(priority_router)
+app.include_router(forecast_router)
+app.include_router(anomalies_router)
 
 
 @app.get("/health")
