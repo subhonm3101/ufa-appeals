@@ -1,15 +1,18 @@
-﻿
-from datetime import datetime, timezone
+import logging
+from datetime import date, datetime, time, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from ..auth import require_roles
+from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
+from ..services.audit import log_event
 from ..services.priority_features import compute_all
 
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/priority",
@@ -19,24 +22,59 @@ router = APIRouter(
     ],
 )
 
+# Ключ блокировки: одновременно выполняется только один пересчёт.
+RECALC_LOCK_KEY = 4207001
+# Снимок приоритетов привязан к дате; время фиксировано, поэтому повторный
+# пересчёт в тот же день заменяет снимок, а не добавляет новый.
+SNAPSHOT_TIME = time(23, 59, 59)
 
-@router.post(
-    "/recalculate",
-    dependencies=[Depends(require_roles("manager", "admin"))],
-)
+
+@router.post("/recalculate")
 def recalculate_priorities(
+    request: Request,
+    as_of_date: date | None = Query(
+        None,
+        alias="as_of",
+        description="Дата снимка (по умолчанию сегодня, UTC); снимок строится на конец суток 23:59:59 UTC",
+    ),
+    user: CurrentUser = Depends(require_roles("manager", "admin")),
     session: Session = Depends(get_session),
 ):
-    """Пересчитать и сохранить приоритеты методом rules_v1."""
-    as_of = datetime.now(timezone.utc)
+    """Пересчитать и сохранить приоритеты методом rules_v1 на дату снимка."""
+    today = datetime.now(timezone.utc).date()
+    snapshot_date = as_of_date or today
+    if snapshot_date > today:
+        raise HTTPException(
+            status_code=422,
+            detail="Дата снимка не может быть в будущем",
+        )
+    as_of = datetime.combine(snapshot_date, SNAPSHOT_TIME, tzinfo=timezone.utc)
 
     try:
+        session.execute(
+            text("SELECT pg_advisory_xact_lock(:k)"), {"k": RECALC_LOCK_KEY}
+        )
         results = compute_all(
             session=session,
             as_of=as_of,
             save=True,
         )
+        # log_event фиксирует транзакцию вместе с пересчётом
+        log_event(
+            session,
+            user.id,
+            "priority_recalculate",
+            "priority_scores",
+            None,
+            details={
+                "method": "rules_v1",
+                "as_of": as_of.isoformat(),
+                "processed_clusters": len(results),
+            },
+            ip=client_ip(request),
+        )
     except SQLAlchemyError:
+        logger.exception("Пересчёт приоритетов не удался (as_of=%s)", as_of)
         session.rollback()
         raise HTTPException(
             status_code=503,
@@ -259,4 +297,3 @@ def priority_cluster_details(
     ]
 
     return result
-

@@ -116,10 +116,11 @@ def compute_all(session, as_of: datetime, cfg: PriorityConfig = DEFAULT_CONFIG, 
     if save:
         session.execute(sql("DELETE FROM priority_scores WHERE method = :m AND as_of = :a"),
                         {"m": cfg.method, "a": as_of})
-        session.execute(sql(
-            "INSERT INTO priority_scores (cluster_id, score, factors, method, as_of) "
-            "VALUES (:cid, :score, CAST(:factors AS jsonb), :method, :as_of)"),
-            [{"cid": o["cluster_id"], "score": o["score"], "factors": json.dumps(o["factors"], ensure_ascii=False),
-              "method": cfg.method, "as_of": as_of} for o in out])
+        if out:  # пустой список строк SQLAlchemy не принимает (нет активных кластеров)
+            session.execute(sql(
+                "INSERT INTO priority_scores (cluster_id, score, factors, method, as_of) "
+                "VALUES (:cid, :score, CAST(:factors AS jsonb), :method, :as_of)"),
+                [{"cid": o["cluster_id"], "score": o["score"], "factors": json.dumps(o["factors"], ensure_ascii=False),
+                  "method": cfg.method, "as_of": as_of} for o in out])
         session.commit()
     return out
