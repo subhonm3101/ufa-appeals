@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
+import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
 
 type PageId = 'appeals' | 'upload' | 'dashboard' | 'queue' | 'admin'
@@ -84,9 +85,13 @@ export default function App() {
 
       <main className="content">
         <h1>{current.title}</h1>
-        <div className="card">
-          <p className="muted">{current.hint}</p>
-        </div>
+        {current.id === 'dashboard' ? (
+          <Dashboard />
+        ) : (
+          <div className="card">
+            <p className="muted">{current.hint}</p>
+          </div>
+        )}
       </main>
     </div>
   )
