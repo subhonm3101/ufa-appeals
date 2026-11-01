@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
+import Admin from './Admin'
 import Appeals from './Appeals'
 import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
@@ -94,6 +95,8 @@ export default function App() {
           <Dashboard />
         ) : current.id === 'queue' ? (
           <QueueMap />
+        ) : current.id === 'admin' ? (
+          <Admin />
         ) : current.id === 'upload' ? (
           <Upload />
         ) : (
