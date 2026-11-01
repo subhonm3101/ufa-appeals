@@ -4,6 +4,7 @@ import { useAuth } from './auth'
 import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
 import QueueMap from './QueueMap'
+import Upload from './Upload'
 
 type PageId = 'appeals' | 'upload' | 'dashboard' | 'queue' | 'admin'
 
@@ -90,6 +91,8 @@ export default function App() {
           <Dashboard />
         ) : current.id === 'queue' ? (
           <QueueMap />
+        ) : current.id === 'upload' ? (
+          <Upload />
         ) : (
           <div className="card">
             <p className="muted">{current.hint}</p>

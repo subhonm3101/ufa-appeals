@@ -1,0 +1,12 @@
+.upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.error {
+  color: #d64545;
+  margin: 12px 0 0;
+}
