@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +13,7 @@ from .api.users import router as users_router
 from .api.priority import router as priority_router
 from .api.forecast import router as forecast_router
 from .api.anomalies import router as anomalies_router
+from .api.reports import router as reports_router
 from .auth import get_current_user
 from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
@@ -40,6 +41,7 @@ app.include_router(users_router)
 app.include_router(priority_router)
 app.include_router(forecast_router)
 app.include_router(anomalies_router)
+app.include_router(reports_router)
 
 
 @app.get("/health")
