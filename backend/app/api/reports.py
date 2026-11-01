@@ -327,7 +327,7 @@ def summary_report(
     ws = wb.create_sheet("Приоритеты")
     headers = ["№", "Проблема", "Категория", "Район", "Обращений", "Балл"]
     headers += [f"{label} (баллы)" for _, label in COMPONENTS] + ["Расчёт на"]
-    _table(ws, 1, headers, priorities, {11: DATE_FMT})
+    _table(ws, 1, headers, priorities, {12: DATE_FMT})
     _widths(ws)
 
     buf = BytesIO()

@@ -101,3 +101,54 @@ th {
   height: 100%;
   background: var(--accent);
 }
+
+.print-only {
+  display: none;
+}
+
+/* печать и сохранение в PDF: светлая тема, без меню и фильтров */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --panel: #ffffff;
+    --text: #111111;
+    --muted: #555555;
+    --border: #cccccc;
+    --accent: #2f6fed;
+    --accent-text: #ffffff;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .topbar,
+  .menu,
+  .toolbar,
+  .block-head select {
+    display: none;
+  }
+
+  .shell {
+    display: block;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .stack {
+    max-width: none;
+  }
+
+  .card {
+    break-inside: avoid;
+    border-color: #cccccc;
+  }
+
+  .print-only {
+    display: block;
+    margin: 0;
+    font-weight: 600;
+  }
+}

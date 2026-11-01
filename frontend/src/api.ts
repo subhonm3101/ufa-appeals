@@ -96,3 +96,24 @@ export async function login(email: string, password: string): Promise<TokenRespo
   if (!res.ok) throw await readError(res)
   return (await res.json()) as TokenResponse
 }
+
+/** Скачивает файл с авторизацией (имя берётся из заголовка Content-Disposition). */
+export async function downloadFile(path: string): Promise<void> {
+  const token = getToken()
+  const res = await request(path, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+  if (res.status === 401 && token) {
+    setToken(null)
+    window.dispatchEvent(new Event('auth-expired'))
+  }
+  if (!res.ok) throw await readError(res)
+  const blob = await res.blob()
+  const match = /filename="([^"]+)"/.exec(res.headers.get('Content-Disposition') ?? '')
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = match?.[1] ?? 'report.xlsx'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}

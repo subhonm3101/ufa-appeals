@@ -12,6 +12,7 @@ import {
   YAxis,
 } from 'recharts'
 import './dashboard.css'
+import { downloadFile } from './api'
 import type {
   AnomalyPage,
   Category,
@@ -86,6 +87,8 @@ export default function Dashboard() {
   const [dateTo, setDateTo] = useState('')
   const [gran, setGran] = useState('day')
   const [fcGran, setFcGran] = useState<'week' | 'day'>('week')
+  const [exporting, setExporting] = useState(false)
+  const [exportError, setExportError] = useState<string | null>(null)
 
   const cats = useFetch<Category[]>('/api/categories')
   const dists = useFetch<District[]>('/api/districts')
@@ -109,6 +112,20 @@ export default function Dashboard() {
     if (!anchor) return
     setDateTo(anchor)
     setDateFrom(shiftDay(anchor, -(days - 1)))
+  }
+
+  async function exportReport() {
+    setExporting(true)
+    setExportError(null)
+    try {
+      await downloadFile(
+        '/api/reports/summary.xlsx' + qs({ date_from: dateFrom, date_to: dateTo, category, district }),
+      )
+    } catch (e: unknown) {
+      setExportError(e instanceof Error ? e.message : 'Не удалось скачать отчёт')
+    } finally {
+      setExporting(false)
+    }
   }
 
   const areas = useMemo(() => {
@@ -143,9 +160,13 @@ export default function Dashboard() {
   const coverage = fcMetrics?.['city_coverage80_pct']
 
   const s = summary.data
+  const catName = cats.data?.find((c) => c.code === category)?.name ?? 'все'
 
   return (
     <div className="stack">
+      <p className="print-only">
+        Отчёт по обращениям граждан, г. Уфа · категория: {catName} · район: {district || 'все'}
+      </p>
       <div className="card toolbar">
         <label>
           Категория
@@ -191,6 +212,15 @@ export default function Dashboard() {
             Сбросить период
           </button>
         </div>
+        <div className="chips">
+          <button disabled={exporting} onClick={exportReport}>
+            {exporting ? 'Формируем…' : 'Скачать отчёт (Excel)'}
+          </button>
+          <button className="secondary" onClick={() => window.print()}>
+            Печать / PDF
+          </button>
+        </div>
+        {exportError && <div className="alert">{exportError}</div>}
       </div>
 
       <Status loading={summary.loading && !s} error={summary.error} />
