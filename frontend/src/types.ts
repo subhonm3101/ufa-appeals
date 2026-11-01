@@ -81,3 +81,63 @@ export interface AnomalyPage {
   items: AnomalyItem[]
   total: number
 }
+
+export interface PriorityFactors {
+  raw: Record<string, unknown>
+  as_of: string
+  method: string
+  weights: Record<string, number>
+  components: Record<string, number>
+}
+
+export interface QueueItem {
+  cluster_id: number
+  score: number
+  factors: PriorityFactors
+  as_of: string
+  calculated_at: string
+  status: string | null
+  appeals_count: number
+  centroid_lat: number | null
+  centroid_lon: number | null
+  category: string | null
+  category_name: string | null
+  district: string | null
+}
+
+export interface QueuePage {
+  items: QueueItem[]
+  total: number
+  limit: number
+  offset: number
+  method: string
+}
+
+export interface ClusterAppeal {
+  id: number
+  external_id: string | null
+  text: string
+  created_at: string
+  status: string | null
+  lat: number | null
+  lon: number | null
+}
+
+export interface ClusterDetails {
+  id: number
+  status: string | null
+  appeals_count: number
+  centroid_lat: number | null
+  centroid_lon: number | null
+  first_seen: string | null
+  last_seen: string | null
+  category: string | null
+  category_name: string | null
+  district: string | null
+  score: number | null
+  factors: PriorityFactors | null
+  as_of: string | null
+  calculated_at: string | null
+  components: Record<string, number>
+  appeals: ClusterAppeal[]
+}

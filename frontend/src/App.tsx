@@ -3,6 +3,7 @@ import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
 import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
+import QueueMap from './QueueMap'
 
 type PageId = 'appeals' | 'upload' | 'dashboard' | 'queue' | 'admin'
 
@@ -87,6 +88,8 @@ export default function App() {
         <h1>{current.title}</h1>
         {current.id === 'dashboard' ? (
           <Dashboard />
+        ) : current.id === 'queue' ? (
+          <QueueMap />
         ) : (
           <div className="card">
             <p className="muted">{current.hint}</p>
