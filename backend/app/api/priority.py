@@ -135,6 +135,8 @@ def priority_queue(
             latest.calculated_at,
             cl.status,
             cl.appeals_count,
+            cl.centroid_lat,
+            cl.centroid_lon,
             cat.code AS category,
             cat.name_ru AS category_name,
             d.name AS district
@@ -192,6 +194,8 @@ def priority_queue(
                 "calculated_at": row["calculated_at"],
                 "status": row["status"],
                 "appeals_count": row["appeals_count"],
+                "centroid_lat": row["centroid_lat"],
+                "centroid_lon": row["centroid_lon"],
                 "category": row["category"],
                 "category_name": row["category_name"],
                 "district": row["district"],
