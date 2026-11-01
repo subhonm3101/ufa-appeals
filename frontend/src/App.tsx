@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
+import Appeals from './Appeals'
 import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
 import QueueMap from './QueueMap'
@@ -87,7 +88,9 @@ export default function App() {
 
       <main className="content">
         <h1>{current.title}</h1>
-        {current.id === 'dashboard' ? (
+        {current.id === 'appeals' ? (
+          <Appeals />
+        ) : current.id === 'dashboard' ? (
           <Dashboard />
         ) : current.id === 'queue' ? (
           <QueueMap />
