@@ -1,5 +1,5 @@
 """Работа с обращением: карточка, смена статуса, назначение, комментарии (шаг 9.2)."""
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
@@ -12,6 +12,7 @@ from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
 from ..services import workflow
 from ..services.audit import log_event
+from ..services.importer import LOCAL_TZ
 
 router = APIRouter(prefix="/api", tags=["workflow"])
 
@@ -318,3 +319,126 @@ def list_executors(
     except SQLAlchemyError as exc:
         raise DB_DOWN from exc
     return [dict(r) for r in rows]
+
+
+@router.get("/departments")
+def list_departments(
+    user: CurrentUser = Depends(require_roles(*STAFF)),
+    session: Session = Depends(get_session),
+):
+    """Активные подразделения."""
+    try:
+        rows = session.execute(
+            text("SELECT id, name FROM departments WHERE is_active ORDER BY name")
+        ).mappings().all()
+    except SQLAlchemyError as exc:
+        raise DB_DOWN from exc
+    return [dict(r) for r in rows]
+
+
+CLOSED_SQL = "('resolved', 'rejected')"
+
+
+@router.get("/cases")
+def list_cases(
+    category: str | None = Query(None, description="Код категории"),
+    district: str | None = Query(None, description="Название района"),
+    status: str | None = Query(None, description="Статус обращения"),
+    assignee: str | None = Query(None, description="me, none или id исполнителя"),
+    overdue: bool = Query(False, description="Только просроченные"),
+    date_from: date | None = Query(None, description="С даты регистрации включительно"),
+    date_to: date | None = Query(None, description="По дату регистрации включительно"),
+    q: str | None = Query(None, max_length=200, description="Поиск по тексту и номеру"),
+    sort: Literal["created", "due"] = Query("created", description="created: новые сверху; due: ближайший срок"),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    user: CurrentUser = Depends(require_roles(*STAFF)),
+    session: Session = Depends(get_session),
+):
+    """Рабочий список обращений со статусом, исполнителем и сроком.
+
+    Исполнитель всегда видит только назначенные ему обращения.
+    В ответе также счётчики по статусам при остальных заданных фильтрах.
+    """
+    if status is not None and status not in workflow.STATUSES:
+        raise HTTPException(status_code=422, detail="Неизвестный статус")
+
+    where, params = ["TRUE"], {}
+    if user.role == "executor":
+        assignee = "me"
+    if assignee is not None:
+        if assignee == "me":
+            where.append("a.assignee_id = :assignee")
+            params["assignee"] = user.id
+        elif assignee == "none":
+            where.append("a.assignee_id IS NULL")
+        elif assignee.isdigit() and int(assignee) < 2**31:
+            where.append("a.assignee_id = :assignee")
+            params["assignee"] = int(assignee)
+        else:
+            raise HTTPException(status_code=422, detail="assignee: me, none или номер исполнителя")
+    if category:
+        where.append("c.code = :category")
+        params["category"] = category
+    if district:
+        where.append("d.name = :district")
+        params["district"] = district
+    if overdue:
+        where.append(f"(a.due_at IS NOT NULL AND a.due_at < now() AND COALESCE(a.status, 'new') NOT IN {CLOSED_SQL})")
+    if date_from:
+        where.append("a.created_at >= :date_from")
+        params["date_from"] = datetime.combine(date_from, time.min, tzinfo=LOCAL_TZ)
+    if date_to:
+        where.append("a.created_at < :date_to")
+        params["date_to"] = datetime.combine(date_to + timedelta(days=1), time.min, tzinfo=LOCAL_TZ)
+    if q:
+        escaped = q.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        where.append("(a.text ILIKE :q ESCAPE '\\' OR a.public_number ILIKE :q ESCAPE '\\')")
+        params["q"] = f"%{escaped}%"
+
+    joins = (
+        "FROM appeals a LEFT JOIN categories c ON c.id = a.category_id "
+        "LEFT JOIN districts d ON d.id = a.district_id "
+        "LEFT JOIN departments dep ON dep.id = a.department_id "
+        "LEFT JOIN users u ON u.id = a.assignee_id"
+    )
+    base_where = " AND ".join(where)
+    list_where = base_where
+    list_params = dict(params)
+    if status is not None:
+        list_where += " AND COALESCE(a.status, 'new') = :status"
+        list_params["status"] = status
+    order = (
+        "a.created_at DESC, a.id DESC" if sort == "created"
+        else "a.due_at ASC NULLS LAST, a.created_at DESC, a.id DESC"
+    )
+    try:
+        total = session.execute(
+            text(f"SELECT COUNT(*) {joins} WHERE {list_where}"), list_params
+        ).scalar_one()
+        counted = session.execute(
+            text(f"SELECT COALESCE(a.status, 'new') AS status, COUNT(*) AS n {joins} WHERE {base_where} GROUP BY 1"),
+            params,
+        ).all()
+        rows = session.execute(
+            text(
+                "SELECT a.id, a.public_number, left(a.text, 300) AS excerpt, a.created_at, "
+                "COALESCE(a.status, 'new') AS status, c.code AS category, c.name_ru AS category_name, "
+                "d.name AS district, dep.name AS department_name, a.assignee_id, "
+                "u.email AS assignee_email, u.full_name AS assignee_name, a.due_at, "
+                f"(a.due_at IS NOT NULL AND a.due_at < now() AND COALESCE(a.status, 'new') NOT IN {CLOSED_SQL}) AS is_overdue "
+                f"{joins} WHERE {list_where} ORDER BY {order} LIMIT :limit OFFSET :offset"
+            ),
+            {**list_params, "limit": limit, "offset": offset},
+        ).mappings().all()
+    except SQLAlchemyError as exc:
+        raise DB_DOWN from exc
+    status_counts = {name: 0 for name in workflow.STATUSES}
+    status_counts.update({row.status: row.n for row in counted})
+    return {
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+        "status_counts": status_counts,
+        "items": [dict(r) for r in rows],
+    }
