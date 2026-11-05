@@ -1,4 +1,4 @@
-﻿
+
 import os
 import uuid
 from datetime import datetime, timezone
@@ -90,7 +90,7 @@ def priority_data():
                     VALUES (
                         :batch_id, :external_id, 'Тестовое обращение',
                         CURRENT_TIMESTAMP, :district_id, 54.7, 55.9,
-                        :category_id, :cluster_id, 'open'
+                        :category_id, :cluster_id, 'new'
                     )
                     RETURNING id
                 """),

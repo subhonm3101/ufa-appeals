@@ -10,3 +10,5 @@ venv/
 # ML: кэш и модели (большие, воспроизводятся)
 ml/cache/
 ml/models/
+*.dump
+pytest_out.txt
