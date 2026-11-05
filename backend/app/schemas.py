@@ -132,7 +132,7 @@ class MapPoints(BaseModel):
 
 from typing import Literal  # noqa: E402
 
-Role = Literal["operator", "analyst", "manager", "admin"]
+Role = Literal["operator", "analyst", "manager", "admin", "executor"]
 
 
 class UserOut(BaseModel):
@@ -143,6 +143,7 @@ class UserOut(BaseModel):
     is_active: bool
     last_login_at: datetime | None
     created_at: datetime | None
+    department_id: int | None = None
 
 
 class Token(BaseModel):
@@ -157,6 +158,7 @@ class UserCreate(BaseModel):
     password: str
     full_name: str | None = None
     role: Role
+    department_id: int | None = None
 
 
 class UserUpdate(BaseModel):
@@ -164,6 +166,7 @@ class UserUpdate(BaseModel):
     full_name: str | None = None
     is_active: bool | None = None
     password: str | None = None  # сброс пароля администратором
+    department_id: int | None = None
 
 
 class PasswordChange(BaseModel):

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from .db import get_session
 from .services.security import decode_access_token
 
-ROLES = ("operator", "analyst", "manager", "admin")
+ROLES = ("operator", "analyst", "manager", "admin", "executor")
 
 # auto_error=False: сообщение об отсутствии токена формируем сами, по-русски
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)

@@ -13,7 +13,14 @@ from ..services.security import check_password_strength, hash_password, normaliz
 router = APIRouter(prefix="/api", tags=["admin"])
 
 DB_DOWN = HTTPException(status_code=503, detail="База данных недоступна")
-USER_COLS = "id, email, full_name, role, is_active, last_login_at, created_at"
+USER_COLS = "id, email, full_name, role, is_active, last_login_at, created_at, department_id"
+
+
+def _check_department(session: Session, department_id: int | None) -> None:
+    if department_id is None:
+        return
+    if not session.execute(text("SELECT 1 FROM departments WHERE id = :i"), {"i": department_id}).first():
+        raise HTTPException(status_code=422, detail="Подразделение не найдено")
 
 
 @router.get("/users", response_model=list[UserOut])
@@ -38,17 +45,20 @@ def create_user(
     if error:
         raise HTTPException(status_code=422, detail=error)
     try:
+        _check_department(session, body.department_id)
         if session.execute(text("SELECT 1 FROM users WHERE lower(email) = :e"), {"e": email}).first():
             raise HTTPException(status_code=409, detail="Пользователь с таким email уже существует")
         row = session.execute(
             text(
-                "INSERT INTO users (email, password_hash, full_name, role) VALUES (:e, :h, :n, :r) "
+                "INSERT INTO users (email, password_hash, full_name, role, department_id) VALUES (:e, :h, :n, :r, :d) "
                 f"RETURNING {USER_COLS}"
             ),
-            {"e": email, "h": hash_password(body.password), "n": (body.full_name or "").strip() or None, "r": body.role},
+            {"e": email, "h": hash_password(body.password), "n": (body.full_name or "").strip() or None, "r": body.role,
+             "d": body.department_id},
         ).mappings().one()
         log_event(session, admin.id, "user_created", "user", row["id"],
-                  details={"email": email, "role": body.role}, ip=client_ip(request))
+                  details={"email": email, "role": body.role, "department_id": body.department_id},
+                  ip=client_ip(request))
     except IntegrityError as exc:
         session.rollback()
         raise HTTPException(status_code=409, detail="Пользователь с таким email уже существует") from exc
@@ -78,6 +88,9 @@ def update_user(
         logged["full_name"] = params["name"]
     if "is_active" in changes and changes["is_active"] is not None:
         sets.append("is_active = :active"); params["active"] = changes["is_active"]; logged["is_active"] = changes["is_active"]
+    if "department_id" in changes:
+        sets.append("department_id = :dep"); params["dep"] = changes["department_id"]
+        logged["department_id"] = changes["department_id"]
     if changes.get("password") is not None:
         try:
             target_email = session.execute(text("SELECT email FROM users WHERE id = :id"), {"id": user_id}).scalar()
@@ -90,6 +103,8 @@ def update_user(
     if not sets:
         raise HTTPException(status_code=422, detail="Не указано, что менять")
     try:
+        if "department_id" in changes:
+            _check_department(session, changes["department_id"])
         row = session.execute(
             text(f"UPDATE users SET {', '.join(sets)} WHERE id = :id RETURNING {USER_COLS}"), params
         ).mappings().one_or_none()
