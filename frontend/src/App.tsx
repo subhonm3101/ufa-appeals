@@ -22,7 +22,7 @@ const PAGES: PageDef[] = [
   {
     id: 'appeals',
     title: 'Обращения',
-    roles: ['operator', 'analyst', 'manager', 'admin'],
+    roles: ['operator', 'analyst', 'manager', 'admin', 'executor'],
     hint: 'Список обращений с фильтрами по району, категории и дате. Появится на шаге 7.2.',
   },
   {

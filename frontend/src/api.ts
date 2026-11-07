@@ -2,13 +2,14 @@
 
 const TOKEN_KEY = 'appeals_token'
 
-export type Role = 'operator' | 'analyst' | 'manager' | 'admin'
+export type Role = 'operator' | 'analyst' | 'manager' | 'admin' | 'executor'
 
 export const ROLE_LABELS: Record<Role, string> = {
   operator: 'Оператор',
   analyst: 'Аналитик',
   manager: 'Руководитель',
   admin: 'Администратор',
+  executor: 'Исполнитель',
 }
 
 export interface User {
@@ -19,6 +20,7 @@ export interface User {
   is_active: boolean
   last_login_at: string | null
   created_at: string
+  department_id?: number | null
 }
 
 interface TokenResponse {

@@ -3,6 +3,7 @@ import { apiFetch, ApiError, ROLE_LABELS, type Role, type User } from './api'
 import './dashboard.css'
 import './upload.css'
 import { useFetch } from './useFetch'
+import type { Department } from './caseTypes'
 
 interface AuditEntry {
   id: number
@@ -40,8 +41,15 @@ function fmt(iso: string | null): string {
 function Users() {
   const [version, setVersion] = useState(0)
   const users = useFetch<User[]>(`/api/users?v=${version}`)
+  const departments = useFetch<Department[]>('/api/departments')
   const [error, setError] = useState<string | null>(null)
-  const [form, setForm] = useState({ email: '', full_name: '', password: '', role: 'operator' as Role })
+  const [form, setForm] = useState({
+    email: '',
+    full_name: '',
+    password: '',
+    role: 'operator' as Role,
+    department_id: '',
+  })
 
   async function call(path: string, method: string, body: unknown) {
     setError(null)
@@ -66,8 +74,9 @@ function Users() {
       password: form.password,
       full_name: form.full_name.trim() || null,
       role: form.role,
+      department_id: form.role === 'executor' && form.department_id ? Number(form.department_id) : null,
     })
-    if (ok) setForm({ email: '', full_name: '', password: '', role: 'operator' })
+    if (ok) setForm({ email: '', full_name: '', password: '', role: 'operator', department_id: '' })
   }
 
   function resetPassword(u: User) {
@@ -88,6 +97,7 @@ function Users() {
               <th>Почта</th>
               <th>Имя</th>
               <th>Роль</th>
+              <th>Подразделение</th>
               <th>Активен</th>
               <th>Последний вход</th>
               <th />
@@ -109,6 +119,27 @@ function Users() {
                       </option>
                     ))}
                   </select>
+                </td>
+                <td>
+                  {u.role === 'executor' ? (
+                    <select
+                      value={u.department_id ?? ''}
+                      onChange={(e) =>
+                        void call(`/api/users/${u.id}`, 'PATCH', {
+                          department_id: e.target.value ? Number(e.target.value) : null,
+                        })
+                      }
+                    >
+                      <option value="">Не указано</option>
+                      {departments.data?.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    '—'
+                  )}
                 </td>
                 <td>{u.is_active ? 'да' : 'нет'}</td>
                 <td>{fmt(u.last_login_at)}</td>
@@ -163,6 +194,19 @@ function Users() {
             ))}
           </select>
         </label>
+        {form.role === 'executor' && (
+          <label>
+            Подразделение
+            <select value={form.department_id} onChange={(e) => setForm({ ...form, department_id: e.target.value })}>
+              <option value="">Не указано</option>
+              {departments.data?.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <button type="submit">Создать</button>
       </form>
     </div>
