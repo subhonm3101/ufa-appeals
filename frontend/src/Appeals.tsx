@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AppealCard from './AppealCard'
 import { useAuth } from './auth'
 import {
@@ -19,7 +19,13 @@ import './cases.css'
 
 const LIMIT = 50
 
-export default function Appeals() {
+interface Props {
+  /** Обращение, которое нужно сразу открыть (например, по клику на уведомление) */
+  openId?: number | null
+  onOpenHandled?: () => void
+}
+
+export default function Appeals({ openId = null, onOpenHandled }: Props) {
   const { user } = useAuth()
   const isExecutor = user?.role === 'executor'
 
@@ -39,6 +45,13 @@ export default function Appeals() {
   const [offset, setOffset] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    if (openId !== null) {
+      setSelected(openId)
+      onOpenHandled?.()
+    }
+  }, [openId, onOpenHandled])
 
   const params = new URLSearchParams({ limit: String(LIMIT), offset: String(offset), sort })
   if (category) params.set('category', category)

@@ -148,7 +148,8 @@ function AssignForm({ card, busy, run }: { card: CaseCard; busy: boolean; run: R
       </label>
       {list.length === 0 && !executors.loading && (
         <p className="muted note">
-          Исполнителей нет. Создайте пользователя с ролью «Исполнитель» в разделе «Пользователи и журнал».
+          В этом подразделении исполнителей нет. Выберите другое подразделение или создайте пользователя с ролью
+          «Исполнитель» в разделе «Пользователи и журнал».
         </p>
       )}
       <div className="action-row">

@@ -5,6 +5,7 @@ import Admin from './Admin'
 import Appeals from './Appeals'
 import Dashboard from './Dashboard'
 import LoginPage from './LoginPage'
+import NotificationBell from './NotificationBell'
 import QueueMap from './QueueMap'
 import Upload from './Upload'
 
@@ -54,6 +55,7 @@ const PAGES: PageDef[] = [
 export default function App() {
   const { user, loading, logout } = useAuth()
   const [page, setPage] = useState<PageId>('appeals')
+  const [openAppeal, setOpenAppeal] = useState<number | null>(null)
 
   if (loading) return <div className="center muted">Загрузка…</div>
   if (!user) return <LoginPage />
@@ -66,6 +68,12 @@ export default function App() {
       <header className="topbar">
         <strong>Анализ обращений граждан · Уфа</strong>
         <span className="spacer" />
+        <NotificationBell
+          onOpenAppeal={(id) => {
+            setPage('appeals')
+            setOpenAppeal(id)
+          }}
+        />
         <span className="who">
           {user.full_name || user.email}
           <span className="badge">{ROLE_LABELS[user.role]}</span>
@@ -90,7 +98,7 @@ export default function App() {
       <main className="content">
         <h1>{current.title}</h1>
         {current.id === 'appeals' ? (
-          <Appeals />
+          <Appeals openId={openAppeal} onOpenHandled={() => setOpenAppeal(null)} />
         ) : current.id === 'dashboard' ? (
           <Dashboard />
         ) : current.id === 'queue' ? (
