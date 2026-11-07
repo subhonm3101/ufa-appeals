@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
-from ..services import workflow
+from ..services import notifications, workflow
 from ..services.audit import log_event
 from ..services.importer import LOCAL_TZ
 
@@ -128,7 +128,7 @@ def change_status(
         # блокировка строки: два сотрудника не изменят одно обращение одновременно
         row = session.execute(
             text(
-                "SELECT id, status, assignee_id, created_at, due_at, response_text "
+                "SELECT id, public_number, status, assignee_id, created_at, due_at, response_text "
                 "FROM appeals WHERE id = :id FOR UPDATE"
             ),
             {"id": appeal_id},
@@ -163,6 +163,12 @@ def change_status(
             ),
             {"id": appeal_id, "frm": current, "to": body.to_status, "by": user.id, "c": comment},
         )
+        if row.assignee_id is not None and row.assignee_id != user.id:
+            notifications.notify(
+                session, row.assignee_id, appeal_id, "status_changed",
+                f"Статус обращения {row.public_number} изменён: "
+                f"{workflow.STATUS_LABELS[current]} → {workflow.STATUS_LABELS[body.to_status]}",
+            )
         log_event(
             session, user.id, "appeal_status_changed", "appeal", appeal_id,
             details={"from": current, "to": body.to_status}, ip=client_ip(request),
@@ -187,7 +193,7 @@ def assign(
         raise HTTPException(status_code=422, detail="Укажите подразделение или исполнителя")
     try:
         row = session.execute(
-            text("SELECT id, status, department_id, assignee_id FROM appeals WHERE id = :id FOR UPDATE"),
+            text("SELECT id, public_number, status, department_id, assignee_id FROM appeals WHERE id = :id FOR UPDATE"),
             {"id": appeal_id},
         ).one_or_none()
         if row is None:
@@ -250,6 +256,11 @@ def assign(
                 "body": f"Назначено: подразделение — {department_name or 'не указано'}; исполнитель — {who}",
             },
         )
+        if assignee_id is not None and assignee_id != row.assignee_id and assignee_id != user.id:
+            notifications.notify(
+                session, assignee_id, appeal_id, "assigned",
+                f"Вам назначено обращение {row.public_number}",
+            )
         log_event(
             session, user.id, "appeal_assigned", "appeal", appeal_id,
             details={"department_id": department_id, "assignee_id": assignee_id}, ip=client_ip(request),

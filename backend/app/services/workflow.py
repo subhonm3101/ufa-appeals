@@ -20,6 +20,8 @@ CLOSED = frozenset({"resolved", "rejected"})
 
 # Срок рассмотрения по умолчанию, календарных дней с даты регистрации.
 RESPONSE_DAYS = 30
+# За сколько дней до срока исполнитель получает напоминание.
+DUE_SOON_DAYS = 3
 
 TRANSITIONS = {
     "new": ("accepted", "rejected"),
