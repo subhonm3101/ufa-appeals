@@ -48,7 +48,7 @@ def _card(session: Session, appeal_id: int, user: CurrentUser) -> dict:
                    c.code AS category, c.name_ru AS category_name, d.name AS district,
                    a.department_id, dep.name AS department_name,
                    a.assignee_id, u.email AS assignee_email, u.full_name AS assignee_name,
-                   a.due_at, a.resolved_at, a.response_text, a.updated_at
+                   a.due_at, a.resolved_at, a.response_text, a.updated_at, a.needs_review
             FROM appeals a
             LEFT JOIN categories c ON c.id = a.category_id
             LEFT JOIN districts d ON d.id = a.district_id
@@ -97,6 +97,22 @@ def _card(session: Session, appeal_id: int, user: CurrentUser) -> dict:
             {"id": appeal_id},
         ).mappings()
     ]
+    card["suggestion"] = None
+    pred = session.execute(
+        text(
+            "SELECT c.code, c.name_ru, p.confidence, p.urgency FROM appeal_predictions p "
+            "JOIN categories c ON c.id = p.predicted_category_id "
+            "WHERE p.appeal_id = :id ORDER BY p.id DESC LIMIT 1"
+        ),
+        {"id": appeal_id},
+    ).mappings().one_or_none()
+    if pred is not None:
+        card["suggestion"] = {
+            "category": pred["code"],
+            "category_name": pred["name_ru"],
+            "confidence": pred["confidence"],
+            "urgency": pred["urgency"],
+        }
     return card
 
 
@@ -311,6 +327,57 @@ def add_comment(
     return {**comment, "author": user.email}
 
 
+class CategoryChange(BaseModel):
+    category_code: str = Field(min_length=1, max_length=50)
+
+
+@router.post("/appeals/{appeal_id}/category")
+def set_category(
+    appeal_id: int,
+    body: CategoryChange,
+    request: Request,
+    user: CurrentUser = Depends(require_roles(*ASSIGNERS)),
+    session: Session = Depends(get_session),
+):
+    """Оператор подтверждает или меняет категорию; обращение снимается с ручной проверки."""
+    try:
+        row = session.execute(
+            text("SELECT id, category_id, needs_review FROM appeals WHERE id = :id FOR UPDATE"),
+            {"id": appeal_id},
+        ).one_or_none()
+        if row is None:
+            raise NOT_FOUND
+        category = session.execute(
+            text("SELECT id, name_ru FROM categories WHERE code = :c"), {"c": body.category_code}
+        ).one_or_none()
+        if category is None:
+            raise HTTPException(status_code=422, detail="Неизвестная категория")
+        if category.id == row.category_id and not row.needs_review:
+            raise HTTPException(status_code=409, detail="Категория не изменилась")
+        session.execute(
+            text(
+                "UPDATE appeals SET category_id = :c, needs_review = FALSE, updated_at = now() "
+                "WHERE id = :id"
+            ),
+            {"c": category.id, "id": appeal_id},
+        )
+        session.execute(
+            text(
+                "INSERT INTO appeal_comments (appeal_id, author_id, body, is_internal) "
+                "VALUES (:id, :by, :body, TRUE)"
+            ),
+            {"id": appeal_id, "by": user.id, "body": f"Категория: {category.name_ru}"},
+        )
+        log_event(
+            session, user.id, "appeal_category_set", "appeal", appeal_id,
+            details={"category_id": category.id}, ip=client_ip(request),
+        )
+        return _card(session, appeal_id, user)
+    except SQLAlchemyError as exc:
+        session.rollback()
+        raise DB_DOWN from exc
+
+
 @router.get("/executors")
 def list_executors(
     department_id: int | None = Query(None),
@@ -357,6 +424,7 @@ def list_cases(
     status: str | None = Query(None, description="Статус обращения"),
     assignee: str | None = Query(None, description="me, none или id исполнителя"),
     overdue: bool = Query(False, description="Только просроченные"),
+    review: bool = Query(False, description="Только требующие ручной проверки"),
     date_from: date | None = Query(None, description="С даты регистрации включительно"),
     date_to: date | None = Query(None, description="По дату регистрации включительно"),
     q: str | None = Query(None, max_length=200, description="Поиск по тексту и номеру"),
@@ -396,6 +464,8 @@ def list_cases(
         params["district"] = district
     if overdue:
         where.append(f"(a.due_at IS NOT NULL AND a.due_at < now() AND COALESCE(a.status, 'new') NOT IN {CLOSED_SQL})")
+    if review:
+        where.append("a.needs_review")
     if date_from:
         where.append("a.created_at >= :date_from")
         params["date_from"] = datetime.combine(date_from, time.min, tzinfo=LOCAL_TZ)
@@ -436,12 +506,15 @@ def list_cases(
                 "SELECT a.id, a.public_number, left(a.text, 300) AS excerpt, a.created_at, "
                 "COALESCE(a.status, 'new') AS status, c.code AS category, c.name_ru AS category_name, "
                 "d.name AS district, dep.name AS department_name, a.assignee_id, "
-                "u.email AS assignee_email, u.full_name AS assignee_name, a.due_at, "
+                "u.email AS assignee_email, u.full_name AS assignee_name, a.due_at, a.needs_review, "
                 f"(a.due_at IS NOT NULL AND a.due_at < now() AND COALESCE(a.status, 'new') NOT IN {CLOSED_SQL}) AS is_overdue "
                 f"{joins} WHERE {list_where} ORDER BY {order} LIMIT :limit OFFSET :offset"
             ),
             {**list_params, "limit": limit, "offset": offset},
         ).mappings().all()
+        review_count = session.execute(
+            text(f"SELECT COUNT(*) {joins} WHERE a.needs_review AND COALESCE(a.status, 'new') NOT IN {CLOSED_SQL}")
+        ).scalar_one()
     except SQLAlchemyError as exc:
         raise DB_DOWN from exc
     status_counts = {name: 0 for name in workflow.STATUSES}
@@ -451,5 +524,6 @@ def list_cases(
         "limit": limit,
         "offset": offset,
         "status_counts": status_counts,
+        "review_count": review_count,
         "items": [dict(r) for r in rows],
     }
