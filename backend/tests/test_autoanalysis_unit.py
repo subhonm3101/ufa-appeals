@@ -59,3 +59,39 @@ def test_missing_model_file_is_handled(monkeypatch, tmp_path):
     monkeypatch.setattr(autoanalysis, "MODEL_PATH", tmp_path / "none.joblib")
     autoanalysis.reset()
     assert autoanalysis.load_model() is None
+
+
+class VocabModel(FakeModel):
+    """Модель с «словарём», как у настоящего конвейера TF-IDF."""
+
+    class _Word:
+        vocabulary_ = {"яма": 0, "на": 1, "дороге": 2, "ленина": 3, "яма на": 4}
+
+    class _Tfidf:
+        transformer_list = [("word", None)]
+
+    def __init__(self, probs):
+        super().__init__(probs)
+        tfidf = self._Tfidf()
+        tfidf.transformer_list = [("word", self._Word())]
+        self.named_steps = {"tfidf": tfidf}
+
+
+def test_unfamiliar_text_goes_to_review_even_if_confident():
+    autoanalysis.set_model(VocabModel([0.01, 0.99]))
+    a = autoanalysis.analyze("Сделайте уже что-нибудь наконец")
+    assert a.needs_review is True and a.reason == "unfamiliar_text"
+    assert a.category_code == "roads"
+
+
+def test_familiar_text_is_accepted():
+    autoanalysis.set_model(VocabModel([0.01, 0.99]))
+    a = autoanalysis.analyze("Яма на дороге на Ленина")
+    assert a.needs_review is False and a.reason is None
+
+
+def test_reasons_are_reported():
+    autoanalysis.set_model(FakeModel([0.5, 0.45]))
+    assert autoanalysis.analyze("текст").reason == "low_confidence"
+    autoanalysis.set_model(None)
+    assert autoanalysis.analyze("текст").reason == "no_model"
