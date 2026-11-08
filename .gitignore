@@ -1,4 +1,4 @@
-﻿.env
+.env
 .env.*
 !.env.example
 __pycache__/
@@ -12,3 +12,4 @@ ml/cache/
 ml/models/
 *.dump
 pytest_out.txt
+backend/uploads/

@@ -1,15 +1,14 @@
 """Публичный приём обращений и проверка статуса по номеру (без входа в систему)."""
 import re
 
-from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from ..auth import client_ip
 from ..db import get_session
-from ..services import intake
+from ..services import attachments, intake
 from ..services.ratelimit import RateLimiter
 
 router = APIRouter(prefix="/api/public", tags=["public"])
@@ -29,13 +28,6 @@ STATUS_RU = {
 TOO_MANY = HTTPException(status_code=429, detail="Слишком много запросов. Попробуйте позже.")
 
 
-class PublicAppeal(BaseModel):
-    text: str = Field(max_length=6000)
-    address_text: str | None = Field(None, max_length=400)
-    contact_email: str | None = Field(None, max_length=300)
-    district_id: int | None = None
-
-
 @router.get("/districts")
 def districts(session: Session = Depends(get_session)):
     try:
@@ -46,23 +38,36 @@ def districts(session: Session = Depends(get_session)):
 
 
 @router.post("/appeals", status_code=201)
-def submit(body: PublicAppeal, request: Request, session: Session = Depends(get_session)):
+def submit(
+    request: Request,
+    body_text: str = Form(alias="text", max_length=6000),
+    address_text: str | None = Form(None, max_length=400),
+    contact_email: str | None = Form(None, max_length=300),
+    district_id: int | None = Form(None),
+    files: list[UploadFile] = File(default=[]),
+    session: Session = Depends(get_session),
+):
+    """Приём обращения: поля формы и до трёх фотографий (multipart/form-data)."""
     if not submit_limiter.allow(client_ip(request)):
         raise TOO_MANY
     data = intake.NewAppeal(
-        text=body.text,
+        text=body_text,
         source="web",
-        address_text=body.address_text,
-        contact_email=body.contact_email,
-        district_id=body.district_id,
+        address_text=address_text,
+        contact_email=contact_email,
+        district_id=district_id,
     )
     try:
+        intake.clean(data)
+        raw = [(f.filename, f.file.read(attachments.MAX_SIZE + 1)) for f in files if f.filename]
+        checked = attachments.check_files(raw)
         done = intake.register(session, data)
+        attachments.save(session, done.id, checked)
     except intake.IntakeError as e:
         raise HTTPException(status_code=422, detail=str(e))
-    except SQLAlchemyError:
+    except (SQLAlchemyError, OSError):
         session.rollback()
-        raise HTTPException(status_code=503, detail="База данных недоступна")
+        raise HTTPException(status_code=503, detail="Не удалось сохранить обращение")
     return {"public_number": done.public_number}
 
 
