@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from . import autoanalysis
+
 SOURCES = ("web", "operator", "api")
 MIN_TEXT = 20
 MAX_TEXT = 5000
@@ -90,5 +92,6 @@ def register(session: Session, data: NewAppeal) -> Registered:
         ),
         {"i": row.id, "c": "Обращение зарегистрировано"},
     )
+    autoanalysis.apply(session, row.id, d.text)
     session.commit()
     return Registered(row.id, row.public_number)
