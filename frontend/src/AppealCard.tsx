@@ -13,6 +13,7 @@ import {
   type Department,
   type Executor,
 } from './caseTypes'
+import AppealPhotos from './AppealPhotos'
 import StatusBadge from './StatusBadge'
 import { useFetch } from './useFetch'
 import './dashboard.css'
@@ -305,6 +306,8 @@ export default function AppealCard({ id, onClose, onChanged }: Props) {
 
             <h3>Текст обращения</h3>
             <div className="appeal-text">{c.text}</div>
+
+            <AppealPhotos key={`p-${c.id}`} appealId={c.id} />
 
             {c.response_text && (
               <>

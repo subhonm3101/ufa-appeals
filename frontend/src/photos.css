@@ -1,0 +1,17 @@
+.photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.photo-grid img,
+.photo-placeholder {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #2a3140;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
