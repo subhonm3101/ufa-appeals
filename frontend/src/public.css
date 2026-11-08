@@ -1,0 +1,86 @@
+.public-shell {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.public-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.public-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .public-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.public-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.public-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.public-form textarea,
+.public-form input,
+.public-form select {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.public-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 4px 0 12px;
+}
+
+.public-result {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 8px 0 0;
+}
+
+.public-result dt {
+  color: var(--muted, #8a93a3);
+}
+
+.public-result dd {
+  margin: 0;
+}
+
+.public-link {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+}
+
+.public-shell a,
+.public-link {
+  color: #7aa2f7;
+}
+
+.public-form select {
+  background: #11151c;
+  color: inherit;
+  border: 1px solid #2a3140;
+  border-radius: 8px;
+  padding: 10px 12px;
+}

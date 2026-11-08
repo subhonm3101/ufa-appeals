@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
 import Admin from './Admin'
 import Appeals from './Appeals'
 import Dashboard from './Dashboard'
+import PublicPage from './PublicPage'
 import LoginPage from './LoginPage'
 import NotificationBell from './NotificationBell'
 import QueueMap from './QueueMap'
@@ -55,10 +56,25 @@ const PAGES: PageDef[] = [
 export default function App() {
   const { user, loading, logout } = useAuth()
   const [page, setPage] = useState<PageId>('appeals')
+  const [hash, setHash] = useState(window.location.hash)
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
   const [openAppeal, setOpenAppeal] = useState<number | null>(null)
 
   if (loading) return <div className="center muted">Загрузка…</div>
-  if (!user) return <LoginPage />
+  if (!user && hash === '#/public') return <PublicPage />
+  if (!user)
+    return (
+      <>
+        <LoginPage />
+        <a className="public-link" href="#/public">
+          Подать обращение или проверить статус
+        </a>
+      </>
+    )
 
   const available = PAGES.filter((p) => p.roles.includes(user.role))
   const current = available.find((p) => p.id === page) ?? available[0]
