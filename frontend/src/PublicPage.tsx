@@ -21,6 +21,8 @@ interface PublicStatus {
 
 const MIN_TEXT = 20
 const MAX_TEXT = 5000
+const MAX_PHOTOS = 3
+const MAX_PHOTO_MB = 5
 
 function fmtDate(iso: string | null): string {
   if (!iso) return '—'
@@ -40,21 +42,40 @@ function SubmitForm() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [number, setNumber] = useState<string | null>(null)
+  const [photos, setPhotos] = useState<File[]>([])
+
+  function addPhotos(list: FileList | null) {
+    if (!list) return
+    const next = [...photos]
+    for (const f of Array.from(list)) {
+      if (next.length >= MAX_PHOTOS) {
+        setError(`Можно приложить не больше ${MAX_PHOTOS} фотографий.`)
+        break
+      }
+      if (f.size > MAX_PHOTO_MB * 1024 * 1024) {
+        setError(`Файл «${f.name}» больше ${MAX_PHOTO_MB} МБ.`)
+        continue
+      }
+      setError(null)
+      next.push(f)
+    }
+    setPhotos(next)
+  }
 
   async function submit(e: FormEvent) {
     e.preventDefault()
     setBusy(true)
     setError(null)
     try {
+      const form = new FormData()
+      form.append('text', text)
+      if (address) form.append('address_text', address)
+      if (email) form.append('contact_email', email)
+      if (districtId) form.append('district_id', districtId)
+      for (const f of photos) form.append('files', f)
       const res = await apiFetch<{ public_number: string }>('/api/public/appeals', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text,
-          address_text: address || null,
-          contact_email: email || null,
-          district_id: districtId ? Number(districtId) : null,
-        }),
+        body: form,
       })
       setNumber(res.public_number)
     } catch (err) {
@@ -79,6 +100,7 @@ function SubmitForm() {
             setAddress('')
             setEmail('')
             setDistrictId('')
+            setPhotos([])
           }}
         >
           Подать ещё одно
@@ -124,6 +146,35 @@ function SubmitForm() {
         Электронная почта для связи (необязательно)
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
+      <label>
+        Фотографии (необязательно, до {MAX_PHOTOS} шт., JPEG, PNG или WebP)
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          disabled={photos.length >= MAX_PHOTOS}
+          onChange={(e) => {
+            addPhotos(e.target.files)
+            e.target.value = ''
+          }}
+        />
+      </label>
+      {photos.length > 0 && (
+        <ul className="public-photos">
+          {photos.map((f, i) => (
+            <li key={`${f.name}-${i}`}>
+              <span>{f.name}</span>
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => setPhotos(photos.filter((_, j) => j !== i))}
+              >
+                Убрать
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
       {error && <p className="error">{error}</p>}
       <div>
         <button type="submit" disabled={busy || text.trim().length < MIN_TEXT}>
