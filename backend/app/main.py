@@ -16,6 +16,7 @@ from .api.anomalies import router as anomalies_router
 from .api.reports import router as reports_router
 from .api.cases import router as cases_router
 from .api.notifications import router as notifications_router
+from .api.public import router as public_router
 from .auth import get_current_user
 from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
@@ -46,6 +47,7 @@ app.include_router(anomalies_router)
 app.include_router(reports_router)
 app.include_router(cases_router)
 app.include_router(notifications_router)
+app.include_router(public_router)
 
 
 @app.get("/health")

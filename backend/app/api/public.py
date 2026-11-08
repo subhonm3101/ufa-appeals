@@ -1,0 +1,101 @@
+"""Публичный приём обращений и проверка статуса по номеру (без входа в систему)."""
+import re
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, Field
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from ..auth import client_ip
+from ..db import get_session
+from ..services import intake
+from ..services.ratelimit import RateLimiter
+
+router = APIRouter(prefix="/api/public", tags=["public"])
+
+submit_limiter = RateLimiter(limit=5, window=3600)
+lookup_limiter = RateLimiter(limit=60, window=600)
+
+NUMBER = re.compile(r"^UFA-\d{4}-\d{6}$")
+STATUS_RU = {
+    "new": "Зарегистрировано",
+    "accepted": "Принято в работу",
+    "in_progress": "Выполняется",
+    "waiting": "Ожидает уточнения",
+    "resolved": "Решено",
+    "rejected": "Отклонено",
+}
+TOO_MANY = HTTPException(status_code=429, detail="Слишком много запросов. Попробуйте позже.")
+
+
+class PublicAppeal(BaseModel):
+    text: str = Field(max_length=6000)
+    address_text: str | None = Field(None, max_length=400)
+    contact_email: str | None = Field(None, max_length=300)
+    district_id: int | None = None
+
+
+@router.get("/districts")
+def districts(session: Session = Depends(get_session)):
+    try:
+        rows = session.execute(text("SELECT id, name FROM districts ORDER BY name")).all()
+    except SQLAlchemyError:
+        raise HTTPException(status_code=503, detail="База данных недоступна")
+    return [{"id": r.id, "name": r.name} for r in rows]
+
+
+@router.post("/appeals", status_code=201)
+def submit(body: PublicAppeal, request: Request, session: Session = Depends(get_session)):
+    if not submit_limiter.allow(client_ip(request)):
+        raise TOO_MANY
+    data = intake.NewAppeal(
+        text=body.text,
+        source="web",
+        address_text=body.address_text,
+        contact_email=body.contact_email,
+        district_id=body.district_id,
+    )
+    try:
+        done = intake.register(session, data)
+    except intake.IntakeError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except SQLAlchemyError:
+        session.rollback()
+        raise HTTPException(status_code=503, detail="База данных недоступна")
+    return {"public_number": done.public_number}
+
+
+@router.get("/appeals/{number}")
+def status_by_number(number: str, request: Request, session: Session = Depends(get_session)):
+    if not lookup_limiter.allow(client_ip(request)):
+        raise TOO_MANY
+    number = number.strip().upper()
+    if not NUMBER.match(number):
+        raise HTTPException(status_code=404, detail="Обращение с таким номером не найдено")
+    try:
+        row = session.execute(
+            text(
+                "SELECT a.public_number, a.status, a.created_at, a.due_at, a.resolved_at, "
+                "a.response_text, c.name_ru AS category "
+                "FROM appeals a LEFT JOIN categories c ON c.id = a.category_id "
+                "WHERE a.public_number = :n"
+            ),
+            {"n": number},
+        ).first()
+    except SQLAlchemyError:
+        raise HTTPException(status_code=503, detail="База данных недоступна")
+    if not row:
+        raise HTTPException(status_code=404, detail="Обращение с таким номером не найдено")
+    status = row.status or "new"
+    answered = status in ("resolved", "rejected")
+    return {
+        "public_number": row.public_number,
+        "status": status,
+        "status_label": STATUS_RU.get(status, status),
+        "category": row.category,
+        "created_at": row.created_at,
+        "due_at": row.due_at,
+        "resolved_at": row.resolved_at,
+        "response_text": row.response_text if answered else None,
+    }
