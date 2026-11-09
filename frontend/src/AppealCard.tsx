@@ -15,9 +15,11 @@ import {
 } from './caseTypes'
 import AppealPhotos from './AppealPhotos'
 import StatusBadge from './StatusBadge'
+import type { Category } from './types'
 import { useFetch } from './useFetch'
 import './dashboard.css'
 import './cases.css'
+import './review.css'
 
 type Run = (path: string, body: unknown) => Promise<boolean>
 
@@ -217,6 +219,46 @@ interface Props {
   onChanged: () => void
 }
 
+function ReviewBox({ card, busy, run, canEdit }: { card: CaseCard; busy: boolean; run: Run; canEdit: boolean }) {
+  const cats = useFetch<Category[]>('/api/categories')
+  const [other, setOther] = useState('')
+  const s = card.suggestion
+  const path = `/api/appeals/${card.id}/category`
+
+  return (
+    <div className="review-box">
+      <p>
+        <strong>Требуется проверка категории.</strong>{' '}
+        {s
+          ? `Модель предлагает «${s.category_name}», уверенность ${Math.round(s.confidence * 100)}%.`
+          : 'Модель не смогла определить категорию.'}
+      </p>
+      {canEdit ? (
+        <div className="review-row">
+          {s && (
+            <button disabled={busy} onClick={() => run(path, { category_code: s.category })}>
+              Подтвердить
+            </button>
+          )}
+          <select value={other} onChange={(e) => setOther(e.target.value)}>
+            <option value="">Выбрать другую категорию…</option>
+            {cats.data?.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <button className="secondary" disabled={busy || !other} onClick={() => run(path, { category_code: other })}>
+            Назначить
+          </button>
+        </div>
+      ) : (
+        <p className="muted">Категорию определяет оператор.</p>
+      )}
+    </div>
+  )
+}
+
 export default function AppealCard({ id, onClose, onChanged }: Props) {
   const { user } = useAuth()
   const role = user?.role ?? ''
@@ -303,6 +345,10 @@ export default function AppealCard({ id, onClose, onChanged }: Props) {
                 </>
               )}
             </dl>
+
+            {c.needs_review && (
+              <ReviewBox key={`r-${c.id}`} card={c} busy={busy} run={run} canEdit={ASSIGNERS.includes(role)} />
+            )}
 
             <h3>Текст обращения</h3>
             <div className="appeal-text">{c.text}</div>

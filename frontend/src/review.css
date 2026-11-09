@@ -1,0 +1,32 @@
+.review-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #54451d;
+  color: #ffd47a;
+  white-space: nowrap;
+}
+
+.review-box {
+  border: 1px solid #54451d;
+  background: rgba(255, 212, 122, 0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-box p {
+  margin: 0;
+}
+
+.review-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

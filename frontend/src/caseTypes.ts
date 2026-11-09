@@ -44,6 +44,7 @@ export interface CaseItem {
   assignee_name: string | null
   due_at: string | null
   is_overdue: boolean
+  needs_review: boolean
 }
 
 export interface CasePage {
@@ -51,6 +52,7 @@ export interface CasePage {
   limit: number
   offset: number
   status_counts: Record<CaseStatus, number>
+  review_count: number
   items: CaseItem[]
 }
 
@@ -69,6 +71,13 @@ export interface CommentEntry {
   is_internal: boolean
   created_at: string
   author: string | null
+}
+
+export interface Suggestion {
+  category: string
+  category_name: string
+  confidence: number
+  urgency: number | null
 }
 
 export interface CaseCard {
@@ -94,6 +103,8 @@ export interface CaseCard {
   response_text: string | null
   updated_at: string
   is_overdue: boolean
+  needs_review: boolean
+  suggestion: Suggestion | null
   allowed_transitions: CaseStatus[]
   history: HistoryEntry[]
   comments: CommentEntry[]

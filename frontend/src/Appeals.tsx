@@ -16,6 +16,7 @@ import { useFetch } from './useFetch'
 import './dashboard.css'
 import './upload.css'
 import './cases.css'
+import './review.css'
 
 const LIMIT = 50
 
@@ -37,6 +38,7 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
   const [status, setStatus] = useState<CaseStatus | ''>('')
   const [onlyMine, setOnlyMine] = useState(false)
   const [overdue, setOverdue] = useState(false)
+  const [review, setReview] = useState(false)
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [sort, setSort] = useState('created')
@@ -59,6 +61,7 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
   if (status) params.set('status', status)
   if (onlyMine) params.set('assignee', 'me')
   if (overdue) params.set('overdue', 'true')
+  if (review) params.set('review', 'true')
   if (dateFrom) params.set('date_from', dateFrom)
   if (dateTo) params.set('date_to', dateTo)
   if (q) params.set('q', q)
@@ -77,6 +80,7 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
     setStatus('')
     setOnlyMine(false)
     setOverdue(false)
+    setReview(false)
     setDateFrom('')
     setDateTo('')
     setSort('created')
@@ -88,6 +92,7 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
   const counts = page.data?.status_counts
   const allCount = counts ? STATUS_ORDER.reduce((sum, s) => sum + counts[s], 0) : 0
   const total = page.data?.total ?? 0
+  const reviewCount = page.data?.review_count ?? 0
   const from = total === 0 ? 0 : offset + 1
   const to = Math.min(offset + LIMIT, total)
 
@@ -158,6 +163,12 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
           <input type="checkbox" checked={overdue} onChange={(e) => filter(setOverdue)(e.target.checked)} />
           Просроченные
         </label>
+        {!isExecutor && (
+          <label className="check">
+            <input type="checkbox" checked={review} onChange={(e) => filter(setReview)(e.target.checked)} />
+            Требуют проверки <small className="muted">({reviewCount})</small>
+          </label>
+        )}
         <button type="submit">Найти</button>
         <button type="button" className="secondary" onClick={reset}>
           Сбросить
@@ -216,7 +227,10 @@ export default function Appeals({ openId = null, onOpenHandled }: Props) {
                   <td>
                     <StatusBadge status={a.status} />
                   </td>
-                  <td>{a.category_name ?? 'не определена'}</td>
+                  <td>
+                    {a.category_name ?? 'не определена'}
+                    {a.needs_review && <span className="review-badge">проверить</span>}
+                  </td>
                   <td>{a.district ?? '—'}</td>
                   <td>{a.assignee_id ? personName(a.assignee_name, a.assignee_email) : '—'}</td>
                   <td className={a.is_overdue ? 'overdue' : undefined}>{a.due_at ? fmtDate(a.due_at) : '—'}</td>
