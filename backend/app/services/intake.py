@@ -28,6 +28,7 @@ class NewAppeal:
     lat: float | None = None
     lon: float | None = None
     external_id: str | None = None
+    citizen_id: int | None = None
 
 
 @dataclass
@@ -56,7 +57,7 @@ def clean(data: NewAppeal) -> NewAppeal:
     if data.lat is not None and not (-90 <= data.lat <= 90 and -180 <= data.lon <= 180):
         raise IntakeError("Координаты вне допустимого диапазона.")
     external = (data.external_id or "").strip() or None
-    return NewAppeal(body, data.source, address, email, data.district_id, data.lat, data.lon, external)
+    return NewAppeal(body, data.source, address, email, data.district_id, data.lat, data.lon, external, data.citizen_id)
 
 
 def register(session: Session, data: NewAppeal) -> Registered:
@@ -78,12 +79,12 @@ def register(session: Session, data: NewAppeal) -> Registered:
     row = session.execute(
         text(
             "INSERT INTO appeals (text, created_at, source, address_text, contact_email, "
-            "district_id, lat, lon, external_id, status) "
-            "VALUES (:t, now(), :s, :a, :e, :d, :lat, :lon, :x, 'new') "
+            "district_id, lat, lon, external_id, citizen_id, status) "
+            "VALUES (:t, now(), :s, :a, :e, :d, :lat, :lon, :x, :cz, 'new') "
             "RETURNING id, public_number"
         ),
         {"t": d.text, "s": d.source, "a": d.address_text, "e": d.contact_email,
-         "d": d.district_id, "lat": d.lat, "lon": d.lon, "x": d.external_id},
+         "d": d.district_id, "lat": d.lat, "lon": d.lon, "x": d.external_id, "cz": d.citizen_id},
     ).one()
     session.execute(
         text(

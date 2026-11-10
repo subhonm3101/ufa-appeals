@@ -19,6 +19,7 @@ from .api.notifications import router as notifications_router
 from .api.public import router as public_router
 from .api.attachments import router as attachments_router
 from .api.register import router as register_router
+from .api.my import router as my_router
 from .auth import get_current_user
 from .auth import require_roles
 from .config import DEFAULT_SECRET_KEY, settings
@@ -53,6 +54,7 @@ app.include_router(notifications_router)
 app.include_router(public_router)
 app.include_router(attachments_router)
 app.include_router(register_router)
+app.include_router(my_router)
 
 
 @app.get("/health")

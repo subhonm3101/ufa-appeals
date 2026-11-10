@@ -6,10 +6,11 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from ..auth import client_ip
+from ..auth import client_ip, oauth2_scheme
 from ..db import get_session
 from ..services import attachments, intake
 from ..services.ratelimit import RateLimiter
+from ..services.security import decode_access_token
 
 router = APIRouter(prefix="/api/public", tags=["public"])
 
@@ -26,6 +27,24 @@ STATUS_RU = {
     "rejected": "Отклонено",
 }
 TOO_MANY = HTTPException(status_code=429, detail="Слишком много запросов. Попробуйте позже.")
+
+
+def optional_citizen(
+    token: str | None = Depends(oauth2_scheme), session: Session = Depends(get_session)
+):
+    """Гражданин по токену, если он вошёл; иначе None: подавать обращение можно и без входа."""
+    if not token:
+        return None
+    user_id = decode_access_token(token)
+    if user_id is None:
+        return None
+    try:
+        return session.execute(
+            text("SELECT id, email FROM users WHERE id = :i AND is_active AND role = 'citizen'"),
+            {"i": user_id},
+        ).one_or_none()
+    except SQLAlchemyError:
+        return None
 
 
 @router.get("/districts")
@@ -46,6 +65,7 @@ def submit(
     district_id: int | None = Form(None),
     files: list[UploadFile] = File(default=[]),
     session: Session = Depends(get_session),
+    citizen=Depends(optional_citizen),
 ):
     """Приём обращения: поля формы и до трёх фотографий (multipart/form-data)."""
     if not submit_limiter.allow(client_ip(request)):
@@ -54,8 +74,9 @@ def submit(
         text=body_text,
         source="web",
         address_text=address_text,
-        contact_email=contact_email,
+        contact_email=contact_email or (citizen.email if citizen else None),
         district_id=district_id,
+        citizen_id=citizen.id if citizen else None,
     )
     try:
         intake.clean(data)
