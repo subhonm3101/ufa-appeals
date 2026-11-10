@@ -33,7 +33,7 @@ function errorText(e: unknown): string {
   return e instanceof ApiError ? e.message : 'Не удалось выполнить запрос'
 }
 
-function SubmitForm() {
+export function SubmitForm() {
   const districts = useFetch<District[]>('/api/public/districts')
   const [text, setText] = useState('')
   const [address, setAddress] = useState('')
@@ -258,7 +258,9 @@ export default function PublicPage() {
     <div className="public-shell">
       <header className="public-head">
         <strong>Обращения граждан · Уфа</strong>
-        <a href="#/">Вход для сотрудников</a>
+        <span>
+          <a href="#/account">Вход и регистрация</a> · <a href="#/">Для сотрудников</a>
+        </span>
       </header>
       <div className="public-grid">
         <SubmitForm />

@@ -2,7 +2,7 @@
 
 const TOKEN_KEY = 'appeals_token'
 
-export type Role = 'operator' | 'analyst' | 'manager' | 'admin' | 'executor'
+export type Role = 'operator' | 'analyst' | 'manager' | 'admin' | 'executor' | 'citizen'
 
 export const ROLE_LABELS: Record<Role, string> = {
   operator: 'Оператор',
@@ -10,6 +10,7 @@ export const ROLE_LABELS: Record<Role, string> = {
   manager: 'Руководитель',
   admin: 'Администратор',
   executor: 'Исполнитель',
+  citizen: 'Гражданин',
 }
 
 export interface User {
@@ -118,4 +119,15 @@ export async function downloadFile(path: string): Promise<void> {
   link.click()
   link.remove()
   URL.revokeObjectURL(url)
+}
+
+
+export async function registerCitizen(email: string, password: string, fullName: string): Promise<TokenResponse> {
+  const res = await request('/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, full_name: fullName || null }),
+  })
+  if (!res.ok) throw await readError(res)
+  return (await res.json()) as TokenResponse
 }

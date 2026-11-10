@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
+import AccountPage from './AccountPage'
 import Admin from './Admin'
 import Appeals from './Appeals'
+import CitizenCabinet from './CitizenCabinet'
 import Dashboard from './Dashboard'
 import PublicPage from './PublicPage'
 import LoginPage from './LoginPage'
@@ -66,6 +68,7 @@ export default function App() {
 
   if (loading) return <div className="center muted">Загрузка…</div>
   if (!user && hash === '#/public') return <PublicPage />
+  if (!user && hash === '#/account') return <AccountPage />
   if (!user)
     return (
       <>
@@ -75,6 +78,8 @@ export default function App() {
         </a>
       </>
     )
+
+  if (user.role === 'citizen') return <CitizenCabinet />
 
   const available = PAGES.filter((p) => p.roles.includes(user.role))
   const current = available.find((p) => p.id === page) ?? available[0]

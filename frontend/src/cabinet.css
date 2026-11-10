@@ -1,0 +1,47 @@
+.cabinet-body {
+  margin-top: 16px;
+}
+
+.cabinet-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cabinet-detail h2,
+.cabinet-detail h3 {
+  margin: 8px 0 0;
+}
+
+.cabinet-list,
+.cabinet-messages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cabinet-messages li {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #2a3140;
+  max-width: 85%;
+}
+
+.cabinet-messages li.mine {
+  align-self: flex-end;
+  background: rgba(122, 162, 247, 0.12);
+}
+
+.account-form {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
