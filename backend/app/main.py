@@ -18,7 +18,9 @@ from .api.cases import router as cases_router
 from .api.notifications import router as notifications_router
 from .api.public import router as public_router
 from .api.attachments import router as attachments_router
+from .api.register import router as register_router
 from .auth import get_current_user
+from .auth import require_roles
 from .config import DEFAULT_SECRET_KEY, settings
 from .db import get_session
 
@@ -50,6 +52,7 @@ app.include_router(cases_router)
 app.include_router(notifications_router)
 app.include_router(public_router)
 app.include_router(attachments_router)
+app.include_router(register_router)
 
 
 @app.get("/health")
@@ -68,7 +71,7 @@ def health_db(session: Session = Depends(get_session)):
     return {"status": "ok", "database": "connected"}
 
 
-@app.get("/api/stats/categories", dependencies=[Depends(get_current_user)])
+@app.get("/api/stats/categories", dependencies=[Depends(require_roles("operator", "analyst", "manager", "admin"))])
 def stats_categories(session: Session = Depends(get_session)):
     """Число обращений по категориям. Требует входа."""
     try:

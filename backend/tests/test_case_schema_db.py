@@ -142,11 +142,11 @@ def _delete_user(engine, user_id):
         c.execute(text("DELETE FROM users WHERE id = :i"), {"i": user_id})
 
 
-def test_executor_role_is_allowed_and_citizen_is_not_yet(engine):
-    user_id = _insert_user(engine, "executor")
-    _delete_user(engine, user_id)
+def test_executor_and_citizen_roles_are_allowed_unknown_is_not(engine):
+    for role in ("executor", "citizen"):
+        _delete_user(engine, _insert_user(engine, role))
     with pytest.raises(IntegrityError):
-        _insert_user(engine, "citizen")
+        _insert_user(engine, "superuser")
 
 
 def test_user_can_belong_to_department(engine):

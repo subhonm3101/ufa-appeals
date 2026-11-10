@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from ..auth import CurrentUser, client_ip, get_current_user, require_roles
+from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
 from ..schemas import AppealOut, AppealsPage, CategoryOut, DistrictOut, ImportReport
 from ..services.audit import log_event
@@ -44,7 +44,7 @@ def import_appeals(
         raise DB_DOWN from exc
 
 
-@router.get("/appeals", response_model=AppealsPage, dependencies=[Depends(get_current_user)])
+@router.get("/appeals", response_model=AppealsPage, dependencies=[Depends(require_roles("operator", "analyst", "manager", "admin"))])
 def list_appeals(
     category: str | None = Query(None, description="Код категории, например roads"),
     district: str | None = Query(None, description="Название района"),
@@ -92,7 +92,7 @@ def list_appeals(
     return AppealsPage(total=total, limit=limit, offset=offset, items=[AppealOut(**r) for r in rows])
 
 
-@router.get("/categories", response_model=list[CategoryOut], dependencies=[Depends(get_current_user)])
+@router.get("/categories", response_model=list[CategoryOut], dependencies=[Depends(require_roles("operator", "analyst", "manager", "admin", "executor"))])
 def list_categories(session: Session = Depends(get_session)):
     try:
         rows = session.execute(text("SELECT code, name_ru FROM categories ORDER BY id")).all()
@@ -101,7 +101,7 @@ def list_categories(session: Session = Depends(get_session)):
     return [CategoryOut(code=r.code, name=r.name_ru) for r in rows]
 
 
-@router.get("/districts", response_model=list[DistrictOut], dependencies=[Depends(get_current_user)])
+@router.get("/districts", response_model=list[DistrictOut], dependencies=[Depends(require_roles("operator", "analyst", "manager", "admin", "executor"))])
 def list_districts(session: Session = Depends(get_session)):
     try:
         rows = session.execute(text("SELECT MIN(id) AS id, name FROM districts GROUP BY name ORDER BY name")).all()

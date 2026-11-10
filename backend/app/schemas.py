@@ -132,7 +132,7 @@ class MapPoints(BaseModel):
 
 from typing import Literal  # noqa: E402
 
-Role = Literal["operator", "analyst", "manager", "admin", "executor"]
+Role = Literal["operator", "analyst", "manager", "admin", "executor", "citizen"]
 
 
 class UserOut(BaseModel):
