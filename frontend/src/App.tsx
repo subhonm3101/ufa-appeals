@@ -3,6 +3,7 @@ import { ROLE_LABELS, type Role } from './api'
 import { useAuth } from './auth'
 import AccountPage from './AccountPage'
 import Admin from './Admin'
+import ApiKeys from './ApiKeys'
 import Appeals from './Appeals'
 import CitizenCabinet from './CitizenCabinet'
 import Dashboard from './Dashboard'
@@ -12,7 +13,7 @@ import NotificationBell from './NotificationBell'
 import QueueMap from './QueueMap'
 import Upload from './Upload'
 
-type PageId = 'appeals' | 'upload' | 'dashboard' | 'queue' | 'admin'
+type PageId = 'appeals' | 'upload' | 'dashboard' | 'queue' | 'admin' | 'keys'
 
 interface PageDef {
   id: PageId
@@ -52,6 +53,12 @@ const PAGES: PageDef[] = [
     title: 'Пользователи и журнал',
     roles: ['admin'],
     hint: 'Управление пользователями и журнал действий. Появится после шага 7.4.',
+  },
+  {
+    id: 'keys',
+    title: 'Ключи API',
+    roles: ['admin'],
+    hint: 'Ключи для внешних систем.',
   },
 ]
 
@@ -126,6 +133,8 @@ export default function App() {
           <QueueMap />
         ) : current.id === 'admin' ? (
           <Admin />
+        ) : current.id === 'keys' ? (
+          <ApiKeys />
         ) : current.id === 'upload' ? (
           <Upload />
         ) : (

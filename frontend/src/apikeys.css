@@ -1,0 +1,37 @@
+.keys-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.keys-form input {
+  flex: 1 1 260px;
+}
+.key-fresh {
+  border: 1px solid #c9a227;
+  background: #fff8dc;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px 0;
+  display: grid;
+  gap: 8px;
+}
+.key-fresh code {
+  word-break: break-all;
+  user-select: all;
+  background: #fff;
+  padding: 8px;
+  border-radius: 6px;
+}
+.key-example {
+  background: #f4f4f6;
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .key-fresh { background: #3a3315; border-color: #8a7420; color: inherit; }
+  .key-fresh code { background: #1d1d1f; }
+  .key-example { background: #1d1d1f; }
+}
