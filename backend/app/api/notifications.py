@@ -36,7 +36,9 @@ def list_notifications(
         total = session.execute(text(f"SELECT count(*) FROM notifications {where}"), {"u": user.id}).scalar_one()
         rows = session.execute(
             text(
-                "SELECT id, appeal_id, kind, message, created_at, read_at FROM notifications "
+                "SELECT id, appeal_id, kind, message, created_at, read_at, "
+                "(SELECT public_number FROM appeals WHERE id = notifications.appeal_id) AS public_number "
+                "FROM notifications "
                 f"{where} ORDER BY created_at DESC, id DESC LIMIT :limit OFFSET :offset"
             ),
             {"u": user.id, "limit": limit, "offset": offset},

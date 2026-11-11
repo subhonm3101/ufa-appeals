@@ -7,7 +7,8 @@ import './notifications.css'
 interface NotificationItem {
   id: number
   appeal_id: number | null
-  kind: 'assigned' | 'status_changed' | 'due_soon' | 'overdue'
+  public_number: string | null
+  kind: 'assigned' | 'status_changed' | 'due_soon' | 'overdue' | 'appeal_update' | 'citizen_comment'
   message: string
   created_at: string
   read_at: string | null
@@ -24,11 +25,13 @@ const KIND_LABELS: Record<NotificationItem['kind'], string> = {
   status_changed: 'Статус',
   due_soon: 'Срок',
   overdue: 'Просрочено',
+  appeal_update: 'Обращение',
+  citizen_comment: 'Сообщение',
 }
 
 const POLL_MS = 60_000
 
-export default function NotificationBell({ onOpenAppeal }: { onOpenAppeal: (id: number) => void }) {
+export default function NotificationBell({ onOpenAppeal }: { onOpenAppeal: (id: number, number: string | null) => void }) {
   const [open, setOpen] = useState(false)
   const [unread, setUnread] = useState(0)
   const [version, setVersion] = useState(0)
@@ -77,7 +80,7 @@ export default function NotificationBell({ onOpenAppeal }: { onOpenAppeal: (id: 
     }
     setOpen(false)
     loadCount()
-    if (n.appeal_id !== null) onOpenAppeal(n.appeal_id)
+    if (n.appeal_id !== null) onOpenAppeal(n.appeal_id, n.public_number)
   }
 
   async function readAll() {

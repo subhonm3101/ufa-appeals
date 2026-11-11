@@ -81,7 +81,10 @@ def test_status_change_and_public_reply_notify_citizen(client, citizen, my_appea
     r = client.post(f"/api/appeals/{aid}/status", json={"to_status": "accepted"}, headers=operator.headers)
     assert r.status_code == 200, r.text
     items = feed(client, citizen["headers"])["items"]
-    assert any(n["kind"] == "appeal_update" and number in n["message"] for n in items)
+    assert any(
+        n["kind"] == "appeal_update" and number in n["message"] and n["public_number"] == number
+        for n in items
+    )
 
     before = len(items)
     r = client.post(f"/api/appeals/{aid}/comments", json={"body": "внутренняя заметка"}, headers=operator.headers)

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { ApiError, apiFetch } from './api'
 import { useAuth } from './auth'
 import { fmtDate, fmtDateTime } from './caseTypes'
+import NotificationBell from './NotificationBell'
 import { SubmitForm } from './PublicPage'
 import { useFetch } from './useFetch'
 import './cases.css'
@@ -219,9 +220,18 @@ export default function CitizenCabinet() {
     <div className="public-shell">
       <header className="public-head">
         <strong>Личный кабинет · {user?.full_name || user?.email}</strong>
-        <button className="secondary" onClick={logout}>
-          Выйти
-        </button>
+        <div className="cabinet-actions">
+          <NotificationBell
+            onOpenAppeal={(_id, number) => {
+              if (!number) return
+              setTab('list')
+              setOpen(number)
+            }}
+          />
+          <button className="secondary" onClick={logout}>
+            Выйти
+          </button>
+        </div>
       </header>
       <nav className="menu" aria-label="Разделы кабинета">
         <button
