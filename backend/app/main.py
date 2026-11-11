@@ -17,6 +17,8 @@ from .api.reports import router as reports_router
 from .api.cases import router as cases_router
 from .api.notifications import router as notifications_router
 from .api.public import router as public_router
+from .api.apikeys import router as apikeys_router
+from .api.external import router as external_router
 from .api.attachments import router as attachments_router
 from .api.register import router as register_router
 from .api.my import router as my_router
@@ -52,6 +54,8 @@ app.include_router(reports_router)
 app.include_router(cases_router)
 app.include_router(notifications_router)
 app.include_router(public_router)
+app.include_router(apikeys_router)
+app.include_router(external_router)
 app.include_router(attachments_router)
 app.include_router(register_router)
 app.include_router(my_router)
