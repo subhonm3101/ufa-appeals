@@ -13,7 +13,7 @@ pytestmark = pytest.mark.skipif(
 )
 
 PASSWORD = "Xk9#mQ2$vLp7wZ"
-OPEN_PREFIXES = ("/api/auth/", "/api/public/", "/api/my/")
+OPEN_PREFIXES = ("/api/auth/", "/api/public/", "/api/my/", "/api/notifications")
 
 
 @pytest.fixture

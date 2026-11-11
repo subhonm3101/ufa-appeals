@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from . import workflow
 
-KINDS = ("assigned", "status_changed", "due_soon", "overdue")
+KINDS = ("assigned", "status_changed", "due_soon", "overdue", "appeal_update", "citizen_comment")
 MANAGER_ROLES = ("manager", "admin")
 
 

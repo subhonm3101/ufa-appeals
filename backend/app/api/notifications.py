@@ -11,7 +11,7 @@ from ..services.notifications import refresh_deadlines
 router = APIRouter(prefix="/api/notifications", tags=["notifications"])
 
 DB_DOWN = HTTPException(status_code=503, detail="База данных недоступна")
-STAFF = ("operator", "analyst", "manager", "admin", "executor")
+STAFF = ("operator", "analyst", "manager", "admin", "executor", "citizen")
 
 
 def _unread(session: Session, user_id: int) -> int:
@@ -31,7 +31,8 @@ def list_notifications(
     """Уведомления пользователя, новые сверху. Заодно проверяются сроки."""
     where = "WHERE user_id = :u" + (" AND read_at IS NULL" if unread_only else "")
     try:
-        refresh_deadlines(session, user.id, user.role)
+        if user.role != "citizen":
+            refresh_deadlines(session, user.id, user.role)
         total = session.execute(text(f"SELECT count(*) FROM notifications {where}"), {"u": user.id}).scalar_one()
         rows = session.execute(
             text(
@@ -54,7 +55,8 @@ def unread_count(
 ):
     """Число непрочитанных (для значка у колокольчика)."""
     try:
-        refresh_deadlines(session, user.id, user.role)
+        if user.role != "citizen":
+            refresh_deadlines(session, user.id, user.role)
         return {"unread": _unread(session, user.id)}
     except SQLAlchemyError as exc:
         session.rollback()

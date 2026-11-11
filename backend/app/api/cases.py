@@ -144,7 +144,7 @@ def change_status(
         # блокировка строки: два сотрудника не изменят одно обращение одновременно
         row = session.execute(
             text(
-                "SELECT id, public_number, status, assignee_id, created_at, due_at, response_text "
+                "SELECT id, public_number, status, assignee_id, created_at, due_at, response_text, citizen_id "
                 "FROM appeals WHERE id = :id FOR UPDATE"
             ),
             {"id": appeal_id},
@@ -183,6 +183,12 @@ def change_status(
             notifications.notify(
                 session, row.assignee_id, appeal_id, "status_changed",
                 f"Статус обращения {row.public_number} изменён: "
+                f"{workflow.STATUS_LABELS[current]} → {workflow.STATUS_LABELS[body.to_status]}",
+            )
+        if row.citizen_id is not None:
+            notifications.notify(
+                session, row.citizen_id, appeal_id, "appeal_update",
+                f"Статус вашего обращения {row.public_number} изменён: "
                 f"{workflow.STATUS_LABELS[current]} → {workflow.STATUS_LABELS[body.to_status]}",
             )
         log_event(
@@ -300,11 +306,13 @@ def add_comment(
     if not text_body:
         raise HTTPException(status_code=422, detail="Комментарий не может быть пустым")
     try:
-        assignee_id = session.execute(
-            text("SELECT assignee_id FROM appeals WHERE id = :id"), {"id": appeal_id}
+        found = session.execute(
+            text("SELECT assignee_id, citizen_id, public_number FROM appeals WHERE id = :id"),
+            {"id": appeal_id},
         ).one_or_none()
-        if assignee_id is None:
+        if found is None:
             raise NOT_FOUND
+        assignee_id = (found.assignee_id,)
         if user.role == "executor" and assignee_id[0] != user.id:
             raise HTTPException(
                 status_code=403, detail="Исполнитель может комментировать только назначенные ему обращения"
@@ -317,6 +325,11 @@ def add_comment(
             {"id": appeal_id, "by": user.id, "body": text_body, "internal": body.is_internal},
         ).mappings().one()
         session.execute(text("UPDATE appeals SET updated_at = now() WHERE id = :id"), {"id": appeal_id})
+        if not body.is_internal and found.citizen_id is not None:
+            notifications.notify(
+                session, found.citizen_id, appeal_id, "appeal_update",
+                f"По вашему обращению {found.public_number} есть новый ответ",
+            )
         log_event(
             session, user.id, "appeal_commented", "appeal", appeal_id,
             details={"internal": body.is_internal}, ip=client_ip(request),

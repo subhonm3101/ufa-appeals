@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
+from ..services import notifications
 from ..services.audit import log_event
 from ..services.ratelimit import RateLimiter
 from .public import NUMBER, STATUS_RU
@@ -161,6 +162,19 @@ def add_comment(
             {"i": a.id, "u": user.id, "b": text_body},
         )
         session.execute(text("UPDATE appeals SET updated_at = now() WHERE id = :i"), {"i": a.id})
+        recipients = session.execute(
+            text(
+                "SELECT assignee_id AS id FROM appeals WHERE id = :i AND assignee_id IS NOT NULL "
+                "UNION SELECT id FROM users WHERE is_active AND role IN ('operator', 'manager') "
+                "AND NOT EXISTS (SELECT 1 FROM appeals WHERE id = :i AND assignee_id IS NOT NULL)"
+            ),
+            {"i": a.id},
+        ).scalars().all()
+        for rid in recipients:
+            notifications.notify(
+                session, rid, a.id, "citizen_comment",
+                f"Гражданин дополнил обращение {a.public_number}",
+            )
         log_event(session, user.id, "citizen_comment_added", "appeal", a.id, ip=client_ip(request))
         return _detail(session, number, user.id)
     except SQLAlchemyError:
