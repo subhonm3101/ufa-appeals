@@ -7,7 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from .db import get_session
-from .services.security import decode_access_token
+from .services.security import decode_access_claims, decode_access_token  # noqa: F401
 
 ROLES = ("operator", "analyst", "manager", "admin", "executor", "citizen")
 
@@ -33,16 +33,17 @@ def get_current_user(
     поэтому отключение или смена роли действуют сразу, а не после истечения токена."""
     if not token:
         raise _unauthorized()
-    user_id = decode_access_token(token)
-    if user_id is None:
+    claims = decode_access_claims(token)
+    if claims is None:
         raise _unauthorized()
+    user_id, version = claims
     try:
         row = session.execute(
-            text("SELECT id, email, full_name, role, is_active FROM users WHERE id = :id"), {"id": user_id}
+            text("SELECT id, email, full_name, role, is_active, token_version FROM users WHERE id = :id"), {"id": user_id}
         ).one_or_none()
     except SQLAlchemyError as exc:
         raise HTTPException(status_code=503, detail="База данных недоступна") from exc
-    if row is None or not row.is_active:
+    if row is None or not row.is_active or row.token_version != version:
         raise _unauthorized()
     return CurrentUser(id=row.id, email=row.email, full_name=row.full_name, role=row.role)
 

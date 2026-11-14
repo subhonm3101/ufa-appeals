@@ -72,11 +72,13 @@ def check_password_strength(password: str, email: str | None = None) -> str | No
     return None
 
 
-def create_access_token(user_id: int, role: str, now: datetime | None = None) -> tuple[str, int]:
+def create_access_token(
+    user_id: int, role: str, now: datetime | None = None, version: int = 0
+) -> tuple[str, int]:
     now = now or datetime.now(timezone.utc)
     exp = now + timedelta(minutes=settings.access_token_minutes)
     token = jwt.encode(
-        {"sub": str(user_id), "role": role, "iat": now, "exp": exp}, settings.secret_key, algorithm="HS256"
+        {"sub": str(user_id), "role": role, "tv": version, "iat": now, "exp": exp}, settings.secret_key, algorithm="HS256"
     )
     return token, settings.access_token_minutes * 60
 
@@ -86,5 +88,18 @@ def decode_access_token(token: str) -> int | None:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=["HS256"], options={"require": ["exp", "sub"]})
         return int(payload["sub"])
+    except (jwt.PyJWTError, KeyError, ValueError, TypeError):
+        return None
+
+
+
+def decode_access_claims(token: str) -> tuple[int, int] | None:
+    """(id пользователя, версия токена) или None, если токен неверный или просрочен.
+
+    У токенов, выданных до появления версий, поля нет: считаем версию нулевой.
+    """
+    try:
+        payload = jwt.decode(token, settings.secret_key, algorithms=["HS256"], options={"require": ["exp", "sub"]})
+        return int(payload["sub"]), int(payload.get("tv", 0))
     except (jwt.PyJWTError, KeyError, ValueError, TypeError):
         return None

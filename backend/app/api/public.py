@@ -10,7 +10,7 @@ from ..auth import client_ip, oauth2_scheme
 from ..db import get_session
 from ..services import attachments, intake
 from ..services.ratelimit import RateLimiter
-from ..services.security import decode_access_token
+from ..services.security import decode_access_claims
 
 router = APIRouter(prefix="/api/public", tags=["public"])
 
@@ -35,13 +35,15 @@ def optional_citizen(
     """Гражданин по токену, если он вошёл; иначе None: подавать обращение можно и без входа."""
     if not token:
         return None
-    user_id = decode_access_token(token)
-    if user_id is None:
+    claims = decode_access_claims(token)
+    if claims is None:
         return None
+    user_id, version = claims
     try:
         return session.execute(
-            text("SELECT id, email FROM users WHERE id = :i AND is_active AND role = 'citizen'"),
-            {"i": user_id},
+            text("SELECT id, email FROM users WHERE id = :i AND is_active AND role = 'citizen' "
+            "AND token_version = :v"),
+            {"i": user_id, "v": version},
         ).one_or_none()
     except SQLAlchemyError:
         return None

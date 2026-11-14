@@ -51,7 +51,7 @@ def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), session
             )
         row = session.execute(
             text(
-                "SELECT id, email, full_name, role, password_hash, is_active, created_at "
+                "SELECT id, email, full_name, role, password_hash, is_active, created_at, token_version "
                 "FROM users WHERE lower(email) = :e"
             ),
             {"e": email},
@@ -74,7 +74,7 @@ def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), session
         session.rollback()
         raise DB_DOWN from exc
 
-    token, expires_in = create_access_token(row.id, row.role)
+    token, expires_in = create_access_token(row.id, row.role, version=row.token_version)
     return Token(
         access_token=token, expires_in=expires_in,
         user=UserOut(id=row.id, email=row.email, full_name=row.full_name, role=row.role,
@@ -107,6 +107,20 @@ def change_password(
             {"h": hash_password(body.new_password), "id": user.id},
         )
         log_event(session, user.id, "password_changed", "user", user.id, ip=client_ip(request))
+    except SQLAlchemyError as exc:
+        session.rollback()
+        raise DB_DOWN from exc
+
+
+
+@router.post("/logout", status_code=204)
+def logout(
+    request: Request, user: CurrentUser = Depends(get_current_user), session: Session = Depends(get_session)
+):
+    """Выход: все выданные пользователю токены перестают действовать (на всех устройствах)."""
+    try:
+        session.execute(text("UPDATE users SET token_version = token_version + 1 WHERE id = :id"), {"id": user.id})
+        log_event(session, user.id, "logout", "user", user.id, ip=client_ip(request))
     except SQLAlchemyError as exc:
         session.rollback()
         raise DB_DOWN from exc
