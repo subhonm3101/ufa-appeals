@@ -108,7 +108,6 @@ python ml\train_tfidf_baseline.py
 
 ```powershell
 cd frontend
-npm install
 npm run dev
 ```
 

@@ -70,8 +70,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(() => {
-    setToken(null)
-    setUser(null)
+    // сначала просим сервер отозвать токен; если связи нет, из системы всё равно выходим
+    apiFetch('/api/auth/logout', { method: 'POST' })
+      .catch(() => {
+        /* токен истечёт сам */
+      })
+      .finally(() => {
+        setToken(null)
+        setUser(null)
+      })
   }, [])
 
   const value = useMemo(
