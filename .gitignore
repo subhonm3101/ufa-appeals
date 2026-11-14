@@ -13,3 +13,5 @@ ml/models/
 *.dump
 pytest_out.txt
 backend/uploads/
+
+.env.prod

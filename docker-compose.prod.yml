@@ -1,0 +1,44 @@
+# Рабочая сборка: база + бэкенд. Секреты берутся из файла .env.prod (шаблон: .env.prod.example).
+# Запуск: docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+name: ufa-appeals-prod
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: appeals
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD в .env.prod}
+      POSTGRES_DB: appeals
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appeals -d appeals"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APPEALS_ENVIRONMENT: production
+      APPEALS_SECRET_KEY: ${APPEALS_SECRET_KEY:?задайте APPEALS_SECRET_KEY в .env.prod}
+      APPEALS_DATABASE_URL: postgresql+psycopg2://appeals:${POSTGRES_PASSWORD}@db:5432/appeals
+      APPEALS_CORS_ORIGINS: ${PUBLIC_URL:?задайте PUBLIC_URL в .env.prod}
+      APPEALS_TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+      APPEALS_UPLOAD_DIR: /app/uploads
+      APPEALS_CATEGORY_MODEL: /app/models/tfidf_logreg_A_grouped.joblib
+    volumes:
+      - uploads_prod:/app/uploads
+      - ./ml/models:/app/models:ro
+    ports:
+      # только с этого компьютера; наружу сайт будет выходить через прокси (следующий шаг)
+      - "127.0.0.1:8100:8000"
+
+volumes:
+  pgdata_prod:
+  uploads_prod:
