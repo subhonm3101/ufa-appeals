@@ -9,13 +9,13 @@ from sqlalchemy.orm import Session
 from ..auth import client_ip, oauth2_scheme
 from ..db import get_session
 from ..services import attachments, intake
-from ..services.ratelimit import RateLimiter
+from ..services.ratelimit import DbRateLimiter
 from ..services.security import decode_access_claims
 
 router = APIRouter(prefix="/api/public", tags=["public"])
 
-submit_limiter = RateLimiter(limit=5, window=3600)
-lookup_limiter = RateLimiter(limit=60, window=600)
+submit_limiter = DbRateLimiter("public_submit", limit=5, window=3600)
+lookup_limiter = DbRateLimiter("public_lookup", limit=60, window=600)
 
 NUMBER = re.compile(r"^UFA-\d{4}-\d{6}$")
 STATUS_RU = {

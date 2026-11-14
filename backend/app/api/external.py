@@ -8,13 +8,13 @@ from sqlalchemy.orm import Session
 from ..auth import client_ip
 from ..db import get_session
 from ..services import apikeys, intake
-from ..services.ratelimit import RateLimiter
+from ..services.ratelimit import DbRateLimiter
 from .public import NUMBER, STATUS_RU
 
 router = APIRouter(prefix="/api/external", tags=["external"])
 
-key_limiter = RateLimiter(limit=300, window=600)
-bad_key_limiter = RateLimiter(limit=30, window=600)
+key_limiter = DbRateLimiter("api_key", limit=300, window=600)
+bad_key_limiter = DbRateLimiter("api_bad_key", limit=30, window=600)
 
 UNAUTHORIZED = HTTPException(status_code=401, detail="Неверный или отозванный ключ API")
 

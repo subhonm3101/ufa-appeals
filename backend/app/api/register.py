@@ -9,14 +9,14 @@ from ..auth import client_ip
 from ..db import get_session
 from ..schemas import Token, UserOut
 from ..services.audit import log_event
-from ..services.ratelimit import RateLimiter
+from ..services.ratelimit import DbRateLimiter
 from ..services.security import (
     check_password_strength, create_access_token, hash_password, normalize_email,
 )
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-register_limiter = RateLimiter(limit=5, window=3600)
+register_limiter = DbRateLimiter("register", limit=5, window=3600)
 
 DUPLICATE = HTTPException(status_code=409, detail="Эта почта уже зарегистрирована. Войдите в систему.")
 

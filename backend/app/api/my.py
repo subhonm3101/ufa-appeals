@@ -10,12 +10,12 @@ from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
 from ..services import notifications
 from ..services.audit import log_event
-from ..services.ratelimit import RateLimiter
+from ..services.ratelimit import DbRateLimiter
 from .public import NUMBER, STATUS_RU
 
 router = APIRouter(prefix="/api/my", tags=["citizen"])
 
-comment_limiter = RateLimiter(limit=20, window=3600)
+comment_limiter = DbRateLimiter("citizen_comment", limit=20, window=3600)
 
 CLOSED = ("resolved", "rejected")
 NOT_FOUND = HTTPException(status_code=404, detail="Обращение не найдено")
