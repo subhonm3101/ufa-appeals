@@ -24,7 +24,7 @@ from .api.register import router as register_router
 from .api.my import router as my_router
 from .auth import get_current_user
 from .auth import require_roles
-from .config import DEFAULT_SECRET_KEY, settings
+from .config import DEFAULT_SECRET_KEY, production_problems, settings
 from .db import get_session
 
 if settings.secret_key == DEFAULT_SECRET_KEY:
@@ -33,15 +33,40 @@ if settings.secret_key == DEFAULT_SECRET_KEY:
         "(переменная окружения или файл .env), иначе токены может подделать любой."
     )
 
-app = FastAPI(title="Ufa Appeals API", version="0.2.0")
+_problems = production_problems(settings)
+if _problems:
+    raise RuntimeError("Небезопасные настройки для production: " + "; ".join(_problems))
+
+app = FastAPI(
+    title="Ufa Appeals API",
+    version="0.2.0",
+    docs_url=None if settings.is_production else "/docs",
+    redoc_url=None,
+    openapi_url=None if settings.is_production else "/openapi.json",
+)
 
 # Разрешаем запросы с фронтенда на этапе разработки (React dev-сервер)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=settings.cors_origin_list,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def security_headers(request, call_next):
+    """Заголовки, которые просят браузер не угадывать тип файла, не встраивать страницы и не кэшировать ответы API."""
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "same-origin")
+    response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+    if request.url.path.startswith("/api/"):
+        response.headers.setdefault("Cache-Control", "no-store")
+    if settings.is_production:
+        response.headers.setdefault("Strict-Transport-Security", "max-age=31536000")
+    return response
+
 
 app.include_router(auth_router)
 app.include_router(appeals_router)

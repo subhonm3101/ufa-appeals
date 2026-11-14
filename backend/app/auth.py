@@ -6,6 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from .config import settings
 from .db import get_session
 from .services.security import decode_access_claims, decode_access_token  # noqa: F401
 
@@ -63,4 +64,12 @@ def require_roles(*roles: str):
 
 def client_ip(request: Request) -> str | None:
     """Адрес клиента. Заголовку X-Forwarded-For не доверяем: его может подставить кто угодно."""
-    return request.client.host if request.client else None
+    host = request.client.host if request.client else None
+    trusted = settings.trusted_proxy_list
+    if host and host in trusted:
+        # идём справа налево и пропускаем свои прокси: первый чужой адрес и есть клиент
+        chain = [p.strip() for p in request.headers.get("x-forwarded-for", "").split(",") if p.strip()]
+        for ip in reversed(chain):
+            if ip not in trusted:
+                return ip[:45]
+    return host
