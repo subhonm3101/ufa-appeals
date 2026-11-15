@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   backend:
-    name: Бэкенд: миграции и тесты
+    name: "Бэкенд, миграции и тесты"
     runs-on: ubuntu-latest
     services:
       db:
@@ -46,7 +46,7 @@ jobs:
         run: python -m pytest -q
 
   frontend:
-    name: Интерфейс: сборка
+    name: "Интерфейс, сборка"
     runs-on: ubuntu-latest
     defaults:
       run:
