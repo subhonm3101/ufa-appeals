@@ -2,6 +2,13 @@
 # Запуск: docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
 name: ufa-appeals-prod
 
+# журналы контейнеров хранятся ограниченно: до 3 файлов по 10 МБ на каждый контейнер
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   db:
     image: postgis/postgis:16-3.4
@@ -18,6 +25,7 @@ services:
       timeout: 5s
       retries: 20
     networks: [internal]
+    logging: *default-logging
 
   backend:
     build: ./backend
@@ -38,6 +46,7 @@ services:
       - uploads_prod:/app/uploads
       - ./ml/models:/app/models:ro
     networks: [internal]
+    logging: *default-logging
 
   web:
     build: ./frontend
@@ -50,6 +59,7 @@ services:
     networks:
       internal:
         ipv4_address: 172.30.0.10
+    logging: *default-logging
 
 networks:
   internal:

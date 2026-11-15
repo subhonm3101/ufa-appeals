@@ -39,6 +39,33 @@
 - `docs/` — архитектура, схема БД (`schema.sql`, `er_diagram.png`), описание данных, результаты экспериментов (`experiments.md`).
 - `docker-compose.yml` — база PostgreSQL 16 + PostGIS.
 
+## Рабочая сборка в Docker
+
+![CI](https://github.com/subhonm3101/ufa-appeals/actions/workflows/ci.yml/badge.svg)
+
+Вся система (база, бэкенд, сайт) запускается одной командой Docker Compose. Нужен только Docker.
+
+1. Создайте файл `.env.prod` по образцу `.env.prod.example`: задайте случайные пароль базы (`POSTGRES_PASSWORD`) и ключ подписи токенов (`APPEALS_SECRET_KEY`, не короче 32 символов). В git этот файл не попадает.
+2. Запустите (первая сборка занимает несколько минут):
+
+```powershell
+docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+```
+
+3. Создайте первого администратора (пароль скрипт спросит сам):
+
+```powershell
+docker compose -f docker-compose.prod.yml --env-file .env.prod exec backend python scripts/create_user.py --email admin@example.com --name "Администратор" --role admin
+```
+
+Сайт открывается на http://127.0.0.1:8200 (порт можно изменить в `docker-compose.prod.yml`). Схема базы, справочники категорий и районов, подразделения создаются миграциями при первом запуске.
+
+Модель категорий подключается из папки `ml/models`; без неё все обращения уходят на ручную проверку (создаётся командой `python ml\train_tfidf_baseline.py`).
+
+Резервные копии базы и фотографий: `.\deploy\backup.ps1` (папка `backups`, хранится 14 последних копий). Проверка копии без вреда для рабочей базы: `.\deploy\restore.ps1 -Dump backups\appeals-....dump`.
+
+При каждой отправке в GitHub автоматически выполняются миграции на пустой базе, тесты бэкенда и сборка интерфейса (`.github/workflows/ci.yml`).
+
 ## Запуск
 
 Нужны Docker, Python 3.13 и Node.js 20.
