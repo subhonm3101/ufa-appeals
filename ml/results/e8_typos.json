@@ -1,0 +1,303 @@
+{
+  "best_C": 100,
+  "threshold": 0.7,
+  "noise": {
+    "0.0": {
+      "base": {
+        "accuracy": 0.9633,
+        "macro_f1": 0.96,
+        "auto_share": 0.9755,
+        "wrong_auto_share": 0.0231
+      },
+      "aug": {
+        "accuracy": 0.9592,
+        "macro_f1": 0.9524,
+        "auto_share": 0.9837,
+        "wrong_auto_share": 0.0313
+      }
+    },
+    "0.1": {
+      "base": {
+        "accuracy": 0.9646,
+        "macro_f1": 0.9587,
+        "auto_share": 0.9769,
+        "wrong_auto_share": 0.0218
+      },
+      "aug": {
+        "accuracy": 0.9619,
+        "macro_f1": 0.9537,
+        "auto_share": 0.985,
+        "wrong_auto_share": 0.0286
+      }
+    },
+    "0.2": {
+      "base": {
+        "accuracy": 0.9592,
+        "macro_f1": 0.9514,
+        "auto_share": 0.9782,
+        "wrong_auto_share": 0.0286
+      },
+      "aug": {
+        "accuracy": 0.9605,
+        "macro_f1": 0.9498,
+        "auto_share": 0.9864,
+        "wrong_auto_share": 0.034
+      }
+    },
+    "0.3": {
+      "base": {
+        "accuracy": 0.9714,
+        "macro_f1": 0.9674,
+        "auto_share": 0.9755,
+        "wrong_auto_share": 0.0204
+      },
+      "aug": {
+        "accuracy": 0.966,
+        "macro_f1": 0.9593,
+        "auto_share": 0.9837,
+        "wrong_auto_share": 0.0272
+      }
+    }
+  },
+  "realistic": {
+    "n": 28,
+    "base": {
+      "accuracy": 0.8571,
+      "macro_f1": 0.8341,
+      "auto_share": 0.7857,
+      "wrong_auto_share": 0.0
+    },
+    "aug": {
+      "accuracy": 0.8929,
+      "macro_f1": 0.8889,
+      "auto_share": 0.8929,
+      "wrong_auto_share": 0.0357
+    },
+    "rows": [
+      {
+        "text": "На улице Зорге огромная яма, уже две машины пробили колёса",
+        "expected": "roads",
+        "base": "roads",
+        "base_conf": 1.0,
+        "aug": "roads",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Дорога во дворе разбита, после дождя не пройти и не проехать",
+        "expected": "roads",
+        "base": "roads",
+        "base_conf": 0.99,
+        "aug": "roads",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Асфальт провалился возле остановки, сделайте что-нибудь",
+        "expected": "roads",
+        "base": "roads",
+        "base_conf": 1.0,
+        "aug": "roads",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Нету разметки на перекрёстке, постоянно аварии",
+        "expected": "roads",
+        "base": "roads",
+        "base_conf": 0.97,
+        "aug": "roads",
+        "aug_conf": 0.95
+      },
+      {
+        "text": "Не работает освещение во дворе уже неделю, темно как ночью",
+        "expected": "lighting",
+        "base": "lighting",
+        "base_conf": 1.0,
+        "aug": "lighting",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Фанарь у подъезда не горит, прошу заменить лампу",
+        "expected": "lighting",
+        "base": "lighting",
+        "base_conf": 0.89,
+        "aug": "lighting",
+        "aug_conf": 0.91
+      },
+      {
+        "text": "Освешение на улице Ленина отсутсвует, страшно ходить вечером",
+        "expected": "lighting",
+        "base": "lighting",
+        "base_conf": 0.98,
+        "aug": "lighting",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Прощу обратите внимание не работает освешение и принимаете меры",
+        "expected": "lighting",
+        "base": "transport",
+        "base_conf": 0.42,
+        "aug": "transport",
+        "aug_conf": 0.74
+      },
+      {
+        "text": "Автобус 55 не приходит по расписанию, жду по сорок минут",
+        "expected": "transport",
+        "base": "transport",
+        "base_conf": 1.0,
+        "aug": "transport",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Маршрутка до Черниковки ездит раз в час, добавьте рейсы",
+        "expected": "transport",
+        "base": "transport",
+        "base_conf": 0.75,
+        "aug": "transport",
+        "aug_conf": 0.85
+      },
+      {
+        "text": "Остановка без навеса, зимой стоять невозможно",
+        "expected": "transport",
+        "base": "transport",
+        "base_conf": 0.88,
+        "aug": "transport",
+        "aug_conf": 0.99
+      },
+      {
+        "text": "Водитель трамвая ехал с открытыми дверями",
+        "expected": "transport",
+        "base": "transport",
+        "base_conf": 0.96,
+        "aug": "transport",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Мусор не вывозят уже пять дней, контейнеры переполнены",
+        "expected": "garbage",
+        "base": "garbage",
+        "base_conf": 1.0,
+        "aug": "garbage",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Возле дома стихийная свалка, воняет на весь двор",
+        "expected": "garbage",
+        "base": "garbage",
+        "base_conf": 0.99,
+        "aug": "garbage",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Баки для мусора сломаны, всё валяется вокруг",
+        "expected": "garbage",
+        "base": "garbage",
+        "base_conf": 0.99,
+        "aug": "garbage",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Мусарные контейнеры горят, нужно убрать",
+        "expected": "garbage",
+        "base": "garbage",
+        "base_conf": 0.81,
+        "aug": "garbage",
+        "aug_conf": 0.87
+      },
+      {
+        "text": "Нету горячего вода уже неделя когда уже почините",
+        "expected": "utilities",
+        "base": "utilities",
+        "base_conf": 0.77,
+        "aug": "utilities",
+        "aug_conf": 0.84
+      },
+      {
+        "text": "В квартире батареи холодные, а на улице минус двадцать",
+        "expected": "utilities",
+        "base": "utilities",
+        "base_conf": 1.0,
+        "aug": "utilities",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Течёт крыша в подъезде, на лестнице лужи",
+        "expected": "utilities",
+        "base": "utilities",
+        "base_conf": 1.0,
+        "aug": "utilities",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Отключили воду без предупреждения",
+        "expected": "utilities",
+        "base": "utilities",
+        "base_conf": 0.99,
+        "aug": "utilities",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Во дворе сломаны качели и скамейки, детям негде играть",
+        "expected": "landscaping",
+        "base": "landscaping",
+        "base_conf": 0.98,
+        "aug": "landscaping",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Аварийное дерево нависло над детской площадкой, спилите",
+        "expected": "landscaping",
+        "base": "landscaping",
+        "base_conf": 0.98,
+        "aug": "landscaping",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Трава не кошена все лето, двор зарос",
+        "expected": "landscaping",
+        "base": "landscaping",
+        "base_conf": 0.67,
+        "aug": "landscaping",
+        "aug_conf": 0.94
+      },
+      {
+        "text": "Клумбы вытоптаны, газон превратился в грязь",
+        "expected": "landscaping",
+        "base": "landscaping",
+        "base_conf": 0.59,
+        "aug": "landscaping",
+        "aug_conf": 0.86
+      },
+      {
+        "text": "Хочу узнать как получить справку о составе семьи",
+        "expected": "other",
+        "base": "other",
+        "base_conf": 1.0,
+        "aug": "other",
+        "aug_conf": 1.0
+      },
+      {
+        "text": "Прошу разъяснить порядок оформления субсидии",
+        "expected": "other",
+        "base": "lighting",
+        "base_conf": 0.29,
+        "aug": "lighting",
+        "aug_conf": 0.42
+      },
+      {
+        "text": "Шумят соседи после одиннадцати вечера каждый день",
+        "expected": "other",
+        "base": "roads",
+        "base_conf": 0.54,
+        "aug": "lighting",
+        "aug_conf": 0.49
+      },
+      {
+        "text": "Спасибо за работу администрации, всё хорошо",
+        "expected": "other",
+        "base": "roads",
+        "base_conf": 0.33,
+        "aug": "other",
+        "aug_conf": 0.37
+      }
+    ]
+  }
+}
