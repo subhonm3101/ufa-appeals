@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from . import autoanalysis
+from . import autoanalysis, pipeline
 
 SOURCES = ("web", "operator", "api")
 MIN_TEXT = 20
@@ -94,5 +94,6 @@ def register(session: Session, data: NewAppeal) -> Registered:
         {"i": row.id, "c": "Обращение зарегистрировано"},
     )
     autoanalysis.apply(session, row.id, d.text)
+    pipeline.on_new_appeal(session, row.id)
     session.commit()
     return Registered(row.id, row.public_number)

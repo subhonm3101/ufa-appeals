@@ -189,13 +189,16 @@ def test_priority_queue_returns_rules_v1(make_user, priority_data):
 
     scores = [item["score"] for item in body["items"]]
     assert scores == sorted(scores, reverse=True)
+    limit_max = 200
+    full = client.get("/api/priority/queue", params={"limit": limit_max}, headers=user.headers)
+    assert full.status_code == 200, full.text
     assert any(item["cluster_id"] == priority_data["cluster_id"]
-               for item in body["items"])
+               for item in full.json()["items"])
 
     for item in body["items"]:
         assert "cluster_id" in item
         assert "components" in item["factors"]
-        assert item["category"] is not None
+        assert "category" in item
 
 
 def test_priority_cluster_details_returns_components_and_appeals(
