@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from ..auth import CurrentUser, client_ip, require_roles
 from ..db import get_session
 from ..services import notifications, workflow
+from ..services import pipeline
 from ..services.audit import log_event
 from ..services.importer import LOCAL_TZ
 
@@ -191,6 +192,7 @@ def change_status(
                 f"Статус вашего обращения {row.public_number} изменён: "
                 f"{workflow.STATUS_LABELS[current]} → {workflow.STATUS_LABELS[body.to_status]}",
             )
+        pipeline.on_status_changed(session, appeal_id)
         log_event(
             session, user.id, "appeal_status_changed", "appeal", appeal_id,
             details={"from": current, "to": body.to_status}, ip=client_ip(request),
@@ -381,6 +383,7 @@ def set_category(
             ),
             {"id": appeal_id, "by": user.id, "body": f"Категория: {category.name_ru}"},
         )
+        pipeline.on_category_changed(session, appeal_id)
         log_event(
             session, user.id, "appeal_category_set", "appeal", appeal_id,
             details={"category_id": category.id}, ip=client_ip(request),

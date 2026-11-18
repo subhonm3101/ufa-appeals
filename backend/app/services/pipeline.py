@@ -70,3 +70,43 @@ def refresh_priority(session: Session, cluster_id: int, cfg=DEFAULT_CONFIG) -> f
         {"n": len(rows), "f": min(r.created_at for r in rows), "l": max(r.created_at for r in rows), "c": cluster_id},
     )
     return score
+
+
+def on_category_changed(session: Session, appeal_id: int) -> int | None:
+    """Категория обращения изменилась: кластер из одного обращения наследует её, приоритет пересчитывается."""
+    row = session.execute(
+        text("SELECT cluster_id, category_id FROM appeals WHERE id = :i"), {"i": appeal_id}
+    ).first()
+    if row is None:
+        return None
+    if row.cluster_id is None:
+        return on_new_appeal(session, appeal_id)
+    members = session.execute(
+        text("SELECT count(*) FROM appeals WHERE cluster_id = :c"), {"c": row.cluster_id}
+    ).scalar_one()
+    if members == 1:
+        session.execute(
+            text("UPDATE clusters SET category_id = :cat WHERE id = :c"),
+            {"cat": row.category_id, "c": row.cluster_id},
+        )
+    refresh_priority(session, row.cluster_id)
+    return row.cluster_id
+
+
+def on_status_changed(session: Session, appeal_id: int) -> str | None:
+    """Кластер закрыт, когда все его обращения решены или отклонены; при повторном открытии приоритет пересчитывается."""
+    cid = session.execute(text("SELECT cluster_id FROM appeals WHERE id = :i"), {"i": appeal_id}).scalar()
+    if cid is None:
+        return None
+    still_open = session.execute(
+        text(
+            "SELECT EXISTS (SELECT 1 FROM appeals WHERE cluster_id = :c "
+            "AND COALESCE(status, 'new') NOT IN ('resolved', 'rejected'))"
+        ),
+        {"c": cid},
+    ).scalar_one()
+    status = "open" if still_open else "closed"
+    session.execute(text("UPDATE clusters SET status = :s WHERE id = :c"), {"s": status, "c": cid})
+    if still_open:
+        refresh_priority(session, cid)
+    return status

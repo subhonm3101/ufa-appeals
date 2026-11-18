@@ -107,3 +107,65 @@ def test_cluster_with_other_members_survives(session, made):
     session.commit()
     made.remove(r.id)
     assert session.execute(text("SELECT count(*) FROM clusters WHERE id = :c"), {"c": cid}).scalar_one() == 1
+
+
+def test_category_change_updates_cluster(session, made):
+    from app.services import pipeline
+
+    cat = session.execute(text("SELECT id FROM categories ORDER BY id LIMIT 1")).scalar()
+    if cat is None:
+        pytest.skip("в тестовой базе нет категорий")
+    r = _register(session, made)
+    cid = _cluster_of(session, r.id)
+    session.execute(text("UPDATE appeals SET category_id = :c WHERE id = :i"), {"c": cat, "i": r.id})
+    pipeline.on_category_changed(session, r.id)
+    session.commit()
+    got = session.execute(text("SELECT category_id FROM clusters WHERE id = :c"), {"c": cid}).scalar_one()
+    assert got == cat
+    n = session.execute(
+        text("SELECT count(*) FROM priority_scores WHERE cluster_id = :c AND method = 'rules_v1'"), {"c": cid}
+    ).scalar_one()
+    assert n == 1
+
+
+def test_closing_removes_cluster_from_queue(session, made, make_user):
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+    from app.services import pipeline
+
+    client = TestClient(app)
+    user = make_user("admin")
+
+    def total():
+        r = client.get("/api/priority/queue", params={"limit": 1}, headers=user.headers)
+        assert r.status_code == 200, r.text
+        return r.json()["total"]
+
+    r = _register(session, made)
+    cid = _cluster_of(session, r.id)
+    before = total()
+    session.execute(text("UPDATE appeals SET status = 'resolved' WHERE id = :i"), {"i": r.id})
+    assert pipeline.on_status_changed(session, r.id) == "closed"
+    session.commit()
+    assert total() == before - 1
+    session.execute(text("UPDATE appeals SET status = 'in_progress' WHERE id = :i"), {"i": r.id})
+    assert pipeline.on_status_changed(session, r.id) == "open"
+    session.commit()
+    assert total() == before
+    n = session.execute(
+        text("SELECT count(*) FROM priority_scores WHERE cluster_id = :c AND method = 'rules_v1'"), {"c": cid}
+    ).scalar_one()
+    assert n == 1
+
+
+def test_cluster_stays_open_while_any_member_open(session, made):
+    from app.services import pipeline
+
+    a = _register(session, made)
+    b = _register(session, made)
+    cid = _cluster_of(session, a.id)
+    session.execute(text("UPDATE appeals SET cluster_id = :c WHERE id = :i"), {"c": cid, "i": b.id})
+    session.execute(text("UPDATE appeals SET status = 'rejected' WHERE id = :i"), {"i": a.id})
+    assert pipeline.on_status_changed(session, a.id) == "open"
+    session.commit()

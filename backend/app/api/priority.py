@@ -98,7 +98,7 @@ def priority_queue(
     session: Session = Depends(get_session),
 ):
     """Очередь кластеров по последней оценке основного метода rules_v1."""
-    filters = []
+    filters = ["cl.status = 'open'"]  # закрытые кластеры в очередь не попадают
     params = {"limit": limit, "offset": offset}
 
     if district:
