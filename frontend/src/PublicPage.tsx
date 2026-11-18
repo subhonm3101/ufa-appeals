@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { apiFetch, ApiError } from './api'
 import { useFetch } from './useFetch'
+import LocationPicker, { type Point } from './LocationPicker'
 import './public.css'
 
 interface District {
@@ -39,6 +40,7 @@ export function SubmitForm() {
   const [address, setAddress] = useState('')
   const [email, setEmail] = useState('')
   const [districtId, setDistrictId] = useState('')
+  const [point, setPoint] = useState<Point | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [number, setNumber] = useState<string | null>(null)
@@ -72,6 +74,10 @@ export function SubmitForm() {
       if (address) form.append('address_text', address)
       if (email) form.append('contact_email', email)
       if (districtId) form.append('district_id', districtId)
+      if (point) {
+        form.append('lat', point[0].toFixed(6))
+        form.append('lon', point[1].toFixed(6))
+      }
       for (const f of photos) form.append('files', f)
       const res = await apiFetch<{ public_number: string }>('/api/public/appeals', {
         method: 'POST',
@@ -100,6 +106,7 @@ export function SubmitForm() {
             setAddress('')
             setEmail('')
             setDistrictId('')
+            setPoint(null)
             setPhotos([])
           }}
         >
@@ -138,6 +145,10 @@ export function SubmitForm() {
           ))}
         </select>
       </label>
+      <div className="picker-field">
+        <span>Место на карте (необязательно)</span>
+        <LocationPicker value={point} onChange={setPoint} />
+      </div>
       <label>
         Адрес (необязательно)
         <input value={address} maxLength={300} onChange={(e) => setAddress(e.target.value)} />

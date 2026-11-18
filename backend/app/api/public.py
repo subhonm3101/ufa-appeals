@@ -58,6 +58,10 @@ def districts(session: Session = Depends(get_session)):
     return [{"id": r.id, "name": r.name} for r in rows]
 
 
+# границы Уфы: широта от/до, долгота от/до
+UFA_BOUNDS = (54.40, 55.10, 55.55, 56.45)
+
+
 @router.post("/appeals", status_code=201)
 def submit(
     request: Request,
@@ -65,6 +69,8 @@ def submit(
     address_text: str | None = Form(None, max_length=400),
     contact_email: str | None = Form(None, max_length=300),
     district_id: int | None = Form(None),
+    lat: float | None = Form(None, ge=-90, le=90),
+    lon: float | None = Form(None, ge=-180, le=180),
     files: list[UploadFile] = File(default=[]),
     session: Session = Depends(get_session),
     citizen=Depends(optional_citizen),
@@ -72,12 +78,18 @@ def submit(
     """Приём обращения: поля формы и до трёх фотографий (multipart/form-data)."""
     if not submit_limiter.allow(client_ip(request)):
         raise TOO_MANY
+    if lat is not None and lon is not None and not (
+        UFA_BOUNDS[0] <= lat <= UFA_BOUNDS[1] and UFA_BOUNDS[2] <= lon <= UFA_BOUNDS[3]
+    ):
+        raise HTTPException(status_code=422, detail="Точка должна находиться в пределах Уфы")
     data = intake.NewAppeal(
         text=body_text,
         source="web",
         address_text=address_text,
         contact_email=contact_email or (citizen.email if citizen else None),
         district_id=district_id,
+        lat=lat,
+        lon=lon,
         citizen_id=citizen.id if citizen else None,
     )
     try:

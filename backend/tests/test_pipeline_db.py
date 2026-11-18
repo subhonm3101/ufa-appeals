@@ -169,3 +169,25 @@ def test_cluster_stays_open_while_any_member_open(session, made):
     session.execute(text("UPDATE appeals SET status = 'rejected' WHERE id = :i"), {"i": a.id})
     assert pipeline.on_status_changed(session, a.id) == "open"
     session.commit()
+
+
+def test_public_form_coordinates(session, made):
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    client = TestClient(app)
+    r = client.post("/api/public/appeals", data={"text": BODY, "lat": "54.7388", "lon": "55.9721"})
+    assert r.status_code == 201, r.text
+    row = session.execute(
+        text("SELECT id, lat, lon, cluster_id FROM appeals WHERE public_number = :n"),
+        {"n": r.json()["public_number"]},
+    ).one()
+    made.append(row.id)
+    assert abs(row.lat - 54.7388) < 1e-6 and row.cluster_id is not None
+    clat = session.execute(
+        text("SELECT centroid_lat FROM clusters WHERE id = :c"), {"c": row.cluster_id}
+    ).scalar_one()
+    assert abs(clat - 54.7388) < 1e-6
+    far = client.post("/api/public/appeals", data={"text": BODY, "lat": "10", "lon": "10"})
+    assert far.status_code == 422
