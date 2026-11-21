@@ -1,6 +1,6 @@
 """Регистрация нового обращения: одна точка входа для сайта, оператора и внешнего API."""
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -63,6 +63,15 @@ def clean(data: NewAppeal) -> NewAppeal:
 def register(session: Session, data: NewAppeal) -> Registered:
     """Сохраняет обращение со статусом «new» и записью в истории; фиксирует транзакцию."""
     d = clean(data)
+    if d.district_id is None and d.lat is not None:
+        # район не выбран: определяем по точке (если в базе есть границы районов)
+        found_id = session.execute(
+            text("SELECT id FROM districts WHERE geom IS NOT NULL "
+                 "AND ST_Covers(geom, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)) ORDER BY id LIMIT 1"),
+            {"lon": d.lon, "lat": d.lat},
+        ).scalar()
+        if found_id is not None:
+            d = replace(d, district_id=found_id)
     if d.district_id is not None:
         found = session.execute(
             text("SELECT 1 FROM districts WHERE id = :i"), {"i": d.district_id}

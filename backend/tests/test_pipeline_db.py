@@ -191,3 +191,54 @@ def test_public_form_coordinates(session, made):
     assert abs(clat - 54.7388) < 1e-6
     far = client.post("/api/public/appeals", data={"text": BODY, "lat": "10", "lon": "10"})
     assert far.status_code == 422
+
+
+@pytest.fixture
+def two_districts(session):
+    """Два временных района-прямоугольника в сельской местности к юго-востоку от Уфы."""
+    ids = []
+    boxes = (("Тестовый район A (pytest)", (56.30, 54.40, 56.40, 54.45)),
+             ("Тестовый район B (pytest)", (56.50, 54.40, 56.60, 54.45)))
+    for name, (x1, y1, x2, y2) in boxes:
+        wkt = f"POLYGON(({x1} {y1}, {x2} {y1}, {x2} {y2}, {x1} {y2}, {x1} {y1}))"
+        ids.append(session.execute(
+            text("INSERT INTO districts (name, geom) VALUES (:n, ST_Multi(ST_GeomFromText(:w, 4326))) RETURNING id"),
+            {"n": name, "w": wkt},
+        ).scalar_one())
+    session.commit()
+    yield ids
+    session.execute(text("DELETE FROM districts WHERE id = ANY(:ids)"), {"ids": ids})
+    session.commit()
+
+
+def _district_of(session, appeal_id):
+    return session.execute(text("SELECT district_id FROM appeals WHERE id = :i"), {"i": appeal_id}).scalar_one()
+
+
+def test_district_from_coordinates(session, two_districts, made):
+    r = _register(session, made, lat=54.42, lon=56.35)
+    assert _district_of(session, r.id) == two_districts[0]
+    cid = _cluster_of(session, r.id)
+    assert session.execute(
+        text("SELECT district_id FROM clusters WHERE id = :c"), {"c": cid}
+    ).scalar_one() == two_districts[0]
+
+
+def test_explicit_district_not_overridden(session, two_districts, made):
+    r = _register(session, made, lat=54.42, lon=56.35, district_id=two_districts[1])
+    assert _district_of(session, r.id) == two_districts[1]
+
+
+def test_point_outside_districts_keeps_district_empty(session, two_districts, made):
+    r = _register(session, made, lat=54.43, lon=56.45)
+    assert _district_of(session, r.id) is None
+
+
+def test_real_district_boundaries_loaded(session):
+    n = session.execute(text(
+        "SELECT count(*) FROM districts WHERE geom IS NOT NULL AND name IN "
+        "('Дёмский', 'Калининский', 'Кировский', 'Ленинский', 'Октябрьский', 'Орджоникидзевский', 'Советский')"
+    )).scalar_one()
+    if n == 0:
+        pytest.skip("в тестовой базе нет районов с границами")
+    assert n == 7
